@@ -542,6 +542,7 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
       </p>
     </div>
     <button class="btn" id="save-profile" style="width:100%;padding:14px">保存档案</button>
+    <button class="btn ghost" id="reset-data" style="width:100%;padding:10px;margin-top:12px;font-size:13px;color:#999">重置所有数据（回到新用户状态）</button>
     <div id="save-tip" style="text-align:center;margin-top:10px;font-size:13px;color:var(--sage);min-height:20px"></div>
   </section>
 
@@ -1386,6 +1387,13 @@ document.getElementById("save-profile").addEventListener("click",()=>{
   renderHome();
   setTimeout(()=>tip.textContent="",1500);
 });
+// 重置数据
+document.getElementById("reset-data").addEventListener("click",()=>{
+  if(confirm("确定要清空所有数据吗？（包括衣服、搭配、档案等）")){
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  }
+});
 let weatherCache = { city:null, data:null, ts:0 };
 async function fetchWeather(city){
   if(weatherCache.city===city && weatherCache.data && Date.now()-weatherCache.ts<10*60*1000){
@@ -2205,6 +2213,7 @@ function renderCategoryDetail(catKey){
     <div style="font-size:13px;font-weight:600;margin-bottom:10px">添加新衣服</div>
     <div style="display:flex;gap:8px;align-items:center">
       <input type="text" id="new-${cat.key}-name" placeholder="${cat.placeholder}" style="flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px">
+      <input type="file" id="new-${cat.key}-photo" accept="image/*" hidden>
       <button class="btn ghost" id="add-${cat.key}-photo-btn" style="font-size:12px;padding:8px 10px">照片</button>
       <button class="btn" id="add-${cat.key}-btn" style="font-size:12px;padding:8px 12px">添加</button>
     </div>
