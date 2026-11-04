@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智搭</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+/* ============ 设计 token ============ */
+:root{
+  --bg:#FAF7F2;
+  --card:#FFFFFF;
+  --ink:#3D3A38;
+  --ink-soft:#8A837E;
+  --line:#EFE9E2;
+  --primary:#D97A8C;        /* 豆沙粉 */
+  --primary-soft:#FBE3E8;
+  --primary-deep:#B85A6E;
+  --sage:#9CB49A;           /* 鼠尾草绿 */
+  --sage-soft:#E7EEE5;
+  --sun:#E9B949;
+  --rain:#7FA8C9;
+  --shadow:0 6px 20px rgba(180,150,140,.08);
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.6;
+  padding-bottom:110px; /* 给底部 tab 留位 */
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:16px;outline:none}
+/* ============ 布局 ============ */
+.app{max-width:480px;margin:0 auto;min-height:100vh}
+.view{display:none;padding:20px 18px 24px;animation:fadeIn .25s ease}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ============ 顶部 ============ */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0 16px}
+.topbar h1{font-size:22px;font-weight:600;letter-spacing:.5px}
+.topbar .date-today{font-size:13px;color:var(--ink-soft)}
+
+/* ============ 行程提醒横幅 ============ */
+.alert-banner{
+  background:linear-gradient(135deg,#FCE4E8,#FDEEE9);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  margin-bottom:16px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.alert-banner .icon{font-size:22px;line-height:1.2}
+.alert-banner .body{flex:1;min-width:0}
+.alert-banner .title{font-weight:600;font-size:14px;color:var(--primary-deep);margin-bottom:2px}
+.alert-banner .desc{font-size:13px;color:var(--ink)}
+
+/* ============ 天气卡片 ============ */
+.weather-card{
+  background:linear-gradient(160deg,#FFFFFF 0%,#FDF6F4 100%);
+  border-radius:var(--radius);
+  padding:22px 20px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+.weather-row{display:flex;justify-content:space-between;align-items:center}
+.weather-temp{font-size:48px;font-weight:300;letter-spacing:-1px;line-height:1}
+.weather-temp small{font-size:20px;font-weight:400}
+.weather-meta{text-align:right}
+.weather-city{font-size:16px;font-weight:600}
+.weather-desc{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.weather-hilo{
+  display:flex;gap:16px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+  font-size:13px;color:var(--ink-soft);
+}
+.weather-hilo b{color:var(--ink);font-weight:500}
+
+/* ============ 穿搭推荐卡 ============ */
+.outfit-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+.outfit-card h2{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.outfit-card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.outfit-main{font-size:15px;line-height:1.75;color:var(--ink);margin-bottom:12px}
+.outfit-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-size:12px;padding:4px 10px;border-radius:999px;
+  background:var(--primary-soft);color:var(--primary-deep);
+}
+.tag.sage{background:var(--sage-soft);color:#5C7A5A}
+.tag.warn{background:#FFF3D6;color:#9A7B1F}
+
+/* ============ 经期提示 ============ */
+.period-banner{
+  background:var(--primary-soft);
+  border-radius:14px;
+  padding:12px 14px;
+  font-size:13px;
+  color:var(--primary-deep);
+  margin-bottom:16px;
+  display:flex;gap:8px;align-items:flex-start;
+}
+
+/* ============ 日历 ============ */
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-head .month-label{font-size:18px;font-weight:600}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{
+  width:36px;height:36px;border-radius:10px;background:var(--card);
+  box-shadow:var(--shadow);font-size:16px;color:var(--ink);
+}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:12px;color:var(--ink-soft);margin-bottom:6px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-cell{
+  aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:12px;font-size:14px;cursor:pointer;position:relative;
+  transition:background .15s;
+  padding:4px;
+}
+.cal-cell:hover{background:var(--primary-soft)}
+.cal-cell.other{opacity:.25}
+.cal-cell.today{background:var(--primary);color:#fff;font-weight:600}
+.cal-cell.selected{background:var(--primary-soft);font-weight:600}
+.cal-cell .dot-row{position:absolute;bottom:4px;display:flex;gap:3px}
+.cal-cell .dot-e{width:5px;height:5px;border-radius:50%;background:var(--sun)}
+.cal-cell .dot-p{width:5px;height:5px;border-radius:50%;background:var(--primary)}
+.cal-cell.today .dot-e,.cal-cell.today .dot-p{background:#fff}
+/* 真实经期：浅粉实心背景 */
+.cal-cell.real-period{background:#FBE3E8;color:var(--primary-deep)}
+.cal-cell.real-period.today{background:var(--primary);color:#fff}
+/* 预测经期：浅粉虚线边框 */
+.cal-cell.pred-period{outline:1.5px dashed #E8A0A8;outline-offset:-2px}
+
+/* 日历底部：选中日详情 */
+.day-panel{
+  background:var(--card);border-radius:var(--radius);padding:18px;
+  box-shadow:var(--shadow);margin-top:16px;
+}
+.day-panel h3{font-size:15px;margin-bottom:10px}
+.day-panel textarea{
+  width:100%;min-height:70px;border:1px solid var(--line);border-radius:12px;
+  padding:10px 12px;resize:vertical;background:var(--bg);color:var(--ink);
+}
+.day-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.toggle-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:999px;background:var(--bg);font-size:13px;
+  border:1px solid var(--line);
+}
+.toggle-pill.on{background:var(--primary-soft);border-color:var(--primary);color:var(--primary-deep)}
+.btn{
+  padding:10px 18px;border-radius:12px;background:var(--primary);color:#fff;
+  font-size:14px;font-weight:500;
+}
+.btn.ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+
+/* ============ 我的档案 ============ */
+.profile-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.profile-card h3{font-size:14px;color:var(--ink-soft);font-weight:500;margin-bottom:12px;letter-spacing:.5px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+.field input,.field select{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;
+  background:var(--bg);color:var(--ink);
+}
+.field-row{display:flex;gap:10px}
+.field-row .field{flex:1}
+.chip-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+  background:var(--card);font-size:13px;cursor:pointer;user-select:none;
+  transition:all .15s;
+}
+.chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ============ 底部 Tab ============ */
+.tabbar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);
+  display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index:10;
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 0;color:var(--ink-soft);font-size:11px;
+}
+.tab svg{width:22px;height:22px}
+.tab.on{color:var(--primary)}
+
+/* ============ 首次建档覆盖层 ============ */
+.onboard-mask{
+  position:fixed;inset:0;background:rgba(60,40,45,.4);z-index:100;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.onboard{
+  background:var(--bg);width:100%;max-width:480px;
+  border-radius:24px 24px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+  max-height:92vh;overflow-y:auto;
+}
+.onboard h2{font-size:20px;margin-bottom:6px}
+.onboard p.sub{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+.onboard .btn{width:100%;padding:14px;font-size:15px;margin-top:8px}
+
+.empty{padding:40px 20px;text-align:center;color:var(--ink-soft);font-size:13px}
+
+/* ============ 衣橱 ============ */
+.wardrobe-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.wardrobe-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;background:var(--bg);border-radius:12px;
+}
+.wardrobe-item img{
+  width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--line);
+}
+.wardrobe-item .ph{
+  width:44px;height:44px;border-radius:8px;background:var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--ink-soft);
+}
+.wardrobe-item .name{flex:1;min-width:0;font-size:14px}
+.wardrobe-item .del{
+  width:28px;height:28px;border-radius:8px;background:#FBE3E8;color:var(--primary-deep);
+  font-size:14px;line-height:1;
+}
+.wardrobe-add-row{display:flex;gap:8px;align-items:center}
+.wardrobe-add-row input[type=text]{
+  flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);
+}
+.wardrobe-add-row .btn{padding:10px 14px;font-size:13px}
+.wardrobe-empty{font-size:13px;color:var(--ink-soft);padding:10px 0}
+
+/* ============ 桌面端适配 (>=768px) ============ */
+@media (min-width: 768px){
+  body{padding-bottom:100px}
+  .app{max-width:960px}
+  .view{padding:32px 36px 40px}
+  .topbar h1{font-size:26px}
+  .weather-temp{font-size:64px}
+
+  /* 首页：两栏网格 */
+  #view-home.active{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:16px;
+    align-items:start;
+  }
+  #view-home .topbar,
+  #view-home #alert-area,
+  #view-home #period-tip-area{grid-column:1 / -1}
+  #view-home .weather-card{margin-bottom:0;grid-column:1}
+  #view-home .outfit-card{margin-bottom:0;grid-column:1}
+  #view-home .upcoming-card{grid-column:2;grid-row:4 / span 2}
+
+  /* 右侧空栏放一个"近期行程"小卡（JS 会注入） */
+  .upcoming-card{
+    background:var(--card);border-radius:var(--radius);padding:20px;
+    box-shadow:var(--shadow);align-self:flex-start;
+  }
+  .upcoming-card h3{font-size:14px;color:var(--ink-soft);font-weight:500;margin-bottom:12px}
+  .upcoming-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .upcoming-item:last-child{border-bottom:none}
+  .upcoming-item .d{color:var(--primary-deep);font-weight:600;min-width:70px}
+
+  /* 日历页：月历 + 详情面板并排 */
+  #view-cal.active{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:20px;
+  }
+  #view-cal .topbar, #view-cal .cal-head, #view-cal .cal-weekdays, #view-cal .cal-grid{grid-column:1}
+  #view-cal .day-panel{grid-column:2;grid-row:2 / span 4;margin-top:0;align-self:start;position:sticky;top:20px}
+  .cal-cell{font-size:16px;border-radius:14px}
+
+  /* 我的页：卡片两列 */
+  #view-me.active{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  #view-me .topbar, #view-me #save-profile, #view-me #save-tip{grid-column:1 / -1}
+
+  .tabbar{max-width:960px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ==================== 视图：首页 ==================== -->
+  <section id="view-home" class="view active">
+    <div class="topbar">
+      <div>
+        <h1>今天穿什么</h1>
+        <div class="date-today" id="today-label">--</div>
+      </div>
+    </div>
+
+    <div id="alert-area"></div>
+    <div id="period-tip-area"></div>
+
+    <div class="weather-card">
+      <div class="weather-row">
+        <div class="weather-temp"><span id="w-temp">--</span><small>℃</small></div>
+        <div class="weather-meta">
+          <div class="weather-city" id="w-city">--</div>
+          <div class="weather-desc" id="w-desc">加载天气中…</div>
+        </div>
+      </div>
+      <div class="weather-hilo">
+        <span>最高 <b id="w-hi">--</b></span>
+        <span>最低 <b id="w-lo">--</b></span>
+        <span>湿度 <b id="w-hum">--</b></span>
+        <span>风 <b id="w-wind">--</b></span>
+      </div>
+    </div>
+
+    <div class="outfit-card">
+      <h2><span class="dot"></span>今日穿搭建议</h2>
+      <div class="outfit-main" id="outfit-main">完善资料后这里会生成你的专属穿搭建议。</div>
+      <div class="outfit-tags" id="outfit-tags"></div>
+    </div>
+    <div class="upcoming-card" id="upcoming-card" style="display:none">
+      <h3>近期行程</h3>
+      <div id="upcoming-list"></div>
+    </div>
+  </section>
+
+  <!-- ==================== 视图：日历 ==================== -->
+  <section id="view-cal" class="view">
+    <div class="topbar">
+      <h1>日历</h1>
+    </div>
+    <div class="cal-head">
+      <div class="month-label" id="cal-month">--</div>
+      <div class="cal-nav">
+        <button id="prev-month">‹</button>
+        <button id="next-month">›</button>
+      </div>
+    </div>
+    <div class="cal-weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+
+    <div class="day-panel" id="day-panel" style="display:none">
+      <h3 id="day-panel-title">--</h3>
+      <label style="font-size:13px;color:var(--ink-soft)">当天行程 / 备注</label>
+      <textarea id="day-note" placeholder="例如：面试、约会、健身、在家休息…"></textarea>
+      <div class="day-row">
+        <button class="toggle-pill" id="toggle-period">
+          <span id="period-action-label">记录经期</span>
+        </button>
+        <button class="btn" id="save-day">保存</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 视图：我的 ==================== -->
+  <section id="view-me" class="view">
+    <div class="topbar">
+      <h1>我的档案</h1>
+    </div>
+
+    <div class="profile-card">
+      <h3>基本信息</h3>
+      <div class="field">
+        <label>所在城市（可精确到区/县）</label>
+        <input id="f-city" placeholder="例如：福州鼓楼 / 闽侯">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>身高 (cm)</label>
+          <input id="f-height" type="number" placeholder="160">
+        </div>
+        <div class="field">
+          <label>体重 (kg)</label>
+          <input id="f-weight" type="number" placeholder="50">
+        </div>
+      </div>
+      <div class="field">
+        <label>性别</label>
+        <select id="f-gender">
+          <option value="女">女</option>
+          <option value="男">男</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>身份阶段</label>
+        <select id="f-identity">
+          <option value="学生">学生</option>
+          <option value="上班族">上班族</option>
+          <option value="自由职业">自由职业</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>体型</label>
+        <select id="f-body-shape">
+          <option value="">不填也可以</option>
+          <option value="梨型">梨型（上窄下宽，胯腿有肉）</option>
+          <option value="苹果型">苹果型（腰腹有肉，四肢偏细）</option>
+          <option value="沙漏型">沙漏型（胸臀有曲线，腰细）</option>
+          <option value="直筒型">直筒型 / H型（肩腰胯差不多宽）</option>
+          <option value="倒三角">倒三角（肩宽胯窄）</option>
+          <option value="匀称">匀称标准</option>
+          <option value="偏瘦">偏瘦单薄</option>
+          <option value="偏壮">偏壮/骨架大</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h3>穿搭风格（可多选）</h3>
+      <div class="chip-group" id="style-chips"></div>
+    </div>
+
+    <div class="profile-card" id="period-card">
+      <h3>生理期记录（可选）</h3>
+      <div class="field-row">
+        <div class="field">
+          <label>平均月经周期（天，通常 28~30）</label>
+          <input id="f-cycle" type="number" placeholder="28">
+        </div>
+        <div class="field">
+          <label>经期持续天数（通常 3~7）</label>
+          <input id="f-period-len" type="number" placeholder="5">
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--ink-soft);line-height:1.6">
+        填好后，来月经那天在日历上点一下"开始经期"，App 会自动帮你记完整个经期，并预测下次日子。
+      </p>
+    </div>
+
+    <button class="btn" id="save-profile" style="width:100%;padding:14px">保存档案</button>
+    <div id="save-tip" style="text-align:center;margin-top:10px;font-size:13px;color:var(--sage);min-height:20px"></div>
+  </section>
+
+  <!-- ==================== 视图：衣橱 ==================== -->
+  <section id="view-wardrobe" class="view">
+    <div class="topbar">
+      <h1>我的衣橱</h1>
+    </div>
+
+    <div class="profile-card">
+      <h3>上装</h3>
+      <div id="wardrobe-tops" class="wardrobe-list"></div>
+      <div class="wardrobe-add-row">
+        <input type="text" id="new-top-name" placeholder="例如：白色衬衫">
+        <input type="file" id="new-top-photo" accept="image/*" hidden>
+        <button class="btn ghost" id="add-top-photo-btn">照片</button>
+        <button class="btn" id="add-top-btn">添加</button>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h3>下装</h3>
+      <div id="wardrobe-bottoms" class="wardrobe-list"></div>
+      <div class="wardrobe-add-row">
+        <input type="text" id="new-bottom-name" placeholder="例如：深蓝牛仔裤">
+        <input type="file" id="new-bottom-photo" accept="image/*" hidden>
+        <button class="btn ghost" id="add-bottom-photo-btn">照片</button>
+        <button class="btn" id="add-bottom-btn">添加</button>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h3>鞋子</h3>
+      <div id="wardrobe-shoes" class="wardrobe-list"></div>
+      <div class="wardrobe-add-row">
+        <input type="text" id="new-shoe-name" placeholder="例如：小白鞋">
+        <input type="file" id="new-shoe-photo" accept="image/*" hidden>
+        <button class="btn ghost" id="add-shoe-photo-btn">照片</button>
+        <button class="btn" id="add-shoe-btn">添加</button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">
+      照片和衣服名都只存在你自己浏览器里，不上传任何服务器。
+    </p>
+  </section>
+
+  <!-- ==================== 底部 Tab ==================== -->
+  <nav class="tabbar">
+    <button class="tab on" data-tab="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      <span>今日</span>
+    </button>
+    <button class="tab" data-tab="wardrobe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7l4-3h8l4 3v13H4z"/><path d="M9 10h6"/></svg>
+      <span>衣橱</span>
+    </button>
+    <button class="tab" data-tab="cal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      <span>日历</span>
+    </button>
+    <button class="tab" data-tab="me">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      <span>我的</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ==================== 首次建档覆盖层 ==================== -->
+<div class="onboard-mask" id="onboard-mask" style="display:none">
+  <div class="onboard">
+    <h2>先认识一下你</h2>
+    <p class="sub">填完下面几项，我就能每天帮你安排穿什么啦。随时可以在"我的"里修改。</p>
+    <div class="field">
+      <label>所在城市（可精确到区/县）</label>
+      <input id="ob-city" placeholder="例如：福州鼓楼 / 闽侯">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>身高 (cm)</label>
+        <input id="ob-height" type="number" placeholder="160">
+      </div>
+      <div class="field">
+        <label>体重 (kg)</label>
+        <input id="ob-weight" type="number" placeholder="50">
+      </div>
+    </div>
+    <div class="field">
+      <label>性别</label>
+      <select id="ob-gender">
+        <option value="女">女</option>
+        <option value="男">男</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>身份阶段</label>
+      <select id="ob-identity">
+        <option value="学生">学生</option>
+        <option value="上班族">上班族</option>
+        <option value="自由职业">自由职业</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>体型（可选）</label>
+      <select id="ob-body-shape">
+        <option value="">不填也可以</option>
+        <option value="梨型">梨型（上窄下宽，胯腿有肉）</option>
+        <option value="苹果型">苹果型（腰腹有肉，四肢偏细）</option>
+        <option value="沙漏型">沙漏型（胸臀有曲线，腰细）</option>
+        <option value="直筒型">直筒型 / H型</option>
+        <option value="倒三角">倒三角（肩宽胯窄）</option>
+        <option value="匀称">匀称标准</option>
+        <option value="偏瘦">偏瘦单薄</option>
+        <option value="偏壮">偏壮/骨架大</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>喜欢的穿搭风格（可多选）</label>
+      <div class="chip-group" id="ob-style-chips"></div>
+    </div>
+    <button class="btn" id="ob-start">开始使用</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   数据层：localStorage
+   ============================================================ */
+const LS_KEY = "weather_outfit_calendar_v1";
+
+const STYLE_OPTIONS = [
+  "韩系","日系","新中式","法式","老钱风","极简",
+  "甜酷","甜美","芭蕾风","Y2K辣妹","纯欲","学院风",
+  "街头","暗黑","复古港风","山系户外","波西米亚",
+  "通勤职场","休闲运动","小香风","多巴胺","文艺","中性风"
+];
+/* 仅推荐给女性的风格 */
+const WOMEN_ONLY_STYLES = new Set(["甜美","芭蕾风","Y2K辣妹","纯欲","小香风"]);
+
+const DEFAULT_STATE = {
+  profile: null,            // {city,height,weight,styles:[],identity,bodyShape,cycleDays,periodLength,gender}
+  events: {},               // {"2026-10-28":"面试"}
+  periodDays: [],           // ["2026-10-20", ...]
+  wardrobe: { tops: [], bottoms: [], shoes: [] },  // 每项 {name, photo?}
+  calCursor: null           // 日历当前查看的年月
+};
+
+let state = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw) return Object.assign({}, DEFAULT_STATE, JSON.parse(raw));
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+/* ============================================================
+   工具函数
+   ============================================================ */
+function dkey(d){
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function today(){ return new Date(); }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function fmtCN(d){
+  const w = ["日","一","二","三","四","五","六"][d.getDay()];
+  return `${d.getMonth()+1}月${d.getDate()}日 周${w}`;
+}
+
+/* ============================================================
+   Tab 切换
+   ============================================================ */
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));
+    btn.classList.add("on");
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+    document.getElementById("view-"+btn.dataset.tab).classList.add("active");
+    if(btn.dataset.tab==="cal") renderCalendar();
+    if(btn.dataset.tab==="home") renderHome();
+  });
+});
+
+/* ============================================================
+   风格 chip 渲染（建档 + 我的档案两处）
+   ============================================================ */
+function renderChips(containerId, selectedSet, gender, onChange){
+  const box = document.getElementById(containerId);
+  box.innerHTML = "";
+  const list = STYLE_OPTIONS.filter(s => gender!=="男" || !WOMEN_ONLY_STYLES.has(s));
+  list.forEach(s=>{
+    const c = document.createElement("button");
+    c.className = "chip" + (selectedSet.has(s)?" on":"");
+    c.textContent = s;
+    c.addEventListener("click",()=>{
+      if(selectedSet.has(s)) selectedSet.delete(s); else selectedSet.add(s);
+      c.classList.toggle("on");
+      onChange && onChange(selectedSet);
+    });
+    box.appendChild(c);
+  });
+}
+
+/* ============================================================
+   首次建档
+   ============================================================ */
+function checkOnboard(){
+  if(!state.profile){
+    document.getElementById("onboard-mask").style.display = "flex";
+    renderChips("ob-style-chips", new Set(), "女");
+  }else{
+    document.getElementById("onboard-mask").style.display = "none";
+    fillProfileForm();
+  }
+}
+
+document.getElementById("ob-start").addEventListener("click",()=>{
+  const city = document.getElementById("ob-city").value.trim();
+  const height = parseInt(document.getElementById("ob-height").value)||0;
+  const weight = parseInt(document.getElementById("ob-weight").value)||0;
+  const gender = document.getElementById("ob-gender").value;
+  const identity = document.getElementById("ob-identity").value;
+  const bodyShape = document.getElementById("ob-body-shape").value;
+  const styles = Array.from(document.querySelectorAll("#ob-style-chips .chip.on")).map(c=>c.textContent);
+  if(!city){ alert("请填写所在城市"); return; }
+  state.profile = { city, height, weight, gender, styles, identity, bodyShape, cycleDays: gender==="男" ? null : 28, periodLength: gender==="男" ? null : 5 };
+  save();
+  document.getElementById("onboard-mask").style.display="none";
+  fillProfileForm();
+  renderHome();
+});
+
+/* ============================================================
+   我的档案表单
+   ============================================================ */
+let meStyles = new Set();
+function fillProfileForm(){
+  if(!state.profile) return;
+  document.getElementById("f-city").value = state.profile.city||"";
+  document.getElementById("f-height").value = state.profile.height||"";
+  document.getElementById("f-weight").value = state.profile.weight||"";
+  document.getElementById("f-gender").value = state.profile.gender||"女";
+  document.getElementById("f-identity").value = state.profile.identity||"学生";
+  document.getElementById("f-cycle").value = state.profile.cycleDays||28;
+  document.getElementById("f-period-len").value = state.profile.periodLength||5;
+  document.getElementById("f-body-shape").value = state.profile.bodyShape||"";
+  meStyles = new Set(state.profile.styles||[]);
+  renderChips("style-chips", meStyles, state.profile.gender);
+  applyGenderVisibility(state.profile.gender);
+}
+/* 男生：隐藏周期卡片；切换性别时重建风格选项 */
+function applyGenderVisibility(gender){
+  document.getElementById("period-card").style.display = gender==="男" ? "none" : "";
+}
+document.getElementById("f-gender").addEventListener("change",(e)=>{
+  const g = e.target.value;
+  applyGenderVisibility(g);
+  // 重新渲染风格 chips，过滤掉女性专属项
+  renderChips("style-chips", meStyles, g);
+});
+document.getElementById("save-profile").addEventListener("click",()=>{
+  const gender = document.getElementById("f-gender").value;
+  state.profile = {
+    city: document.getElementById("f-city").value.trim() || state.profile.city,
+    height: parseInt(document.getElementById("f-height").value)||0,
+    weight: parseInt(document.getElementById("f-weight").value)||0,
+    gender,
+    identity: document.getElementById("f-identity").value,
+    bodyShape: document.getElementById("f-body-shape").value,
+    cycleDays: gender==="男" ? null : (parseInt(document.getElementById("f-cycle").value)||28),
+    periodLength: gender==="男" ? null : (parseInt(document.getElementById("f-period-len").value)||5),
+    styles: Array.from(meStyles)
+  };
+  save();
+  const tip = document.getElementById("save-tip");
+  tip.textContent = "已保存";
+  renderHome();
+  setTimeout(()=>tip.textContent="",1500);
+});
+
+/* ============================================================
+   天气获取（wttr.in 免 key）
+   ============================================================ */
+let weatherCache = { city:null, data:null, ts:0 };
+async function fetchWeather(city){
+  // 缓存 10 分钟
+  if(weatherCache.city===city && weatherCache.data && Date.now()-weatherCache.ts<10*60*1000){
+    return weatherCache.data;
+  }
+  try{
+    const url = `https://wttr.in/${encodeURIComponent(city)}?format=j1&lang=zh`;
+    const ctrl = new AbortController();
+    const timer = setTimeout(()=>ctrl.abort(), 8000);
+    const r = await fetch(url, {signal:ctrl.signal});
+    clearTimeout(timer);
+    const j = await r.json();
+    weatherCache = { city, data:j, ts:Date.now() };
+    return j;
+  }catch(e){
+    console.warn("天气获取失败", e);
+    return null;
+  }
+}
+
+/* wttr.in 天气代码 → 中文描述 + 标签 */
+function parseWeather(w){
+  if(!w || !w.current_condition) return null;
+  const c = w.current_condition[0];
+  const today = w.weather[0];
+  return {
+    temp: parseInt(c.temp_C),
+    feels: parseInt(c.FeelsLikeC),
+    desc: (c.lang_zh && c.lang_zh[0] && c.lang_zh[0].value) || c.weatherDesc[0].value,
+    humidity: c.humidity + "%",
+    wind: c.windspeedKmph + "km/h",
+    hi: today.maxtempC,
+    lo: today.mintempC,
+    // 判断是否雨/雪/晴
+    isRain: /雨|小雨|中雨|大雨|阵雨|毛毛雨/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
+    isSnow: /雪/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
+    isSunny: /晴/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
+    isCloudy: /云|阴/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
+    code: c.weatherCode
+  };
+}
+
+/* ============================================================
+   穿搭推荐生成
+   ============================================================ */
+function tempAdvice(t){
+  if(t < 0)   return "天寒地冻，需要羽绒服 / 厚羊毛大衣 + 厚毛衣，围巾手套别忘。";
+  if(t < 5)   return "零下附近，穿厚羽绒服或羊绒大衣，内搭毛衣，下身厚裤或加打底裤。";
+  if(t < 10)  return "有点冷，厚外套（大衣/棉服）+ 针织毛衣，下身长裤。";
+  if(t < 15)  return "微凉，风衣 / 牛仔外套 / 薄呢大衣 + 长袖，中午可能会热，方便脱。";
+  if(t < 20)  return "舒服不冷，长袖 T 恤 / 薄针织 + 一件薄外套，早晚加一件。";
+  if(t < 25)  return "舒适温度，长袖或薄衫即可，早晚备件薄开衫。";
+  if(t < 28)  return "有点暖，短袖、薄长袖、薄裤都可以，注意防晒。";
+  if(t < 33)  return "挺热，穿透气短袖、轻薄下装，注意补水防晒。";
+  return "很热，轻薄透气衣物优先，尽量浅色，多在阴凉处。";
+}
+
+function styleAdvice(styles, gender){
+  if(!styles || !styles.length) return "";
+  const femaleMap = {
+    "韩系":"参考韩系：低饱和、松弛廓形、同色系搭配，温柔不刻意。",
+    "日系":"参考日系：层次叠穿、棉麻质感、中性色调。",
+    "新中式":"参考新中式：盘扣、马面裙、改良旗袍或丝绸元素。",
+    "法式":"参考法式：随性衬衫、直筒牛仔裤、一抹红唇。",
+    "老钱风":"参考老钱：质感基础款、低调配色、无明显 logo。",
+    "极简":"参考极简：剪裁干净、配色克制、一件出彩单品即可。",
+    "甜酷":"参考甜酷：甜系单品 + 一件酷感单品平衡（皮衣、马丁靴）。",
+    "甜美":"参考甜美：荷叶边、粉色系、A 字裙。",
+    "芭蕾风":"参考芭蕾：芭蕾鞋、针织罩衫、温柔配色。",
+    "Y2K辣妹":"参考 Y2K：低腰、亮面、短上衣、未来感配饰。",
+    "纯欲":"参考纯欲：微透、柔和色、不经意的小露肤。",
+    "学院风":"参考学院：针织背心、衬衫、百褶裙、乐福鞋。",
+    "街头":"参考街头：oversize、卫衣、工装、板鞋。",
+    "暗黑":"参考暗黑：全黑、层叠、皮革、金属细节。",
+    "复古港风":"参考港风：大波浪、红色单品、喇叭裤。",
+    "山系户外":"参考山系：冲锋衣、工装裤、徒步鞋、大地色。",
+    "波西米亚":"参考波西：流苏、印花、长裙、编织包。",
+    "通勤职场":"参考通勤：衬衫、西装裤、针织开衫，整洁利落。",
+    "休闲运动":"参考运动：卫衣、leggings、运动鞋。",
+    "小香风":"参考小香：粗花呢、珍珠、金色纽扣。",
+    "多巴胺":"参考多巴胺：大胆亮色、撞色、快乐色块。",
+    "文艺":"参考文艺：棉麻、长裙、帆布包、书卷气。",
+    "中性风":"参考中性：阔腿西装、白 T、皮鞋，雌雄莫辨。"
+  };
+  const maleMap = {
+    "韩系":"参考韩系：低饱和、松弛廓形、同色系搭配，干净不刻意。",
+    "日系":"参考日系：层次叠穿、棉麻或工装质感、大地色调。",
+    "新中式":"参考新中式：盘扣衬衫、改良中山装、唐装外套等东方元素。",
+    "法式":"参考法式：条纹衫、直筒牛仔裤、随性不费力的感觉。",
+    "老钱风":"参考老钱：质感羊毛衫、卡其裤、乐福鞋，低调贵气。",
+    "极简":"参考极简：剪裁干净、配色克制、一件质感单品即可。",
+    "学院风":"参考学院：衬衫、针织马甲、卡其裤、乐福鞋。",
+    "街头":"参考街头：oversize 卫衣、工装裤、板鞋。",
+    "暗黑":"参考暗黑：全黑、层叠、皮革夹克、金属细节。",
+    "复古港风":"参考港风：花衬衫、喇叭牛仔裤、油头墨镜。",
+    "山系户外":"参考山系：冲锋衣、工装裤、徒步鞋、大地色。",
+    "通勤职场":"参考通勤：衬衫、西裤、干净的皮鞋，利落不随便。",
+    "休闲运动":"参考运动：卫衣、运动裤、跑鞋，舒服为主。",
+    "多巴胺":"参考多巴胺：大胆亮色、撞色、快乐色块。",
+    "文艺":"参考文艺：棉麻衬衫、帆布包、书卷气。",
+    "中性风":"参考中性：阔腿西装、白 T、皮鞋。"
+  };
+  const map = gender==="男" ? maleMap : femaleMap;
+  return styles.slice(0,2).map(s=>map[s]).filter(Boolean).join(" ");
+}
+
+function shortSceneTip(evText){
+  if(!evText) return "";
+  const t = evText;
+  if(/面试|开会|报告|汇报|上班|工作|商务|客户|演讲|答辩/.test(t))
+    return "穿搭提示：偏正式，避开过于休闲的卫衣拖鞋。";
+  if(/运动|跑步|健身|瑜伽|球|游泳|骑行|爬山|徒步/.test(t))
+    return "穿搭提示：穿方便活动的衣服和运动鞋。";
+  if(/约会|聚餐|吃饭|餐厅|电影|咖啡|看展|聚会/.test(t))
+    return "穿搭提示：可以稍微精致一点，挑件喜欢的上衣。";
+  if(/拍照|出游|旅行|玩|逛|景点|打卡/.test(t))
+    return "穿搭提示：选上镜、颜色干净的搭配，穿舒服的鞋。";
+  if(/考试|上课|自习|学习|考研|图书馆/.test(t))
+    return "穿搭提示：舒适自在为主，久坐不勒最重要。";
+  if(/婚礼|婚宴|喜酒/.test(t))
+    return "穿搭提示：得体大方，别太随意也别抢风头。";
+  return "";
+}
+
+function eventAdvice(evText){
+  if(!evText) return "";
+  const t = evText;
+  // 先根据行程内容给针对性建议
+  if(/面试|开会|报告|汇报|上班|工作|商务|客户|演讲|答辩/.test(t))
+    return `今天要"${t}"，建议整洁正式一点，衬衫/西裤/干净的上衣，避开太随意的卫衣拖鞋。`;
+  if(/运动|跑步|健身|瑜伽|球|游泳|骑行|爬山|徒步/.test(t))
+    return `今天要"${t}"，穿舒适、速干、方便活动的衣服和运动鞋。`;
+  if(/约会|聚餐|吃饭|餐厅|电影|咖啡|看展|酒吧|聚会/.test(t))
+    return `今天要"${t}"，可以稍微精致一点，挑件喜欢的上衣，比平时多花两分钟搭配。`;
+  if(/拍照|出游|旅行|玩|逛|公园|景点|打卡/.test(t))
+    return `今天要"${t}"，选上镜、颜色干净的搭配，穿舒服的鞋方便走一天。`;
+  if(/考试|上课|自习|学习|考研|考证|图书馆/.test(t))
+    return `今天要"${t}"，舒适自在为主，久坐不勒最重要。`;
+  if(/在家|休息|躺|宅/.test(t))
+    return `今天"${t}"，穿宽松舒服的就好。`;
+  if(/婚礼|婚宴|敬酒|喜酒/.test(t))
+    return `今天参加婚礼，穿得体大方的小礼服或精致套装，别抢新娘风头。`;
+  // 兜底：把行程内容明确带进建议
+  return `今天有安排"${t}"，衣服方便行动、干净得体为主。`;
+}
+
+function periodAdvice(isPeriod, gender){
+  if(gender==="男") return "";
+  if(!isPeriod) return "";
+  return "经期提醒：今天建议穿深色下装更安心，腰腹和腿脚注意保暖，别穿太勒的衣服，随身带个暖宝宝。";
+}
+
+function bodyAdvice(p){
+  if(!p) return "";
+  const bits=[];
+  if(p.height && p.height < 160){
+    if(p.gender==="男") bits.push("身高偏娇小，上衣选短款、裤装选直筒修身，避免过长过宽压个子。");
+    else bits.push("身高偏娇小，多用高腰线和同色系拉长比例。");
+  }
+  if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来。");
+  if(p.height && p.height > 168 && p.gender!=="男") bits.push("个子高挑，宽松廓形和长款都很撑得起来。");
+
+  // 体型建议
+  const bs = p.bodyShape;
+  if(bs){
+    const femaleTip = {
+      "梨型":"梨型身材：上衣可以有点设计感/浅色，下装选深色直筒或 A 字，胯腿处别太紧身。",
+      "苹果型":"苹果型身材：上身选略宽松有型的款，腰线放在胸下位置，下装选修身直筒平衡。",
+      "沙漏型":"沙漏型身材：收腰款最出彩，刚好突出腰臀曲线。",
+      "直筒型":"直筒型身材：用腰带、层次叠穿制造腰线和曲线。",
+      "倒三角":"倒三角身材：下身可以稍微蓬松一点（百褶、阔腿）平衡肩宽。",
+      "匀称":"匀称身材：百搭，主要看风格和场合。",
+      "偏瘦":"偏瘦：多选有层次的叠穿、横条纹，视觉上增加分量感。",
+      "偏壮":"偏壮/骨架大：选剪裁利落的纯色款，避开太蓬松或太紧身的。"
+    };
+    const maleTip = {
+      "梨型":"身材偏下宽：上身可以稍微有体积感（落肩、厚面料），下装选深色直筒。",
+      "苹果型":"苹果型/有肚子：选略宽松直筒的上衣，别穿紧身 T，竖条纹更利落。",
+      "沙漏型":"曲线明显：合身剪裁最显精神，别穿太宽松。",
+      "直筒型":"H 型身材：用外套层次、腰带制造肩腰落差，显倒三角。",
+      "倒三角":"倒三角/肩宽腰细：基本百搭，修身 T 恤就很出效果。",
+      "匀称":"匀称标准：百搭，主要看风格和场合。",
+      "偏瘦":"偏瘦单薄：多叠穿（衬衫+针织马甲+外套），横条纹增加体积感。",
+      "偏壮":"偏壮/肩宽：选垂感好的纯色衬衫/T 恤，避开胸前大 logo 和横纹。"
+    };
+    const m = p.gender==="男" ? maleTip : femaleTip;
+    if(m[bs]) bits.push(m[bs]);
+  }
+  return bits.join(" ");
+}
+
+function buildOutfit(w, profile, todayEvent, isPeriodToday){
+  const parts = [];
+  const tags = [];
+
+  // 优先从衣橱里组合
+  const wr = state.wardrobe || {tops:[],bottoms:[],shoes:[]};
+  const hasAnyWardrobe = wr.tops.length || wr.bottoms.length || wr.shoes.length;
+  if(hasAnyWardrobe){
+    const top = pickFromWardrobe(wr.tops, w, todayEvent);
+    const bot = pickFromWardrobe(wr.bottoms, w, todayEvent);
+    const shoe = pickFromWardrobe(wr.shoes, w, todayEvent);
+    const outfitBits = [];
+    if(top) outfitBits.push(top.name);
+    if(bot) outfitBits.push(bot.name);
+    if(shoe) outfitBits.push(shoe.name);
+    if(outfitBits.length){
+      parts.push("从你衣橱里挑了这套：" + outfitBits.join(" + ") + "。");
+    }
+  }
+
+  if(w){
+    parts.push(tempAdvice(w.temp));
+    if(w.isRain) parts.push("今天有雨，记得带伞，鞋子选防水防滑的。");
+    if(w.isSnow) parts.push("今天下雪，穿防滑靴，注意保暖。");
+    if(w.isSunny) parts.push("紫外线不弱，记得防晒。");
+    if(w.isCloudy) parts.push("阴天紫外线仍在，别偷懒。");
+    tags.push(w.desc + " " + w.temp + "℃");
+  }else{
+    parts.push("暂时没拿到实时天气，按你的体感穿即可。");
+  }
+
+  if(todayEvent) parts.push(eventAdvice(todayEvent));
+  const sa = styleAdvice(profile.styles, profile.gender);
+  if(sa) parts.push(sa);
+  const ba = bodyAdvice(profile);
+  if(ba) parts.push(ba);
+  const pa = periodAdvice(isPeriodToday, profile.gender);
+  if(pa) parts.push(pa);
+
+  return { main: parts.join(" "), tags };
+}
+
+/* ============================================================
+   首页渲染
+   ============================================================ */
+async function renderHome(){
+  const t = today();
+  document.getElementById("today-label").textContent = fmtCN(t);
+
+  if(!state.profile){
+    checkOnboard();
+    return;
+  }
+
+  // 未来 1-2 天行程提醒
+  const alertArea = document.getElementById("alert-area");
+  alertArea.innerHTML = "";
+  for(let i=1;i<=2;i++){
+    const d = addDays(t,i);
+    const k = dkey(d);
+    const ev = state.events[k];
+    if(ev){
+      const shortTip = shortSceneTip(ev);
+      const div = document.createElement("div");
+      div.className = "alert-banner";
+      div.innerHTML = `
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B85A6E" stroke-width="2"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+        </div>
+        <div class="body">
+          <div class="title">${i===1?"明天":"后天"} · ${d.getMonth()+1}月${d.getDate()}日 有安排</div>
+          <div class="desc">${ev}</div>
+          ${shortTip ? `<div style="margin-top:4px;font-size:12px;color:var(--primary-deep)">${shortTip}</div>` : ""}
+        </div>`;
+      alertArea.appendChild(div);
+    }
+  }
+
+  // 经期临近提醒（仅女性）
+  const ptArea = document.getElementById("period-tip-area");
+  ptArea.innerHTML = "";
+  if(state.profile.gender !== "男" && state.profile.cycleDays){
+    const lastStart = getLastPeriodStart();
+    if(lastStart){
+      const next = addDays(new Date(lastStart+"T00:00:00"), state.profile.cycleDays);
+      const diff = Math.round((next - t)/86400000);
+      if(diff>=0 && diff<=3){
+        const b = document.createElement("div");
+        b.className="period-banner";
+        b.innerHTML = `<span>🩷</span><span>按你记录的周期，预计 ${diff===0?"今天":diff===1?"明天":diff+"天后"} 可能来月经，提前备好用品和保暖衣物。</span>`;
+        ptArea.appendChild(b);
+      }
+    }
+  }
+
+  // 穿搭推荐（先基于已知信息立刻渲染，天气回来后再补一条）
+  const todayKey = dkey(t);
+  const todayEvent = state.events[todayKey] || "";
+  const isPeriodToday = state.periodDays.includes(todayKey);
+  renderOutfit(null, todayEvent, isPeriodToday);
+
+  // 近期行程列表（未来 14 天）
+  const upList = document.getElementById("upcoming-list");
+  const upCard = document.getElementById("upcoming-card");
+  upList.innerHTML = "";
+  let hasUpcoming = false;
+  for(let i=0;i<14;i++){
+    const d = addDays(t,i);
+    const k = dkey(d);
+    const ev = state.events[k];
+    if(ev){
+      hasUpcoming = true;
+      const row = document.createElement("div");
+      row.className = "upcoming-item";
+      const label = i===0 ? "今天" : i===1 ? "明天" : `${d.getMonth()+1}/${d.getDate()}`;
+      row.innerHTML = `<span class="d">${label}</span><span>${ev}</span>`;
+      upList.appendChild(row);
+    }
+  }
+  if(!hasUpcoming){
+    upList.innerHTML = `<div style="font-size:13px;color:var(--ink-soft)">未来两周还没有安排，去日历里加几个吧。</div>`;
+  }
+  upCard.style.display = "";
+
+  // 异步拉天气，回来后更新天气卡和穿搭建议
+  const w = parseWeather(await fetchWeather(state.profile.city));
+  if(w){
+    document.getElementById("w-temp").textContent = w.temp;
+    document.getElementById("w-city").textContent = state.profile.city;
+    document.getElementById("w-desc").textContent = w.desc;
+    document.getElementById("w-hi").textContent = w.hi+"℃";
+    document.getElementById("w-lo").textContent = w.lo+"℃";
+    document.getElementById("w-hum").textContent = w.humidity;
+    document.getElementById("w-wind").textContent = w.wind;
+  }else{
+    document.getElementById("w-desc").textContent = "天气暂时加载不出来，检查网络后刷新试试";
+  }
+  renderOutfit(w, todayEvent, isPeriodToday);
+}
+
+function renderOutfit(w, todayEvent, isPeriodToday){
+  const rec = buildOutfit(w, state.profile, todayEvent, isPeriodToday);
+  document.getElementById("outfit-main").textContent = rec.main;
+  const tagBox = document.getElementById("outfit-tags");
+  tagBox.innerHTML = "";
+  rec.tags.forEach(tg=>{
+    const s = document.createElement("span");
+    s.className = "tag";
+    s.textContent = tg;
+    tagBox.appendChild(s);
+  });
+  if(isPeriodToday && state.profile.gender!=="男"){
+    const s = document.createElement("span");
+    s.className = "tag sage";
+    s.textContent = "经期中";
+    tagBox.appendChild(s);
+  }
+  if(todayEvent){
+    const s = document.createElement("span");
+    s.className = "tag warn";
+    s.textContent = "今日：" + todayEvent;
+    tagBox.appendChild(s);
+  }
+}
+
+/* ============================================================
+   日历渲染
+   ============================================================ */
+let calCursor = state.calCursor || { y: today().getFullYear(), m: today().getMonth() };
+let selectedDate = dkey(today());
+
+function renderCalendar(){
+  document.getElementById("cal-month").textContent = `${calCursor.y} 年 ${calCursor.m+1} 月`;
+  const grid = document.getElementById("cal-grid");
+  grid.innerHTML = "";
+
+  const first = new Date(calCursor.y, calCursor.m, 1);
+  const startDay = first.getDay(); // 0=周日
+  const daysInMonth = new Date(calCursor.y, calCursor.m+1, 0).getDate();
+  const prevDays = new Date(calCursor.y, calCursor.m, 0).getDate();
+
+  const tKey = dkey(today());
+
+  // 前面补上月
+  for(let i=startDay-1;i>=0;i--){
+    grid.appendChild(makeCell(prevDays-i, true));
+  }
+  // 本月
+  for(let d=1; d<=daysInMonth; d++){
+    const dt = new Date(calCursor.y, calCursor.m, d);
+    grid.appendChild(makeCell(d, false, dt));
+  }
+  // 后面补到 7 的倍数
+  const total = startDay + daysInMonth;
+  const tail = (7 - total%7) % 7;
+  for(let i=1;i<=tail;i++) grid.appendChild(makeCell(i, true));
+
+  renderDayPanel();
+}
+
+function makeCell(dayNum, other, dateObj){
+  const cell = document.createElement("div");
+  cell.className = "cal-cell" + (other?" other":"");
+  let key = "";
+  if(!other && dateObj){
+    key = dkey(dateObj);
+    if(key===dkey(today())) cell.classList.add("today");
+    if(key===selectedDate) cell.classList.add("selected");
+  }
+  cell.innerHTML = `<span>${dayNum}</span>`;
+
+  if(!other && key){
+    const hasEvent = !!state.events[key];
+    const isPeriod = state.profile && state.profile.gender!=="男" && state.periodDays.includes(key);
+    const pred = getPredictedPeriodDays();
+    const isPred = pred.has(key);
+
+    if(isPeriod) cell.classList.add("real-period");
+    if(isPred && !isPeriod) cell.classList.add("pred-period");
+
+    if(hasEvent){
+      const dots = document.createElement("div");
+      dots.className = "dot-row";
+      const e = document.createElement("span");
+      e.className = "dot-e";
+      dots.appendChild(e);
+      cell.appendChild(dots);
+    }
+    cell.addEventListener("click",()=>{
+      selectedDate = key;
+      renderCalendar();
+    });
+  }
+  return cell;
+}
+
+/* 计算预测经期日期集合：从最近一次真实经期开始日 + cycleDays 开始，连续 periodLength 天 */
+function getPredictedPeriodDays(){
+  const result = new Set();
+  if(!state.profile || state.profile.gender==="男") return result;
+  const cycle = state.profile.cycleDays || 28;
+  const plen = state.profile.periodLength || 5;
+  if(!state.periodDays.length) return result;
+
+  // 找最近一次经期段的开始日（连续段的第一天）
+  const sorted = [...state.periodDays].sort();
+  let lastStart = sorted[sorted.length-1];
+  for(let i=sorted.length-1;i>=0;i--){
+    const cur = new Date(sorted[i]);
+    const prev = new Date(sorted[i-1]);
+    if(i===0 || (cur - prev !== 86400000)){ lastStart = sorted[i]; break; }
+  }
+  // 预测下次开始日
+  const nextStart = addDays(new Date(lastStart+"T00:00:00"), cycle);
+  // 如果预测开始日已经过去（说明用户这次还没记录），不预测
+  if(nextStart < today()) return result;
+  for(let i=0;i<plen;i++){
+    result.add(dkey(addDays(nextStart, i)));
+  }
+  return result;
+}
+
+/* 最近一次真实经期开始日（用于首页临近提醒） */
+function getLastPeriodStart(){
+  if(!state.periodDays.length) return null;
+  const sorted = [...state.periodDays].sort();
+  for(let i=sorted.length-1;i>=0;i--){
+    const cur = new Date(sorted[i]);
+    const prev = new Date(sorted[i-1]);
+    if(i===0 || (cur - prev !== 86400000)) return sorted[i];
+  }
+  return sorted[0];
+}
+
+function renderDayPanel(){
+  const panel = document.getElementById("day-panel");
+  if(!selectedDate){ panel.style.display="none"; return; }
+  panel.style.display="block";
+  const d = new Date(selectedDate + "T00:00:00");
+  document.getElementById("day-panel-title").textContent = fmtCN(d);
+  document.getElementById("day-note").value = state.events[selectedDate]||"";
+  const on = state.periodDays.includes(selectedDate);
+  const tp = document.getElementById("toggle-period");
+  tp.classList.toggle("on", on);
+  document.getElementById("period-action-label").textContent = on ? "结束经期（提前结束）" : "今天来月经了，开始记录";
+  // 男生不显示经期按钮
+  tp.style.display = (state.profile && state.profile.gender==="男") ? "none" : "";
+}
+
+document.getElementById("prev-month").addEventListener("click",()=>{
+  calCursor.m--; if(calCursor.m<0){calCursor.m=11;calCursor.y--;}
+  renderCalendar();
+});
+document.getElementById("next-month").addEventListener("click",()=>{
+  calCursor.m++; if(calCursor.m>11){calCursor.m=0;calCursor.y++;}
+  renderCalendar();
+});
+document.getElementById("toggle-period").addEventListener("click",()=>{
+  const plen = (state.profile && state.profile.periodLength) || 5;
+  const on = state.periodDays.includes(selectedDate);
+  if(on){
+    // 结束经期：把从选中日开始往后的连续经期天删掉
+    const sel = new Date(selectedDate+"T00:00:00");
+    state.periodDays = state.periodDays.filter(k=>{
+      const d = new Date(k+"T00:00:00");
+      return d < sel; // 严格早于选中日的保留，选中日及之后连续的删掉
+    });
+  }else{
+    // 开始经期：从选中日开始加 plen 天
+    for(let i=0;i<plen;i++){
+      const k = dkey(addDays(new Date(selectedDate+"T00:00:00"), i));
+      if(!state.periodDays.includes(k)) state.periodDays.push(k);
+    }
+  }
+  save();
+  renderCalendar();
+});
+document.getElementById("save-day").addEventListener("click",()=>{
+  const v = document.getElementById("day-note").value.trim();
+  if(v) state.events[selectedDate] = v;
+  else delete state.events[selectedDate];
+  save();
+  renderCalendar();
+  const tip = document.createElement("div");
+  tip.style.cssText="text-align:center;color:var(--sage);font-size:13px;margin-top:10px";
+  tip.textContent="已保存";
+  const old = document.getElementById("save-tip-cal");
+  if(old) old.remove();
+  tip.id="save-tip-cal";
+  document.getElementById("day-panel").appendChild(tip);
+  setTimeout(()=>tip.remove(),1200);
+});
+
+/* ============================================================
+   衣橱
+   ============================================================ */
+if(!state.wardrobe) state.wardrobe = { tops: [], bottoms: [], shoes: [] };
+
+function renderWardrobe(){
+  renderWardrobeList("wardrobe-tops", state.wardrobe.tops);
+  renderWardrobeList("wardrobe-bottoms", state.wardrobe.bottoms);
+  renderWardrobeList("wardrobe-shoes", state.wardrobe.shoes);
+}
+function renderWardrobeList(containerId, list){
+  const box = document.getElementById(containerId);
+  box.innerHTML = "";
+  if(!list.length){
+    box.innerHTML = `<div class="wardrobe-empty">还没有衣服，从下面添加吧。</div>`;
+    return;
+  }
+  list.forEach((item, idx)=>{
+    const row = document.createElement("div");
+    row.className = "wardrobe-item";
+    row.innerHTML = item.photo
+      ? `<img src="${item.photo}" alt="">`
+      : `<div class="ph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7l4-3h8l4 3v13H4z"/><path d="M9 10h6"/></svg></div>`;
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = item.name;
+    const del = document.createElement("button");
+    del.className = "del";
+    del.textContent = "×";
+    del.addEventListener("click",()=>{
+      list.splice(idx,1);
+      save();
+      renderWardrobe();
+      renderHome();
+    });
+    row.appendChild(name);
+    row.appendChild(del);
+    box.appendChild(row);
+  });
+}
+
+/* 读照片文件为 base64 */
+let pendingPhotos = { top:null, bottom:null, shoe:null };
+function bindPhotoInput(fileInputId, slotKey, btnId){
+  const input = document.getElementById(fileInputId);
+  const btn = document.getElementById(btnId);
+  btn.addEventListener("click",()=>input.click());
+  input.addEventListener("change",()=>{
+    const f = input.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = e=>{
+      // 压缩一下，避免 localStorage 爆掉
+      const img = new Image();
+      img.onload = ()=>{
+        const canvas = document.createElement("canvas");
+        const MAX = 200;
+        const scale = Math.min(1, MAX/Math.max(img.width, img.height));
+        canvas.width = img.width*scale;
+        canvas.height = img.height*scale;
+        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+        pendingPhotos[slotKey] = canvas.toDataURL("image/jpeg", 0.8);
+        btn.textContent = "已选图";
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(f);
+  });
+}
+bindPhotoInput("new-top-photo","top","add-top-photo-btn");
+bindPhotoInput("new-bottom-photo","bottom","add-bottom-photo-btn");
+bindPhotoInput("new-shoe-photo","shoe","add-shoe-photo-btn");
+
+function bindAddBtn(btnId, inputId, slotKey, listKey){
+  document.getElementById(btnId).addEventListener("click",()=>{
+    const name = document.getElementById(inputId).value.trim();
+    if(!name){ alert("先填个名字吧"); return; }
+    state.wardrobe[listKey].push({ name, photo: pendingPhotos[slotKey] || null });
+    pendingPhotos[slotKey] = null;
+    document.getElementById(inputId).value = "";
+    document.getElementById(btnId.replace("add-","add-").replace("-btn","-photo-btn")).textContent = "照片";
+    save();
+    renderWardrobe();
+    renderHome();
+  });
+}
+bindAddBtn("add-top-btn","new-top-name","top","tops");
+bindAddBtn("add-bottom-btn","new-bottom-name","bottom","bottoms");
+bindAddBtn("add-shoe-btn","new-shoe-name","shoe","shoes");
+
+/* ============================================================
+   从衣橱里挑衣服（按温度+场景关键词打分）
+   ============================================================ */
+function pickFromWardrobe(list, w, eventText){
+  if(!list || !list.length) return null;
+  const scored = list.map(item=>{
+    let score = 0;
+    const n = item.name;
+    // 温度权重
+    if(w){
+      if(w.temp < 10){
+        if(/厚|羽绒|棉|毛|呢|外套|大衣|夹克|针织|毛衣|靴子|靴/.test(n)) score += 3;
+        if(/短|薄|吊带|凉鞋|拖鞋/.test(n)) score -= 3;
+      }else if(w.temp < 20){
+        if(/长袖|衬衫|薄外套|卫衣|长裤|板鞋|休闲鞋/.test(n)) score += 2;
+      }else{
+        if(/短|T 恤|T恤|吊|凉|裙|短裤|透气|薄/.test(n)) score += 3;
+        if(/羽绒|厚|棉|呢|毛衣|靴/.test(n)) score -= 3;
+      }
+    }
+    // 场景权重
+    if(eventText){
+      if(/面试|开会|上班|工作|商务|报告|答辩/.test(eventText)){
+        if(/衬衫|西装|西裤|皮鞋|正装|通勤|衬衫| Polo/.test(n)) score += 4;
+        if(/运动|卫衣|拖鞋|凉鞋|大logo|破洞/.test(n)) score -= 3;
+      }
+      if(/运动|跑步|健身|瑜伽|球|游泳|骑行|爬山/.test(eventText)){
+        if(/运动|速干|跑鞋|运动鞋|瑜伽|紧身/.test(n)) score += 4;
+        if(/西装|衬衫|皮鞋|连衣裙/.test(n)) score -= 3;
+      }
+      if(/约会|聚餐|吃饭|餐厅|电影|聚会/.test(eventText)){
+        if(/连衣裙|好看|精致|小裙子|裙|皮鞋|乐福/.test(n)) score += 2;
+      }
+    }
+    return { item, score };
+  });
+  scored.sort((a,b)=>b.score-a.score);
+  return scored[0].item;
+}
+
+/* ============================================================
+   启动
+   ============================================================ */
+checkOnboard();
+renderHome();
+renderCalendar();
+renderWardrobe();
+
+/* 首次建档时切换性别，联动过滤风格 */
+document.getElementById("ob-gender").addEventListener("change",(e)=>{
+  const g = e.target.value;
+  // 保留已选 chips，过滤女性专属项
+  const keep = new Set(Array.from(document.querySelectorAll("#ob-style-chips .chip.on")).map(c=>c.textContent));
+  if(g==="男") WOMEN_ONLY_STYLES.forEach(s=>keep.delete(s));
+  renderChips("ob-style-chips", keep, g);
+});
+</script>
+</body>
+</html>
