@@ -32,12 +32,15 @@ body{
   line-height:1.6;
   padding-bottom:110px;
 }
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;transition:transform .1s ease, box-shadow .2s ease}
+button:active{transform:scale(.96)}
 input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 .app{max-width:480px;margin:0 auto;min-height:100vh}
 .view{display:none;padding:20px 18px 24px;animation:fadeIn .25s ease}
 .view.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes popIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.modal-pop{animation:popIn .18s ease}
 .topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0 16px}
 .topbar h1{font-size:22px;font-weight:600;letter-spacing:.5px}
 .topbar .date-today{font-size:13px;color:var(--ink-soft)}
@@ -393,6 +396,8 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     </div>
     <div id="alert-area"></div>
     <div id="period-tip-area"></div>
+    <!-- 欢迎语 -->
+    <div id="welcome-text" style="font-size:18px;font-weight:600;margin-bottom:12px;color:var(--ink)"></div>
     <div class="weather-card">
       <div class="weather-row">
         <div class="weather-temp"><span id="w-temp">--</span><small>℃</small></div>
@@ -865,6 +870,26 @@ function load(){
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+// 点击音效
+let audioCtx = null;
+function playClick(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = 800;
+    o.type = 'sine';
+    g.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+    o.start(audioCtx.currentTime);
+    o.stop(audioCtx.currentTime + 0.08);
+  }catch(e){}
+}
+// 所有按钮点击都播放音效
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('button')) playClick();
+});
 function dkey(d){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
   return `${y}-${m}-${day}`;
@@ -1384,10 +1409,28 @@ function parseWeather(w){
   if(!w || !w.current_condition) return null;
   const c = w.current_condition[0];
   const today = w.weather[0];
+  // 英文天气描述翻译成中文
+  const weatherMap = {
+    'sunny': '晴', 'clear': '晴',
+    'partly cloudy': '多云', 'cloudy': '阴', 'overcast': '阴',
+    'mist': '薄雾', 'fog': '雾', 'haze': '霾',
+    'light rain': '小雨', 'light rain shower': '小阵雨', 'drizzle': '毛毛雨',
+    'moderate rain': '中雨', 'heavy rain': '大雨',
+    'patchy rain possible': '局部有雨', 'patchy light rain': '局部小雨',
+    'light snow': '小雪', 'moderate snow': '中雪', 'heavy snow': '大雪',
+    'thunderstorm': '雷阵雨', 'thunder': '雷暴',
+    'windy': '大风', 'breezy': '微风'
+  };
+  let desc = (c.lang_zh && c.lang_zh[0] && c.lang_zh[0].value) || c.weatherDesc[0].value;
+  // 如果是英文，翻译成中文
+  const descLower = desc.toLowerCase().trim();
+  for(const [en, zh] of Object.entries(weatherMap)){
+    if(descLower.includes(en)){ desc = zh; break; }
+  }
   return {
     temp: parseInt(c.temp_C),
     feels: parseInt(c.FeelsLikeC),
-    desc: (c.lang_zh && c.lang_zh[0] && c.lang_zh[0].value) || c.weatherDesc[0].value,
+    desc: desc,
     humidity: c.humidity + "%",
     wind: c.windspeedKmph + "km/h",
     hi: today.maxtempC,
@@ -1700,6 +1743,15 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
 async function renderHome(){
   const t = today();
   document.getElementById("today-label").textContent = fmtCN(t);
+  // 欢迎语
+  const hour = new Date().getHours();
+  let greet = '你好';
+  if(hour < 6) greet = '夜深了';
+  else if(hour < 11) greet = '早上好';
+  else if(hour < 14) greet = '中午好';
+  else if(hour < 18) greet = '下午好';
+  else greet = '晚上好';
+  document.getElementById('welcome-text').textContent = `${greet}，今天穿什么？`;
   if(!state.profile){
     checkOnboard();
     return;
