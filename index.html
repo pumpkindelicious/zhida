@@ -81,6 +81,37 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 .outfit-card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
 .outfit-main{font-size:15px;line-height:1.75;color:var(--ink);margin-bottom:12px}
 .outfit-tags{display:flex;flex-wrap:wrap;gap:6px}
+/* 穿搭预览：选中衣服照片展示 */
+.outfit-preview{
+  display:flex;gap:10px;justify-content:center;align-items:flex-end;
+  padding:16px 12px;margin-bottom:12px;
+  background:linear-gradient(180deg,#FAF7F2,#F5F0EB);
+  border-radius:14px;
+  min-height:120px;
+  flex-wrap:wrap;
+}
+.outfit-preview .item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  max-width:80px;
+}
+.outfit-preview .item img{
+  width:60px;height:60px;object-fit:contain;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.1));
+}
+.outfit-preview .item .label{
+  font-size:10px;color:var(--ink-soft);text-align:center;line-height:1.2;
+  max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.outfit-preview .item .cat{
+  font-size:9px;color:var(--primary-deep);font-weight:600;
+}
+.outfit-preview-empty{
+  font-size:12px;color:var(--ink-soft);text-align:center;
+  padding:20px 0;width:100%;
+}
+.outfit-preview-arrow{
+  font-size:18px;color:var(--ink-soft);align-self:center;
+}
 .tag{
   font-size:12px;padding:4px 10px;border-radius:999px;
   background:var(--primary-soft);color:var(--primary-deep);
@@ -273,6 +304,82 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   #view-me .topbar, #view-me #save-profile, #view-me #save-tip{grid-column:1 / -1}
   .tabbar{max-width:960px}
 }
+
+/* ============ 搭配编辑器 ============ */
+.oe-clothing-item{
+  display:flex;align-items:center;gap:6px;padding:6px;border-radius:8px;
+  background:var(--bg);cursor:pointer;transition:background .15s;
+}
+.oe-clothing-item:hover{background:var(--primary-soft)}
+.oe-clothing-item img{
+  width:40px;height:40px;border-radius:6px;object-fit:contain;
+  background:#fff;flex-shrink:0;
+}
+.oe-clothing-item .ph{
+  width:40px;height:40px;border-radius:6px;background:var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft);
+  flex-shrink:0;
+}
+.oe-clothing-item .nm{
+  font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.oe-cat-tab{
+  padding:6px 8px;border-radius:8px;font-size:12px;cursor:pointer;
+  text-align:center;background:var(--bg);transition:all .15s;
+}
+.oe-cat-tab.on{background:var(--primary);color:#fff;font-weight:500}
+.oe-drag-item{
+  position:absolute;cursor:move;user-select:none;touch-action:none;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.15));
+  transition:box-shadow .15s;
+}
+.oe-drag-item.selected{
+  outline:2px solid var(--primary);
+  outline-offset:2px;
+}
+.oe-drag-item img{
+  max-width:100%;max-height:100%;pointer-events:none;
+}
+/* P图风格操作手柄 */
+.oe-handle{
+  position:absolute;width:26px;height:26px;border-radius:50%;
+  background:#fff;border:2px solid var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;z-index:10;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  user-select:none;touch-action:none;
+}
+.oe-handle.delete{ top:-13px; right:-13px; background:#FF4D6A; border-color:#FF4D6A; color:#fff; }
+.oe-handle.rotate{ top:-13px; left:50%; transform:translateX(-50%); background:var(--primary); color:#fff; border-color:var(--primary); }
+.oe-handle.resize{ bottom:-13px; right:-13px; background:#fff; font-size:10px; }
+.oe-handle.layer-up{ bottom:-13px; left:-13px; background:#fff; font-size:11px; }
+.oe-handle.layer-down{ bottom:-13px; left:28px; background:#fff; font-size:11px; }
+/* 搭配列表项 */
+.outfit-card-item{
+  background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;
+  box-shadow:var(--shadow);cursor:pointer;transition:transform .15s;
+}
+.outfit-card-item:hover{transform:translateY(-2px)}
+.outfit-card-item .thumb{
+  width:100%;height:160px;border-radius:10px;object-fit:cover;
+  background:var(--bg);margin-bottom:10px;
+}
+.outfit-card-item .name{font-size:15px;font-weight:600}
+.outfit-card-item .meta{font-size:12px;color:var(--ink-soft);margin-top:4px}
+/* 首页搭配图容器 */
+.home-outfit-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.home-outfit-card{
+  background:#fff;border-radius:14px;padding:10px;box-shadow:var(--shadow);
+}
+.home-outfit-card img{
+  width:100%;border-radius:10px;object-fit:contain;
+  background:var(--bg);
+}
+.home-outfit-card .label{
+  font-size:12px;color:var(--ink-soft);margin-top:6px;text-align:center;
+}
 </style>
 </head>
 <body>
@@ -301,10 +408,21 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         <span>风 <b id="w-wind">--</b></span>
       </div>
     </div>
-    <div class="outfit-card">
-      <h2><span class="dot"></span>今日穿搭建议</h2>
-      <div class="outfit-main" id="outfit-main">完善资料后这里会生成你的专属穿搭建议。</div>
-      <div class="outfit-tags" id="outfit-tags"></div>
+    <!-- 今日搭配：左图右文 -->
+    <div class="outfit-card" id="home-outfit-section" style="display:none">
+      <h2><span class="dot"></span>今日搭配</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+        <!-- 左边：搭配图 -->
+        <div>
+          <div id="home-outfit-canvas" style="position:relative;height:240px;background:var(--bg);border-radius:12px;overflow:hidden"></div>
+          <div style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">从你衣橱里挑的这套</div>
+        </div>
+        <!-- 右边：文字解释 -->
+        <div>
+          <div class="outfit-main" id="outfit-main" style="font-size:14px;line-height:1.7;margin-bottom:10px">完善资料后这里会生成你的专属穿搭建议。</div>
+          <div class="outfit-tags" id="outfit-tags"></div>
+        </div>
+      </div>
     </div>
     <div class="upcoming-card" id="upcoming-card" style="display:none">
       <h3>近期行程</h3>
@@ -417,6 +535,7 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <div class="topbar">
       <h1>我的衣橱</h1>
     </div>
+    <button class="btn" id="open-outfit-list" style="width:100%;padding:12px;margin-bottom:16px;font-size:14px">👗 我的搭配（点击搭配衣服）</button>
     <div id="wardrobe-cards"></div>
     <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">
       照片和衣服名都只存在你自己浏览器里，不上传任何服务器。
@@ -524,10 +643,13 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <canvas id="editor-canvas" style="max-width:100%;max-height:100%;touch-action:none;cursor:crosshair"></canvas>
   </div>
   <div style="background:#fff;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">
+    <label style="font-size:12px;color:#8A837E">抠图强度</label>
+    <input type="range" id="editor-tolerance" min="10" max="60" value="25" style="width:80px">
+    <button class="btn ghost" id="editor-recut" style="font-size:12px;padding:6px 10px">重新抠图</button>
     <button class="btn ghost" id="editor-erase-mode" style="background:#FBE3E8;color:#B85A6E">擦除</button>
     <button class="btn ghost" id="editor-restore-mode">恢复</button>
     <label style="font-size:12px;color:#8A837E">笔刷</label>
-    <input type="range" id="editor-size" min="5" max="80" value="25" style="width:100px">
+    <input type="range" id="editor-size" min="5" max="80" value="25" style="width:80px">
     <button class="btn ghost" id="editor-cancel">取消</button>
     <button class="btn" id="editor-done">完成</button>
   </div>
@@ -556,6 +678,38 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <button class="btn ghost" id="pickcolor-skip" style="background:#333;color:#fff;border-color:#333">跳过，手动选</button>
     <button class="btn ghost" id="pickcolor-back" style="background:#333;color:#fff;border-color:#333">上一步</button>
   </div>
+</div>
+
+<!-- ==================== 搭配编辑器 ==================== -->
+<div id="outfit-editor-mask" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:350;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff">
+    <button class="btn ghost" id="oe-close" style="padding:8px 12px;font-size:13px">← 返回</button>
+    <input id="oe-name" placeholder="给这套搭配起个名字" style="flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px">
+    <button class="btn" id="oe-save" style="padding:8px 16px;font-size:13px">保存搭配</button>
+  </div>
+  <div style="flex:1;display:flex;overflow:hidden">
+    <!-- 左侧：衣服列表 -->
+    <div style="width:140px;background:#fff;border-right:1px solid var(--line);overflow-y:auto;padding:10px 8px">
+      <div id="oe-category-tabs" style="display:flex;flex-direction:column;gap:4px;margin-bottom:10px"></div>
+      <div id="oe-clothes-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+    <!-- 右侧：画布 -->
+    <div id="oe-canvas-area" style="flex:1;position:relative;overflow:hidden;background:
+      repeating-linear-gradient(0deg,#f5f0eb,#f5f0eb 1px,transparent 1px,transparent 20px),
+      repeating-linear-gradient(90deg,#f5f0eb,#f5f0eb 1px,transparent 1px,transparent 20px)">
+      <div id="oe-canvas" style="position:absolute;inset:0"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 我的搭配列表 ==================== -->
+<div id="outfit-list-mask" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:350;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff">
+    <button class="btn ghost" id="ol-close" style="padding:8px 12px;font-size:13px">← 返回衣橱</button>
+    <h3 style="font-size:16px;flex:1">我的搭配</h3>
+    <button class="btn" id="ol-new" style="padding:8px 14px;font-size:13px">+ 新建搭配</button>
+  </div>
+  <div id="outfit-list" style="flex:1;overflow-y:auto;padding:16px"></div>
 </div>
 
 <script>
@@ -1143,81 +1297,81 @@ function tempAdvice(t){
   // 26℃法则：需要的保暖度数 = 26 - 气温
   const need = Math.round(26 - t);
   if(need <= 0){
-    return `今天${t}℃，体感很热，衣服基本不需要额外保暖。选透气短袖+薄下装即可，尽量浅色，注意防晒补水。`;
+    return `今天${t}℃，穿透气短袖+薄下装就好，尽量浅色，注意防晒补水。`;
   }
   // 按需要的度数推荐叠穿组合
   let combo = [];
   let remaining = need;
   if(remaining >= 9){
-    combo.push("厚羽绒服(9℃)"); remaining -= 9;
-    if(remaining >= 4){ combo.push("厚毛衣(4℃)"); remaining -= 4; }
-    if(remaining >= 2){ combo.push("衬衫内搭(2℃)"); remaining -= 2; }
-    if(remaining >= 4){ combo.push("加绒裤(5℃)或围巾(4℃)"); }
+    combo.push("厚羽绒服"); remaining -= 9;
+    if(remaining >= 4){ combo.push("厚毛衣"); remaining -= 4; }
+    if(remaining >= 2){ combo.push("衬衫内搭"); remaining -= 2; }
+    if(remaining >= 4){ combo.push("加绒裤或围巾"); }
   }else if(remaining >= 6){
-    combo.push("轻薄羽绒服(6℃)"); remaining -= 6;
-    if(remaining >= 3){ combo.push("卫衣/针织(3℃)"); remaining -= 3; }
-    if(remaining >= 2){ combo.push("衬衫打底(2℃)"); remaining -= 2; }
-    if(remaining >= 2){ combo.push("长裤(2℃)"); }
+    combo.push("轻薄羽绒服"); remaining -= 6;
+    if(remaining >= 3){ combo.push("卫衣/针织"); remaining -= 3; }
+    if(remaining >= 2){ combo.push("衬衫打底"); remaining -= 2; }
+    if(remaining >= 2){ combo.push("长裤"); }
   }else if(remaining >= 5){
-    combo.push("西装/薄棉服(5℃)"); remaining -= 5;
-    if(remaining >= 2){ combo.push("长袖T(2℃)"); remaining -= 2; }
-    if(remaining >= 2){ combo.push("长裤(2℃)"); }
+    combo.push("西装/薄棉服"); remaining -= 5;
+    if(remaining >= 2){ combo.push("长袖T"); remaining -= 2; }
+    if(remaining >= 2){ combo.push("长裤"); }
   }else if(remaining >= 3){
-    combo.push("卫衣/薄针织(3℃)"); remaining -= 3;
-    if(remaining >= 2){ combo.push("衬衫打底(2℃)"); remaining -= 2; }
-    if(remaining >= 1){ combo.push("薄打底(1℃)"); }
+    combo.push("卫衣/薄针织"); remaining -= 3;
+    if(remaining >= 2){ combo.push("衬衫打底"); remaining -= 2; }
+    if(remaining >= 1){ combo.push("薄打底"); }
   }else if(remaining >= 2){
-    combo.push("衬衫/长袖T(2℃)"); remaining -= 2;
-    if(remaining >= 1){ combo.push("薄打底(1℃)"); }
+    combo.push("衬衫/长袖T"); remaining -= 2;
+    if(remaining >= 1){ combo.push("薄打底"); }
   }else{
-    combo.push("薄T恤+薄长裤(2℃)");
+    combo.push("薄T恤+薄长裤");
   }
-  return `按26℃穿衣法则，今天${t}℃，衣服需要凑够约${need}℃的保暖度。推荐叠穿：${combo.join(" + ")}，体感刚好26℃。中午热了可以脱一件外套灵活调整。`;
+  return `今天${t}℃，建议这样穿：${combo.join(" + ")}。中午热了可以脱一件外套灵活调整。`;
 }
 function styleAdvice(styles, gender){
   if(!styles || !styles.length) return "";
   const femaleMap = {
-    "韩系":"参考韩系：低饱和、松弛廓形、同色系搭配，温柔不刻意。",
-    "日系":"参考日系：层次叠穿、棉麻质感、中性色调。",
-    "新中式":"参考新中式：盘扣、马面裙、改良旗袍或丝绸元素。",
-    "法式":"参考法式：随性衬衫、直筒牛仔裤、一抹红唇。",
-    "老钱风":"参考老钱：质感基础款、低调配色、无明显 logo。",
-    "极简":"参考极简：剪裁干净、配色克制、一件出彩单品即可。",
-    "甜酷":"参考甜酷：甜系单品 + 一件酷感单品平衡（皮衣、马丁靴）。",
-    "甜美":"参考甜美：荷叶边、粉色系、A 字裙。",
-    "芭蕾风":"参考芭蕾：芭蕾鞋、针织罩衫、温柔配色。",
-    "Y2K辣妹":"参考 Y2K：低腰、亮面、短上衣、未来感配饰。",
-    "纯欲":"参考纯欲：微透、柔和色、不经意的小露肤。",
-    "学院风":"参考学院：针织背心、衬衫、百褶裙、乐福鞋。",
-    "街头":"参考街头：oversize、卫衣、工装、板鞋。",
-    "暗黑":"参考暗黑：全黑、层叠、皮革、金属细节。",
-    "复古港风":"参考港风：大波浪、红色单品、喇叭裤。",
-    "山系户外":"参考山系：冲锋衣、工装裤、徒步鞋、大地色。",
-    "波西米亚":"参考波西：流苏、印花、长裙、编织包。",
-    "通勤职场":"参考通勤：衬衫、西装裤、针织开衫，整洁利落。",
-    "休闲运动":"参考运动：卫衣、leggings、运动鞋。",
-    "小香风":"参考小香：粗花呢、珍珠、金色纽扣。",
-    "多巴胺":"参考多巴胺：大胆亮色、撞色、快乐色块。",
-    "文艺":"参考文艺：棉麻、长裙、帆布包、书卷气。",
-    "中性风":"参考中性：阔腿西装、白 T、皮鞋，雌雄莫辨。"
+    "韩系":"低饱和松弛廓形，同色系搭配，温柔不刻意。",
+    "日系":"层次叠穿，棉麻质感，中性色调。",
+    "新中式":"盘扣、马面裙、改良旗袍或丝绸元素。",
+    "法式":"随性衬衫、直筒牛仔裤、一抹红唇。",
+    "老钱风":"质感基础款、低调配色、无明显 logo。",
+    "极简":"剪裁干净、配色克制、一件出彩单品即可。",
+    "甜酷":"甜系单品配一件酷感单品（皮衣、马丁靴）。",
+    "甜美":"荷叶边、粉色系、A 字裙。",
+    "芭蕾风":"芭蕾鞋、针织罩衫、温柔配色。",
+    "Y2K辣妹":"低腰、亮面、短上衣、未来感配饰。",
+    "纯欲":"微透、柔和色、不经意的小露肤。",
+    "学院风":"针织背心、衬衫、百褶裙、乐福鞋。",
+    "街头":"oversize、卫衣、工装、板鞋。",
+    "暗黑":"全黑、层叠、皮革、金属细节。",
+    "复古港风":"大波浪、红色单品、喇叭裤。",
+    "山系户外":"冲锋衣、工装裤、徒步鞋、大地色。",
+    "波西米亚":"流苏、印花、长裙、编织包。",
+    "通勤职场":"衬衫、西装裤、针织开衫，整洁利落。",
+    "休闲运动":"卫衣、leggings、运动鞋。",
+    "小香风":"粗花呢、珍珠、金色纽扣。",
+    "多巴胺":"大胆亮色、撞色、快乐色块。",
+    "文艺":"棉麻、长裙、帆布包、书卷气。",
+    "中性风":"阔腿西装、白 T、皮鞋，雌雄莫辨。"
   };
   const maleMap = {
-    "韩系":"参考韩系：低饱和、松弛廓形、同色系搭配，干净不刻意。",
-    "日系":"参考日系：层次叠穿、棉麻或工装质感、大地色调。",
-    "新中式":"参考新中式：盘扣衬衫、改良中山装、唐装外套等东方元素。",
-    "法式":"参考法式：条纹衫、直筒牛仔裤、随性不费力的感觉。",
-    "老钱风":"参考老钱：质感羊毛衫、卡其裤、乐福鞋，低调贵气。",
-    "极简":"参考极简：剪裁干净、配色克制、一件质感单品即可。",
-    "学院风":"参考学院：衬衫、针织马甲、卡其裤、乐福鞋。",
-    "街头":"参考街头：oversize 卫衣、工装裤、板鞋。",
-    "暗黑":"参考暗黑：全黑、层叠、皮革夹克、金属细节。",
-    "复古港风":"参考港风：花衬衫、喇叭牛仔裤、油头墨镜。",
-    "山系户外":"参考山系：冲锋衣、工装裤、徒步鞋、大地色。",
-    "通勤职场":"参考通勤：衬衫、西裤、干净的皮鞋，利落不随便。",
-    "休闲运动":"参考运动：卫衣、运动裤、跑鞋，舒服为主。",
-    "多巴胺":"参考多巴胺：大胆亮色、撞色、快乐色块。",
-    "文艺":"参考文艺：棉麻衬衫、帆布包、书卷气。",
-    "中性风":"参考中性：阔腿西装、白 T、皮鞋。"
+    "韩系":"低饱和松弛廓形，同色系搭配，干净不刻意。",
+    "日系":"层次叠穿，棉麻或工装质感，大地色调。",
+    "新中式":"盘扣衬衫、改良中山装、唐装外套等东方元素。",
+    "法式":"条纹衫、直筒牛仔裤、随性不费力的感觉。",
+    "老钱风":"质感羊毛衫、卡其裤、乐福鞋，低调贵气。",
+    "极简":"剪裁干净、配色克制、一件质感单品即可。",
+    "学院风":"衬衫、针织马甲、卡其裤、乐福鞋。",
+    "街头":"oversize 卫衣、工装裤、板鞋。",
+    "暗黑":"全黑、层叠、皮革夹克、金属细节。",
+    "复古港风":"花衬衫、喇叭牛仔裤、油头墨镜。",
+    "山系户外":"冲锋衣、工装裤、徒步鞋、大地色。",
+    "通勤职场":"衬衫、西裤、干净的皮鞋，利落不随便。",
+    "休闲运动":"卫衣、运动裤、跑鞋，舒服为主。",
+    "多巴胺":"大胆亮色、撞色、快乐色块。",
+    "文艺":"棉麻衬衫、帆布包、书卷气。",
+    "中性风":"阔腿西装、白 T、皮鞋。"
   };
   const map = gender==="男" ? maleMap : femaleMap;
   return styles.slice(0,2).map(s=>map[s]).filter(Boolean).join(" ");
@@ -1266,65 +1420,61 @@ function periodAdvice(isPeriod, gender){
 function bodyAdvice(p){
   if(!p) return "";
   const bits=[];
-  // 身高比例建议
   if(p.height && p.height < 160 && p.gender!=="男"){
-    bits.push("小个子秘诀：上短下长三七分——短上衣+高腰下装，腰线提到最细处，同色系上下装拉长比例。");
+    bits.push("小个子可以试试短上衣配高腰下装，把腰线提高，同色系上下装更显比例。");
   }
   if(p.height && p.height < 170 && p.gender==="男"){
-    bits.push("个子偏娇小：上衣选短款、裤装选直筒修身，鞋裤同色拉长腿部，避免过长过宽压个子。");
+    bits.push("个子偏娇小，上衣选短款、裤装选直筒修身，鞋裤同色拉长腿部，避免过长过宽压个子。");
   }
-  if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来，基本百搭。");
+  if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来。");
   if(p.height && p.height > 168 && p.gender!=="男") bits.push("个子高挑，宽松廓形和长款都很撑得起来，可以大胆尝试风衣、阔腿裤。");
-  // 身材扬长避短（融入上紧下松/上松下紧、内紧外松规则）
   const bs = p.bodyShape;
   if(bs){
     const femaleTip = {
-      "梨型":"梨型身材（上窄下宽）：上紧下松——上身选修身针织/浅色有设计感，下装选深色直筒或A字裙，胯腿处别太紧身。焦点放上半身，下半身选挺括哑光材质。",
-      "苹果型":"苹果型身材（腰腹圆润）：上松下紧——上身选略宽松有型的款，腰线放到胸下位置，下装选修身直筒平衡。颜色上深下浅，竖向线条引导视线向上。",
-      "沙漏型":"沙漏型身材（腰细臀翘）：收腰款最出彩，别穿太宽松淹没腰线。上下平衡，重点突出腰细这条优势。",
-      "直筒型":"H型身材（肩腰胯差不多宽）：主动制造腰线——用腰带、层次叠穿（内紧外松：修身内搭+廓形外套），肩胯位置适当增加装饰，制造曲线感。",
-      "倒三角":"倒三角身材（肩宽胯窄）：弱化上半身、凸显下半身——上深下浅，上半身选V领/U领，避免横条纹和肩部装饰；下半身可A字裙、花苞裙增加量感。",
-      "匀称":"匀称身材：百搭，可以大胆尝试各种风格和比例组合，主要看风格和场合。",
-      "偏瘦":"偏瘦单薄：多叠穿增加分量感（内紧外松：修身打底+宽松外套），横条纹、蓬松材质视觉上增加体积。",
+      "梨型":"梨型身材：上身穿修身或浅色有设计感的，下身穿深色直筒或A字裙，胯腿处别太紧身。焦点放上半身。",
+      "苹果型":"苹果型身材：上身穿略宽松有型的，腰线放到胸下位置，下身穿修身直筒平衡。颜色上深下浅。",
+      "沙漏型":"沙漏型身材：收腰款最出彩，刚好突出腰臀曲线，别穿太宽松淹没腰线。",
+      "直筒型":"H型身材：用腰带、层次叠穿制造腰线，修身内搭配宽松外套，肩胯位置适当增加装饰。",
+      "倒三角":"倒三角身材：上身穿V领/U领，颜色上深下浅，避免横条纹和肩部装饰；下半身A字裙、花苞裙增加量感。",
+      "匀称":"匀称身材：百搭，主要看风格和场合。",
+      "偏瘦":"偏瘦：多叠穿增加分量感，修身打底配宽松外套，横条纹、蓬松材质视觉上增加体积。",
       "偏壮":"偏壮/骨架大：选剪裁利落的纯色款，垂感面料比蓬松材质更显瘦，避免胸前大logo和横纹。"
     };
     const maleTip = {
-      "梨型":"下半身偏宽：上松下紧——上身选落肩/厚面料增加体积感，下装选深色直筒修身，平衡上下比例。",
-      "苹果型":"苹果型/有肚子：上松下紧——选略宽松直筒的上衣，别穿紧身T，竖条纹更利落，下装选修身款平衡。",
-      "沙漏型":"曲线明显：合身剪裁最显精神，别穿太宽松，突出身材优势。",
-      "直筒型":"H型身材：用外套层次、腰带制造肩腰落差，显倒三角，内紧外松增加轮廓。",
+      "梨型":"下半身偏宽：上身穿落肩/厚面料增加体积感，下身穿深色直筒修身，平衡上下比例。",
+      "苹果型":"苹果型/有肚子：上身穿略宽松直筒的，别穿紧身T，竖条纹更利落，下身穿修身款平衡。",
+      "沙漏型":"曲线明显：合身剪裁最显精神，别穿太宽松。",
+      "直筒型":"H型身材：用外套层次、腰带制造肩腰落差，修身内搭配宽松外套。",
       "倒三角":"倒三角/肩宽腰细：基本百搭，修身T恤就很出效果，避免肩部太蓬松的款式。",
       "匀称":"匀称标准：百搭，主要看风格和场合。",
-      "偏瘦":"偏瘦单薄：多叠穿（衬衫+针织马甲+外套），横条纹、蓬松面料增加体积感，别穿太紧身显单薄。",
+      "偏瘦":"偏瘦单薄：多叠穿（衬衫+针织马甲+外套），横条纹、蓬松面料增加体积感。",
       "偏壮":"偏壮/肩宽：选垂感好的纯色衬衫/T恤，避开胸前大logo和横纹，竖线条更利落。"
     };
     const m = p.gender==="男" ? maleTip : femaleTip;
     if(m[bs]) bits.push(m[bs]);
   }
-  // 通用比例法则：适当露肤
   if(p.gender !== "男"){
-    bits.push("适当露肤法则：全身露一两处最友好的位置——锁骨（V领/方领）、手腕（卷袖子）、脚踝（九分裤/露踝），避免上下同时大面积露肤。");
+    bits.push("可以露一两处：锁骨、手腕、脚踝，全身露一两处就好，别上下同时大面积露肤。");
   }
   return bits.join(" ");
 }
 /* 色彩时尚提示：三色原则 + 70/20/10 + 色彩呼应 */
 function fashionColorTip(profile){
   const bits = [];
-  // 基于四季型色彩给具体配色建议
   if(profile.seasonType && SEASON_TYPES[profile.seasonType]){
     const sd = SEASON_TYPES[profile.seasonType];
     const goodColors = sd.good.slice(0,3);
-    bits.push(`配色法则：今天走${sd.tones}路线，主色用${goodColors[0]}（70%大面积），辅助色用${goodColors[1]}（20%过渡），点睛色用${goodColors[2]}（10%小面积，如配饰/包包）。`);
-    bits.push("色彩呼应小技巧：让同一个颜色在身上出现至少两次（比如包包和鞋子同色、内搭和配饰同色），整体感立刻提升。");
+    bits.push(`今天走${sd.tones}路线，主色用${goodColors[0]}大面积，辅助色用${goodColors[1]}过渡，点睛色用${goodColors[2]}小面积点缀（比如配饰、包包）。`);
+    bits.push("让同一个颜色在身上出现至少两次（比如包包和鞋子同色），整体感立刻提升。");
   }else{
-    bits.push("三色原则：全身大色块不超过三种，遵循70/20/10比例——主色70%定基调，辅助色20%过渡，点睛色10%制造记忆点。中性色（黑白灰米棕）打底最安全。");
-    bits.push("同色系深浅搭配：同一色系深浅不一、材质不同，比全身一模一样高级得多，比如燕麦色+米白+浅驼靠明度差制造层次。");
+    bits.push("全身大色块不超过三种，主色定基调、辅助色过渡、小面积亮色点缀。中性色（黑白灰米棕）打底最安全。");
+    bits.push("同色系深浅搭配比全身一模一样高级得多，比如燕麦色+米白+浅驼靠明度差制造层次。");
   }
   return bits.join(" ");
 }
 /* 基础款/设计款非对称法则 */
 function fashionContrastTip(){
-  return "穿搭节奏法则：上身基础，下身就不基础；下身基础，上身就不基础；上下都基础，配饰就不基础。用低调+高调的组合避免全基础款的乏味感。";
+  return "上身基础下身就设计感，下身基础上身就有亮点；上下都基础的话，配饰出彩。避免全基础款的乏味感。";
 }
 function buildOutfit(w, profile, todayEvent, isPeriodToday){
   const parts = [];
@@ -1332,6 +1482,8 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
   const wr = state.wardrobe || {};
   WARDROBE_CATS.forEach(c=>{ if(!Array.isArray(wr[c.key])) wr[c.key]=[]; });
   const hasAnyWardrobe = WARDROBE_CATS.some(c=>wr[c.key].length);
+
+  // 第一句：今天穿什么（从衣橱挑的）
   if(hasAnyWardrobe){
     const bits = [];
     if(w && w.temp < 20){
@@ -1351,30 +1503,40 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
     const bag = pickFromWardrobe(wr.bags, w, todayEvent);
     if(bag) bits.push(bag.name);
     if(bits.length){
-      parts.push("从你衣橱里挑了这套：" + bits.join(" + ") + "。");
+      parts.push(`今天穿这套：${bits.join(" + ")}。`);
     }
   }
+
+  // 第二句：温度相关
   if(w){
     parts.push(tempAdvice(w.temp));
-    if(w.isRain) parts.push("今天有雨，记得带伞，鞋子选防水防滑的。");
-    if(w.isSnow) parts.push("今天下雪，穿防滑靴，注意保暖。");
-    if(w.isSunny) parts.push("紫外线不弱，记得防晒。");
-    if(w.isCloudy) parts.push("阴天紫外线仍在，别偷懒。");
+    if(w.isRain) parts.push("有雨，记得带伞。");
+    if(w.isSnow) parts.push("下雪，穿防滑靴。");
+    if(w.isSunny) parts.push("记得防晒。");
     tags.push(w.desc + " " + w.temp + "℃");
   }else{
-    parts.push("暂时没拿到实时天气，按你的体感穿即可。");
+    parts.push("暂时没拿到实时天气，按体感穿就好。");
   }
+
+  // 第三句：场合
   if(todayEvent) parts.push(eventAdvice(todayEvent));
+
+  // 第四句：为什么这样搭（风格+身材+色彩，藏在描述里）
+  const whyBits = [];
   const sa = styleAdvice(profile.styles, profile.gender);
-  if(sa) parts.push(sa);
+  if(sa) whyBits.push(sa);
   const ba = bodyAdvice(profile);
-  if(ba) parts.push(ba);
+  if(ba) whyBits.push(ba);
+  const fc = fashionColorTip(profile);
+  if(fc) whyBits.push(fc);
+  if(whyBits.length){
+    parts.push("为什么这样搭：" + whyBits.join(" "));
+  }
+
+  // 经期提示
   const pa = periodAdvice(isPeriodToday, profile.gender);
   if(pa) parts.push(pa);
-  const fc = fashionColorTip(profile);
-  if(fc) parts.push(fc);
-  const fct = fashionContrastTip();
-  if(fct) parts.push(fct);
+
   return { main: parts.join(" "), tags };
 }
 async function renderHome(){
@@ -1459,6 +1621,20 @@ async function renderHome(){
     document.getElementById("w-desc").textContent = "天气暂时加载不出来，检查网络后刷新试试";
   }
   renderOutfit(w, todayEvent, isPeriodToday);
+  renderHomeOutfit(w, todayEvent);
+}
+function renderHomeOutfit(w, todayEvent){
+  const section = document.getElementById('home-outfit-section');
+  const canvas = document.getElementById('home-outfit-canvas');
+  // 系统从衣橱生成的搭配
+  const sysOutfit = generateSystemOutfit(w, state.profile, todayEvent);
+  if(sysOutfit.length){
+    canvas.innerHTML = '';
+    renderOutfitDOM(sysOutfit, canvas);
+    section.style.display = 'block';
+  }else{
+    section.style.display = 'none';
+  }
 }
 function renderOutfit(w, todayEvent, isPeriodToday){
   const rec = buildOutfit(w, state.profile, todayEvent, isPeriodToday);
@@ -1698,7 +1874,7 @@ function renderWardrobeList(box, list){
   });
 }
 let pendingPhotos = { top:null, bottom:null, shoe:null };
-async function colorKeyCutout(dataUrl, tolerance=38){
+async function colorKeyCutout(dataUrl, tolerance=35){
   const img = new Image();
   await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; img.src=dataUrl; });
   const canvas = document.createElement("canvas");
@@ -1709,6 +1885,7 @@ async function colorKeyCutout(dataUrl, tolerance=38){
   const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
   const data = imgData.data;
   const W = canvas.width, H = canvas.height;
+  // 采样背景色（边缘8点）
   const samplePoints = [
     [0,0],[W-1,0],[0,H-1],[W-1,H-1],
     [W/2,0],[W/2,H-1],[0,H/2],[W-1,H/2]
@@ -1719,14 +1896,30 @@ async function colorKeyCutout(dataUrl, tolerance=38){
     br+=data[i]; bg+=data[i+1]; bb+=data[i+2];
   });
   br/=samplePoints.length; bg/=samplePoints.length; bb/=samplePoints.length;
-  const feather = 25;
-  for(let i=0;i<data.length;i+=4){
+  // flood fill 从边缘开始，只抠和边缘连通的背景，避免白色衣服被误抠
+  const visited = new Uint8Array(W*H);
+  const queue = [];
+  // 把所有边缘像素加入队列
+  for(let x=0;x<W;x++){ queue.push([x,0]); queue.push([x,H-1]); }
+  for(let y=0;y<H;y++){ queue.push([0,y]); queue.push([W-1,y]); }
+  const feather = 20;
+  while(queue.length){
+    const [x,y] = queue.pop();
+    if(x<0||x>=W||y<0||y>=H) continue;
+    const idx = y*W + x;
+    if(visited[idx]) continue;
+    visited[idx] = 1;
+    const i = idx*4;
     const dr=data[i]-br, dg=data[i+1]-bg, db=data[i+2]-bb;
     const dist = Math.sqrt(dr*dr+dg*dg+db*db);
     if(dist < tolerance){
-      data[i+3] = 0;
+      data[i+3] = 0; // 完全透明
+      // 继续往四周扩散
+      queue.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
     }else if(dist < tolerance+feather){
+      // 边缘羽化
       data[i+3] = Math.round(255*(dist-tolerance)/feather);
+      // 羽化区域不继续扩散
     }
   }
   ctx.putImageData(imgData,0,0);
@@ -1737,7 +1930,15 @@ function bindPhotoInput(fileInputId, slotKey, btnId, previewId){
   const btn = document.getElementById(btnId);
   const preview = document.getElementById(previewId);
   preview.innerHTML = `<div class="empty-hint">未选图</div>`;
-  btn.addEventListener("click",()=>input.click());
+  btn.addEventListener("click",()=>{
+    // 上传前提醒：衣服颜色要和背景有区别
+    if(!btn.dataset.reminded){
+      const ok = confirm("拍照小提示：\n\n衣服颜色要和背景有明显区别哦~\n比如白衣服放在深色背景上拍，\n深色衣服放在浅色背景上拍，\n这样抠图才干净，不会把衣服也抠掉。\n\n点确定继续选照片。");
+      if(!ok){ input.value = ""; return; }
+      btn.dataset.reminded = "1";
+    }
+    input.click();
+  });
   input.addEventListener("change", async ()=>{
     const f = input.files[0];
     if(!f) return;
@@ -1750,7 +1951,7 @@ function bindPhotoInput(fileInputId, slotKey, btnId, previewId){
         r.onerror = rej;
         r.readAsDataURL(f);
       });
-      pendingPhotos[slotKey] = await colorKeyCutout(dataUrl, 38);
+      pendingPhotos[slotKey] = await colorKeyCutout(dataUrl, 25);
       btn.textContent = "修图";
       openEditor(pendingPhotos[slotKey], (finalUrl)=>{
         pendingPhotos[slotKey] = finalUrl;
@@ -1878,6 +2079,21 @@ function restoreStroke(x1,y1,x2,y2){
 function endDraw(){ editor.isDrawing = false; }
 document.getElementById("editor-erase-mode").addEventListener("click",()=>{ editor.mode="erase"; updateModeBtn(); });
 document.getElementById("editor-restore-mode").addEventListener("click",()=>{ editor.mode="restore"; updateModeBtn(); });
+// 重新抠图（用调整后的强度）
+document.getElementById("editor-recut").addEventListener("click", async ()=>{
+  const tol = parseInt(document.getElementById("editor-tolerance").value);
+  if(!editor.originalImg) return;
+  // 从原图重新抠图
+  const originalDataUrl = editor.originalImg.src;
+  const newDataUrl = await colorKeyCutout(originalDataUrl, tol);
+  // 重新绘制到canvas
+  const newImg = new Image();
+  newImg.onload = ()=>{
+    editor.ctx.clearRect(0,0,editor.canvas.width,editor.canvas.height);
+    editor.ctx.drawImage(newImg,0,0,editor.canvas.width,editor.canvas.height);
+  };
+  newImg.src = newDataUrl;
+});
 document.getElementById("editor-cancel").addEventListener("click",()=>{
   document.getElementById("editor-mask").style.display="none";
 });
@@ -2012,11 +2228,384 @@ function pickFromWardrobe(list, w, eventText){
   scored.sort((a,b)=>b.score-a.score);
   return scored[0].item;
 }
+
+/* ============================================================
+   搭配编辑器（我的搭配）
+   ============================================================ */
+if(!state.outfits) state.outfits = [];
+
+const oeState = {
+  items: [],        // 画布上的衣服：{id, cat, name, photo, x, y, z, rotation, width}
+  selectedId: null,
+  currentCat: 'outerwear',
+  editingId: null   // 正在编辑的搭配ID（null=新建）
+};
+
+function openOutfitEditor(outfitId){
+  oeState.items = [];
+  oeState.selectedId = null;
+  oeState.editingId = outfitId || null;
+  const mask = document.getElementById('outfit-editor-mask');
+  if(outfitId){
+    const o = state.outfits.find(x=>x.id===outfitId);
+    if(o){
+      oeState.items = JSON.parse(JSON.stringify(o.items));
+      document.getElementById('oe-name').value = o.name;
+    }
+  }else{
+    document.getElementById('oe-name').value = '';
+  }
+  renderOeCategoryTabs();
+  renderOeClothesList();
+  renderOeCanvas();
+  mask.style.display = 'flex';
+}
+function closeOutfitEditor(){
+  document.getElementById('outfit-editor-mask').style.display = 'none';
+}
+function renderOeCategoryTabs(){
+  const box = document.getElementById('oe-category-tabs');
+  box.innerHTML = '';
+  WARDROBE_CATS.forEach(cat=>{
+    const has = state.wardrobe[cat.key] && state.wardrobe[cat.key].length;
+    const tab = document.createElement('div');
+    tab.className = 'oe-cat-tab' + (oeState.currentCat===cat.key?' on':'');
+    tab.textContent = cat.label + (has ? ` (${state.wardrobe[cat.key].length})` : ' (空)');
+    tab.addEventListener('click',()=>{
+      oeState.currentCat = cat.key;
+      renderOeCategoryTabs();
+      renderOeClothesList();
+    });
+    box.appendChild(tab);
+  });
+}
+function renderOeClothesList(){
+  const box = document.getElementById('oe-clothes-list');
+  box.innerHTML = '';
+  const list = state.wardrobe[oeState.currentCat] || [];
+  if(!list.length){
+    box.innerHTML = '<div style="font-size:12px;color:var(--ink-soft);padding:10px 0;text-align:center">这个分类还没有衣服</div>';
+    return;
+  }
+  list.forEach((item, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'oe-clothing-item';
+    row.innerHTML = item.photo
+      ? `<img src="${item.photo}" alt=""><span class="nm">${item.name}</span>`
+      : `<div class="ph">👕</div><span class="nm">${item.name}</span>`;
+    row.addEventListener('click',()=>addOeItem(oeState.currentCat, item));
+    box.appendChild(row);
+  });
+}
+function addOeItem(cat, item){
+  const canvas = document.getElementById('oe-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const newId = Date.now() + Math.random();
+  const width = cat === 'outerwear' ? 120 : (cat === 'tops' ? 100 : 80);
+  oeState.items.push({
+    id: newId,
+    cat: cat,
+    name: item.name,
+    photo: item.photo,
+    x: rect.width/2 - width/2 + (Math.random()*40-20),
+    y: 20 + oeState.items.length * 30,
+    z: oeState.items.length + 1,
+    rotation: 0,
+    width: width
+  });
+  oeState.selectedId = newId;
+  renderOeCanvas();
+}
+function renderOeCanvas(){
+  const canvas = document.getElementById('oe-canvas');
+  canvas.innerHTML = '';
+  oeState.items.forEach(item=>{
+    const el = document.createElement('div');
+    el.className = 'oe-drag-item' + (oeState.selectedId===item.id?' selected':'');
+    el.style.left = item.x + 'px';
+    el.style.top = item.y + 'px';
+    el.style.zIndex = item.z;
+    el.style.width = item.width + 'px';
+    el.style.transform = `rotate(${item.rotation}deg)`;
+    if(item.photo){
+      el.innerHTML = `<img src="${item.photo}" alt="${item.name}">`;
+    }else{
+      el.innerHTML = `<div style="width:100%;height:60px;background:var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-soft)">${item.name}</div>`;
+    }
+    el.addEventListener('mousedown',(e)=>startDrag(e, item.id));
+    el.addEventListener('touchstart',(e)=>startDrag(e, item.id), {passive:false});
+    el.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      selectOeItem(item.id);
+    });
+    // 选中时添加手柄
+    if(oeState.selectedId===item.id){
+      const handles = [
+        {cls:'delete', icon:'✕', action:'delete'},
+        {cls:'rotate', icon:'⟳', action:'rotate'},
+        {cls:'resize', icon:'⤢', action:'resize'},
+        {cls:'layer-up', icon:'↑', action:'layerUp'},
+        {cls:'layer-down', icon:'↓', action:'layerDown'}
+      ];
+      handles.forEach(h=>{
+        const hEl = document.createElement('div');
+        hEl.className = 'oe-handle ' + h.cls;
+        hEl.textContent = h.icon;
+        hEl.addEventListener('mousedown',(e)=>{ e.stopPropagation(); e.preventDefault(); });
+        hEl.addEventListener('touchstart',(e)=>{ e.stopPropagation(); }, {passive:false});
+        hEl.addEventListener('click',(e)=>{
+          e.stopPropagation();
+          if(h.action==='delete') deleteOeItem(item.id);
+          else if(h.action==='rotate') rotateOeItem(item.id);
+          else if(h.action==='resize') startResize(e, item.id);
+          else if(h.action==='layerUp') layerUpOeItem(item.id);
+          else if(h.action==='layerDown') layerDownOeItem(item.id);
+        });
+        el.appendChild(hEl);
+      });
+    }
+    canvas.appendChild(el);
+  });
+  // 点击空白处取消选中
+  canvas.onclick = (e)=>{
+    if(e.target === canvas) selectOeItem(null);
+  };
+}
+function selectOeItem(id){
+  oeState.selectedId = id;
+  renderOeCanvas();
+}
+function deleteOeItem(id){
+  oeState.items = oeState.items.filter(x=>x.id!==id);
+  if(oeState.selectedId===id) oeState.selectedId = null;
+  renderOeCanvas();
+}
+function rotateOeItem(id){
+  const item = oeState.items.find(x=>x.id===id);
+  if(item){ item.rotation = (item.rotation + 15) % 360; renderOeCanvas(); }
+}
+function layerUpOeItem(id){
+  const item = oeState.items.find(x=>x.id===id);
+  if(item){
+    const maxZ = Math.max(...oeState.items.map(x=>x.z));
+    item.z = maxZ + 1; renderOeCanvas();
+  }
+}
+function layerDownOeItem(id){
+  const item = oeState.items.find(x=>x.id===id);
+  if(!item) return;
+  const minZ = Math.min(...oeState.items.map(x=>x.z));
+  // 不能让z变成0或负数，否则会跑到画布下面去
+  if(minZ <= 1){
+    // 已经是最底层了，提示一下
+    return;
+  }
+  item.z = minZ - 1; renderOeCanvas();
+}
+// 自由缩放
+function startResize(e, id){
+  const item = oeState.items.find(x=>x.id===id);
+  if(!item) return;
+  const pt = e.touches ? e.touches[0] : e;
+  const startX = pt.clientX;
+  const startY = pt.clientY;
+  const startWidth = item.width;
+  const moveHandler = (ev)=>{
+    const pt = ev.touches ? ev.touches[0] : ev;
+    const dx = pt.clientX - startX;
+    const newWidth = Math.max(40, startWidth + dx);
+    const it = oeState.items.find(x=>x.id===id);
+    if(it){ it.width = newWidth; renderOeCanvas(); }
+  };
+  const upHandler = ()=>{
+    document.removeEventListener('mousemove', moveHandler);
+    document.removeEventListener('mouseup', upHandler);
+    document.removeEventListener('touchmove', moveHandler);
+    document.removeEventListener('touchend', upHandler);
+  };
+  document.addEventListener('mousemove', moveHandler);
+  document.addEventListener('mouseup', upHandler);
+  document.addEventListener('touchmove', moveHandler, {passive:false});
+  document.addEventListener('touchend', upHandler);
+}
+let dragState = { id:null, startX:0, startY:0, origX:0, origY:0 };
+function startDrag(e, id){
+  e.preventDefault();
+  const item = oeState.items.find(x=>x.id===id);
+  if(!item) return;
+  selectOeItem(id);
+  const pt = e.touches ? e.touches[0] : e;
+  dragState = {
+    id: id,
+    startX: pt.clientX,
+    startY: pt.clientY,
+    origX: item.x,
+    origY: item.y
+  };
+  const moveHandler = (ev)=>{
+    const pt = ev.touches ? ev.touches[0] : ev;
+    const dx = pt.clientX - dragState.startX;
+    const dy = pt.clientY - dragState.startY;
+    const it = oeState.items.find(x=>x.id===dragState.id);
+    if(it){
+      it.x = dragState.origX + dx;
+      it.y = dragState.origY + dy;
+      renderOeCanvas();
+    }
+  };
+  const upHandler = ()=>{
+    document.removeEventListener('mousemove', moveHandler);
+    document.removeEventListener('mouseup', upHandler);
+    document.removeEventListener('touchmove', moveHandler);
+    document.removeEventListener('touchend', upHandler);
+  };
+  document.addEventListener('mousemove', moveHandler);
+  document.addEventListener('mouseup', upHandler);
+  document.addEventListener('touchmove', moveHandler, {passive:false});
+  document.addEventListener('touchend', upHandler);
+}
+document.getElementById('oe-close').addEventListener('click', closeOutfitEditor);
+document.getElementById('oe-save').addEventListener('click',()=>{
+  const name = document.getElementById('oe-name').value.trim();
+  if(!name){ alert('给这套搭配起个名字吧'); return; }
+  if(oeState.items.length === 0){ alert('画布上至少放一件衣服吧'); return; }
+  const thumb = generateOutfitThumbnail(oeState.items);
+  if(oeState.editingId){
+    const idx = state.outfits.findIndex(x=>x.id===oeState.editingId);
+    if(idx>=0){
+      state.outfits[idx].name = name;
+      state.outfits[idx].items = JSON.parse(JSON.stringify(oeState.items));
+      state.outfits[idx].thumb = thumb;
+    }
+  }else{
+    state.outfits.push({
+      id: Date.now().toString(),
+      name: name,
+      items: JSON.parse(JSON.stringify(oeState.items)),
+      thumb: thumb,
+      createdAt: new Date().toISOString()
+    });
+  }
+  save();
+  closeOutfitEditor();
+  renderOutfitList();
+});
+// 生成搭配缩略图（用 canvas 把 items 画成一张图）
+function generateOutfitThumbnail(items){
+  const canvas = document.createElement('canvas');
+  canvas.width = 300;
+  canvas.height = 300;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FAF7F2';
+  ctx.fillRect(0,0,300,300);
+  // 按 z 排序
+  const sorted = [...items].sort((a,b)=>a.z-b.z);
+  const scaleX = 300 / 400;  // 画布区域缩放
+  const scaleY = 300 / 400;
+  sorted.forEach(item=>{
+    if(!item.photo) return;
+    const img = new Image();
+    // 同步加载不行，这里用占位（实际用 DOM 渲染）
+    // 简化：直接返回 items 引用，首页用 DOM 渲染
+  });
+  // 简化处理：直接用 canvas 异步绘制，这里先返回空，后面首页用 DOM 渲染
+  return null;
+}
+// 用 DOM 渲染搭配图（首页和列表用）
+function renderOutfitDOM(items, container){
+  container.innerHTML = '';
+  const sorted = [...items].sort((a,b)=>a.z-b.z);
+  sorted.forEach(item=>{
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;left:${item.x*0.6}px;top:${item.y*0.6}px;z-index:${item.z};width:${item.width*0.6}px;transform:rotate(${item.rotation}deg)`;
+    if(item.photo){
+      el.innerHTML = `<img src="${item.photo}" style="width:100%;pointer-events:none">`;
+    }else{
+      el.innerHTML = `<div style="width:100%;height:36px;background:var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-soft)">${item.name}</div>`;
+    }
+    container.appendChild(el);
+  });
+}
+
+/* ============================================================
+   我的搭配列表
+   ============================================================ */
+function openOutfitList(){
+  document.getElementById('outfit-list-mask').style.display = 'flex';
+  renderOutfitList();
+}
+function renderOutfitList(){
+  const box = document.getElementById('outfit-list');
+  box.innerHTML = '';
+  if(!state.outfits.length){
+    box.innerHTML = '<div style="text-align:center;color:var(--ink-soft);padding:60px 20px;font-size:14px">还没有保存的搭配<br>点右上角"+ 新建搭配"开始</div>';
+    return;
+  }
+  state.outfits.forEach(o=>{
+    const card = document.createElement('div');
+    card.className = 'outfit-card-item';
+    card.innerHTML = `
+      <div style="position:relative;height:160px;background:var(--bg);border-radius:10px;overflow:hidden" class="thumb-container"></div>
+      <div class="name">${o.name}</div>
+      <div class="meta">${o.items.length} 件衣服 · ${new Date(o.createdAt).toLocaleDateString()}</div>
+    `;
+    // 渲染缩略图
+    setTimeout(()=>{
+      const container = card.querySelector('.thumb-container');
+      renderOutfitDOM(o.items, container);
+    }, 0);
+    card.addEventListener('click',()=>{
+      document.getElementById('outfit-list-mask').style.display = 'none';
+      openOutfitEditor(o.id);
+    });
+    box.appendChild(card);
+  });
+}
+document.getElementById('ol-close').addEventListener('click',()=>{
+  document.getElementById('outfit-list-mask').style.display = 'none';
+});
+document.getElementById('ol-new').addEventListener('click',()=>{
+  // 先关掉我的搭配列表，再打开编辑器
+  document.getElementById('outfit-list-mask').style.display = 'none';
+  openOutfitEditor(null);
+});
+
+/* ============================================================
+   首页：搭配推荐（左右分栏）
+   ============================================================ */
+function generateSystemOutfit(w, profile, todayEvent){
+  // 从衣橱里智能选衣服
+  const wr = state.wardrobe;
+  const selected = [];
+  let z = 1;
+  // 外套（冷天才选）
+  if(w && w.temp < 20){
+    const outer = pickFromWardrobe(wr.outerwear, w, todayEvent);
+    if(outer) selected.push({cat:'outerwear', name:outer.name, photo:outer.photo, x:140, y:20, z:z++, rotation:0, width:130});
+  }
+  // 上衣
+  const top = pickFromWardrobe(wr.tops, w, todayEvent);
+  if(top) selected.push({cat:'tops', name:top.name, photo:top.photo, x:150, y:100, z:z++, rotation:0, width:100});
+  // 下装
+  const bot = pickFromWardrobe(wr.bottoms, w, todayEvent);
+  if(bot) selected.push({cat:'bottoms', name:bot.name, photo:bot.photo, x:160, y:200, z:z++, rotation:0, width:90});
+  // 鞋子
+  const shoe = pickFromWardrobe(wr.shoes, w, todayEvent);
+  if(shoe) selected.push({cat:'shoes', name:shoe.name, photo:shoe.photo, x:100, y:280, z:z++, rotation:0, width:60});
+  // 包包
+  const bag = pickFromWardrobe(wr.bags, w, todayEvent);
+  if(bag) selected.push({cat:'bags', name:bag.name, photo:bag.photo, x:260, y:150, z:z++, rotation:0, width:50});
+  return selected;
+}
+
 renderWardrobeCards();
 checkOnboard();
 renderHome();
 renderCalendar();
 renderWardrobe();
+
+// 我的搭配入口
+document.getElementById('open-outfit-list').addEventListener('click', openOutfitList);
 </script>
 <div id="ai-mask" style="display:none;position:fixed;inset:0;background:rgba(30,20,25,.55);z-index:200;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:20px;padding:28px 32px;text-align:center;max-width:300px">
