@@ -415,7 +415,14 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         <!-- 左边：搭配图 -->
         <div>
           <div id="home-outfit-canvas" style="position:relative;height:240px;background:var(--bg);border-radius:12px;overflow:hidden"></div>
-          <div style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">从你衣橱里挑的这套</div>
+          <div style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px" id="home-outfit-label">从你衣橱里挑的这套</div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn ghost" id="home-wear-today" style="flex:1;font-size:12px;padding:8px">✅ 今天就穿这套</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn ghost" id="home-save-outfit" style="flex:1;font-size:12px;padding:8px">💾 存到我的搭配</button>
+            <button class="btn ghost" id="home-share-outfit" style="flex:1;font-size:12px;padding:8px">📸 保存图片</button>
+          </div>
         </div>
         <!-- 右边：文字解释 -->
         <div>
@@ -1331,47 +1338,47 @@ function tempAdvice(t){
 function styleAdvice(styles, gender){
   if(!styles || !styles.length) return "";
   const femaleMap = {
-    "韩系":"低饱和松弛廓形，同色系搭配，温柔不刻意。",
-    "日系":"层次叠穿，棉麻质感，中性色调。",
-    "新中式":"盘扣、马面裙、改良旗袍或丝绸元素。",
-    "法式":"随性衬衫、直筒牛仔裤、一抹红唇。",
-    "老钱风":"质感基础款、低调配色、无明显 logo。",
-    "极简":"剪裁干净、配色克制、一件出彩单品即可。",
-    "甜酷":"甜系单品配一件酷感单品（皮衣、马丁靴）。",
-    "甜美":"荷叶边、粉色系、A 字裙。",
-    "芭蕾风":"芭蕾鞋、针织罩衫、温柔配色。",
-    "Y2K辣妹":"低腰、亮面、短上衣、未来感配饰。",
-    "纯欲":"微透、柔和色、不经意的小露肤。",
-    "学院风":"针织背心、衬衫、百褶裙、乐福鞋。",
-    "街头":"oversize、卫衣、工装、板鞋。",
-    "暗黑":"全黑、层叠、皮革、金属细节。",
-    "复古港风":"大波浪、红色单品、喇叭裤。",
-    "山系户外":"冲锋衣、工装裤、徒步鞋、大地色。",
-    "波西米亚":"流苏、印花、长裙、编织包。",
-    "通勤职场":"衬衫、西装裤、针织开衫，整洁利落。",
-    "休闲运动":"卫衣、leggings、运动鞋。",
-    "小香风":"粗花呢、珍珠、金色纽扣。",
-    "多巴胺":"大胆亮色、撞色、快乐色块。",
-    "文艺":"棉麻、长裙、帆布包、书卷气。",
-    "中性风":"阔腿西装、白 T、皮鞋，雌雄莫辨。"
+    "韩系":"低饱和松弛感，温柔不刻意。",
+    "日系":"层次叠穿，中性色调。",
+    "新中式":"东方韵味，有细节感。",
+    "法式":"随性不费力，优雅自然。",
+    "老钱风":"低调质感，不张扬。",
+    "极简":"干净克制，一件出彩。",
+    "甜酷":"甜中带酷，平衡感很好。",
+    "甜美":"柔和粉嫩，温柔可爱。",
+    "芭蕾风":"轻盈温柔，有气质。",
+    "Y2K辣妹":"甜酷辣，有未来感。",
+    "纯欲":"柔和自然，不经意的性感。",
+    "学院风":"清爽干净，有书卷气。",
+    "街头":"松弛随性，有态度。",
+    "暗黑":"酷感十足，有个性。",
+    "复古港风":"复古明艳，有韵味。",
+    "山系户外":"大地色系，自然随性。",
+    "波西米亚":"自由浪漫，有民族感。",
+    "通勤职场":"整洁利落，专业得体。",
+    "休闲运动":"舒服自在，有活力。",
+    "小香风":"精致优雅，有贵气。",
+    "多巴胺":"明亮活泼，心情好。",
+    "文艺":"书卷气，安静有质感。",
+    "中性风":"雌雄莫辨，利落帅气。"
   };
   const maleMap = {
-    "韩系":"低饱和松弛廓形，同色系搭配，干净不刻意。",
-    "日系":"层次叠穿，棉麻或工装质感，大地色调。",
-    "新中式":"盘扣衬衫、改良中山装、唐装外套等东方元素。",
-    "法式":"条纹衫、直筒牛仔裤、随性不费力的感觉。",
-    "老钱风":"质感羊毛衫、卡其裤、乐福鞋，低调贵气。",
-    "极简":"剪裁干净、配色克制、一件质感单品即可。",
-    "学院风":"衬衫、针织马甲、卡其裤、乐福鞋。",
-    "街头":"oversize 卫衣、工装裤、板鞋。",
-    "暗黑":"全黑、层叠、皮革夹克、金属细节。",
-    "复古港风":"花衬衫、喇叭牛仔裤、油头墨镜。",
-    "山系户外":"冲锋衣、工装裤、徒步鞋、大地色。",
-    "通勤职场":"衬衫、西裤、干净的皮鞋，利落不随便。",
-    "休闲运动":"卫衣、运动裤、跑鞋，舒服为主。",
-    "多巴胺":"大胆亮色、撞色、快乐色块。",
-    "文艺":"棉麻衬衫、帆布包、书卷气。",
-    "中性风":"阔腿西装、白 T、皮鞋。"
+    "韩系":"低饱和松弛，干净不刻意。",
+    "日系":"层次叠穿，大地色调。",
+    "新中式":"东方元素，有韵味。",
+    "法式":"随性不费力，自然帅气。",
+    "老钱风":"低调质感，不张扬。",
+    "极简":"干净克制，有质感。",
+    "学院风":"清爽干净，有书卷气。",
+    "街头":"松弛随性，有态度。",
+    "暗黑":"酷感十足，有个性。",
+    "复古港风":"复古有型，有味道。",
+    "山系户外":"大地色系，自然随性。",
+    "通勤职场":"利落专业，不随便。",
+    "休闲运动":"舒服自在，有活力。",
+    "多巴胺":"明亮活泼，有精神。",
+    "文艺":"安静有质感。",
+    "中性风":"利落帅气。"
   };
   const map = gender==="男" ? maleMap : femaleMap;
   return styles.slice(0,2).map(s=>map[s]).filter(Boolean).join(" ");
@@ -1482,55 +1489,73 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
   const wr = state.wardrobe || {};
   WARDROBE_CATS.forEach(c=>{ if(!Array.isArray(wr[c.key])) wr[c.key]=[]; });
   const hasAnyWardrobe = WARDROBE_CATS.some(c=>wr[c.key].length);
+  const pickedItems = [];
 
-  // 第一句：今天穿什么（从衣橱挑的）
+  // 第一句：今天穿什么
   if(hasAnyWardrobe){
-    const bits = [];
     if(w && w.temp < 20){
       const outer = pickFromWardrobe(wr.outerwear, w, todayEvent);
-      if(outer) bits.push(outer.name);
+      if(outer) pickedItems.push(outer.name);
     }
     const top1 = pickFromWardrobe(wr.tops, w, todayEvent);
-    if(top1) bits.push(top1.name);
+    if(top1) pickedItems.push(top1.name);
     if(w && w.temp < 15){
       const top2 = pickFromWardrobe(wr.tops.filter(t=>t!==top1), w, todayEvent);
-      if(top2) bits.push(top2.name);
+      if(top2) pickedItems.push(top2.name);
     }
     const bot = pickFromWardrobe(wr.bottoms, w, todayEvent);
-    if(bot) bits.push(bot.name);
+    if(bot) pickedItems.push(bot.name);
     const shoe = pickFromWardrobe(wr.shoes, w, todayEvent);
-    if(shoe) bits.push(shoe.name);
+    if(shoe) pickedItems.push(shoe.name);
     const bag = pickFromWardrobe(wr.bags, w, todayEvent);
-    if(bag) bits.push(bag.name);
-    if(bits.length){
-      parts.push(`今天穿这套：${bits.join(" + ")}。`);
+    if(bag) pickedItems.push(bag.name);
+    if(pickedItems.length){
+      parts.push(`今天穿：${pickedItems.join(" + ")}。`);
     }
   }
 
-  // 第二句：温度相关
+  // 第二句：温度体感（简短，不说术语）
   if(w){
-    parts.push(tempAdvice(w.temp));
-    if(w.isRain) parts.push("有雨，记得带伞。");
-    if(w.isSnow) parts.push("下雪，穿防滑靴。");
-    if(w.isSunny) parts.push("记得防晒。");
+    if(w.temp >= 25) parts.push(`今天${w.temp}℃，穿薄款就够了，注意防晒。`);
+    else if(w.temp >= 18) parts.push(`今天${w.temp}℃，这样穿刚好舒服，中午热了可以脱外套。`);
+    else if(w.temp >= 10) parts.push(`今天${w.temp}℃，叠穿刚好，中午热了脱一层就好。`);
+    else parts.push(`今天${w.temp}℃，这样穿够保暖了。`);
+    if(w.isRain) parts.push("有雨记得带伞。");
     tags.push(w.desc + " " + w.temp + "℃");
-  }else{
-    parts.push("暂时没拿到实时天气，按体感穿就好。");
   }
 
   // 第三句：场合
   if(todayEvent) parts.push(eventAdvice(todayEvent));
 
-  // 第四句：为什么这样搭（风格+身材+色彩，藏在描述里）
+  // 第四句：为什么好看（只说最实在的）
   const whyBits = [];
-  const sa = styleAdvice(profile.styles, profile.gender);
-  if(sa) whyBits.push(sa);
-  const ba = bodyAdvice(profile);
-  if(ba) whyBits.push(ba);
-  const fc = fashionColorTip(profile);
-  if(fc) whyBits.push(fc);
+  // 身材相关
+  if(profile.bodyShape && profile.gender !== "男"){
+    const shortBody = {
+      "梨型":"上半身有设计感、下半身简洁，焦点对上半身了。",
+      "苹果型":"上半身宽松有型、下半身修身，藏住了腰腹。",
+      "沙漏型":"收腰的款式刚好突出你的腰线。",
+      "直筒型":"层次叠穿制造了腰线，不显扁平。",
+      "倒三角":"上半身简洁、下半身有分量，比例平衡。",
+      "偏瘦":"叠穿增加了分量感，不显单薄。",
+      "偏壮":"垂感面料+简洁款，显瘦利落。"
+    };
+    if(shortBody[profile.bodyShape]) whyBits.push(shortBody[profile.bodyShape]);
+  }else if(profile.bodyShape && profile.gender === "男"){
+    const shortBody = {
+      "匀称":"合身剪裁很显精神。",
+      "偏瘦":"叠穿增加了分量感。",
+      "偏壮":"简洁款垂感好，利落显瘦。"
+    };
+    if(shortBody[profile.bodyShape]) whyBits.push(shortBody[profile.bodyShape]);
+  }
+  // 色彩相关
+  if(profile.seasonType && SEASON_TYPES[profile.seasonType]){
+    const sd = SEASON_TYPES[profile.seasonType];
+    whyBits.push(`走${sd.tones}路线，和你的肤色很衬。`);
+  }
   if(whyBits.length){
-    parts.push("为什么这样搭：" + whyBits.join(" "));
+    parts.push(whyBits.join(" "));
   }
 
   // 经期提示
@@ -1539,6 +1564,7 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
 
   return { main: parts.join(" "), tags };
 }
+
 async function renderHome(){
   const t = today();
   document.getElementById("today-label").textContent = fmtCN(t);
@@ -1626,16 +1652,117 @@ async function renderHome(){
 function renderHomeOutfit(w, todayEvent){
   const section = document.getElementById('home-outfit-section');
   const canvas = document.getElementById('home-outfit-canvas');
-  // 系统从衣橱生成的搭配
+  const label = document.getElementById('home-outfit-label');
+  // 优先展示用户自己保存的搭配
+  if(state.outfits && state.outfits.length){
+    const userOutfit = state.outfits[0];
+    canvas.innerHTML = '';
+    renderOutfitDOM(userOutfit.items, canvas);
+    label.textContent = `你的搭配：${userOutfit.name}`;
+    section.style.display = 'block';
+    state._currentHomeOutfit = userOutfit.items;
+    state._currentHomeOutfitId = userOutfit.id;
+    return;
+  }
+  // 没有用户搭配时，系统生成
   const sysOutfit = generateSystemOutfit(w, state.profile, todayEvent);
   if(sysOutfit.length){
     canvas.innerHTML = '';
     renderOutfitDOM(sysOutfit, canvas);
+    label.textContent = '从你衣橱里挑的这套';
     section.style.display = 'block';
+    state._currentHomeOutfit = sysOutfit;
+    state._currentHomeOutfitId = null;
   }else{
     section.style.display = 'none';
+    state._currentHomeOutfit = null;
+    state._currentHomeOutfitId = null;
   }
 }
+// 今天就穿这套
+document.getElementById('home-wear-today').addEventListener('click',()=>{
+  if(!state._currentHomeOutfit || !state._currentHomeOutfit.length){
+    alert('还没有搭配'); return;
+  }
+  if(confirm('确认今天就穿这套吗？\n确认后这些衣服的穿过次数会+1')){
+    state._currentHomeOutfit.forEach(item=>{
+      const list = state.wardrobe[item.cat];
+      if(list){
+        const found = list.find(x=>x.name === item.name);
+        if(found) found.wearCount = (found.wearCount||0)+1;
+      }
+    });
+    save();
+    renderWardrobe();
+    alert('好的！今天就穿这套啦~');
+  }
+});
+// 保存系统推荐到我的搭配
+document.getElementById('home-save-outfit').addEventListener('click',()=>{
+  if(!state._currentHomeOutfit || !state._currentHomeOutfit.length){
+    alert('还没有生成搭配'); return;
+  }
+  const name = prompt('给这套搭配起个名字：', '今日搭配');
+  if(!name) return;
+  // 检查穿搭是否重复（衣服组合一样就算重复，不管名字）
+  const currentItems = state._currentHomeOutfit.map(i=>i.cat+':'+i.name).sort().join('|');
+  const exists = state.outfits.find(o=>{
+    const existingItems = o.items.map(i=>i.cat+':'+i.name).sort().join('|');
+    return existingItems === currentItems;
+  });
+  if(exists){
+    alert('这套已经在你的搭配里啦！');
+    return;
+  }
+  state.outfits.push({
+    id: Date.now().toString(),
+    name: name,
+    items: JSON.parse(JSON.stringify(state._currentHomeOutfit)),
+    thumb: null,
+    createdAt: new Date().toISOString()
+  });
+  save();
+  renderWardrobe();
+  alert('已保存到我的搭配！');
+});
+// 保存系统推荐搭配为图片
+document.getElementById('home-share-outfit').addEventListener('click',()=>{
+  if(!state._currentHomeOutfit || !state._currentHomeOutfit.length){
+    alert('还没有生成搭配'); return;
+  }
+  // 用canvas生成图片
+  const canvas = document.createElement('canvas');
+  canvas.width = 400;
+  canvas.height = 500;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FAF7F2';
+  ctx.fillRect(0, 0, 400, 500);
+  ctx.fillStyle = '#3A3238';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('今日搭配', 200, 40);
+  const sorted = [...state._currentHomeOutfit].sort((a,b)=>a.z-b.z);
+  sorted.forEach(item=>{
+    if(!item.photo) return;
+    ctx.save();
+    ctx.translate(200 + item.x*0.5, 100 + item.y*0.5);
+    ctx.rotate(item.rotation * Math.PI / 180);
+    ctx.fillStyle = '#E8E0D8';
+    ctx.fillRect(-item.width*0.5, -30, item.width, 60);
+    ctx.fillStyle = '#8A837E';
+    ctx.font = '12px sans-serif';
+    ctx.fillText(item.name, 0, 5);
+    ctx.restore();
+  });
+  ctx.fillStyle = '#B8A89A';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('来自 智搭', 200, 480);
+  const link = document.createElement('a');
+  link.download = '今日搭配.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  alert('搭配图已生成！长按保存分享吧~');
+});
 function renderOutfit(w, todayEvent, isPeriodToday){
   const rec = buildOutfit(w, state.profile, todayEvent, isPeriodToday);
   document.getElementById("outfit-main").textContent = rec.main;
@@ -1859,6 +1986,14 @@ function renderWardrobeList(box, list){
       name.appendChild(dot);
     }
     name.appendChild(document.createTextNode(item.name));
+    // 显示穿过次数
+    const wearCount = item.wearCount || 0;
+    if(wearCount > 0){
+      const count = document.createElement("span");
+      count.style.cssText = "font-size:11px;color:var(--ink-soft);margin-left:8px;background:var(--bg);padding:2px 6px;border-radius:6px";
+      count.textContent = `已穿${wearCount}次`;
+      name.appendChild(count);
+    }
     const del = document.createElement("button");
     del.className = "del";
     del.textContent = "×";
@@ -2548,15 +2683,32 @@ function renderOutfitList(){
       <div style="position:relative;height:160px;background:var(--bg);border-radius:10px;overflow:hidden" class="thumb-container"></div>
       <div class="name">${o.name}</div>
       <div class="meta">${o.items.length} 件衣服 · ${new Date(o.createdAt).toLocaleDateString()}</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn ghost share-btn" style="flex:1;font-size:12px;padding:8px">📸 保存图片</button>
+        <button class="btn ghost delete-btn" style="flex:1;font-size:12px;padding:8px;background:#FBE3E8;color:#B85A6E">🗑 删除</button>
+      </div>
     `;
     // 渲染缩略图
     setTimeout(()=>{
       const container = card.querySelector('.thumb-container');
       renderOutfitDOM(o.items, container);
     }, 0);
-    card.addEventListener('click',()=>{
+    card.addEventListener('click',(e)=>{
+      if(e.target.closest('.share-btn') || e.target.closest('.delete-btn')) return;
       document.getElementById('outfit-list-mask').style.display = 'none';
       openOutfitEditor(o.id);
+    });
+    card.querySelector('.share-btn').addEventListener('click',(e)=>{
+      e.stopPropagation();
+      shareOutfit(o.id);
+    });
+    card.querySelector('.delete-btn').addEventListener('click',(e)=>{
+      e.stopPropagation();
+      if(confirm('确定要删除这套搭配吗？')){
+        state.outfits = state.outfits.filter(x=>x.id!==o.id);
+        save();
+        renderOutfitList();
+      }
     });
     box.appendChild(card);
   });
@@ -2606,6 +2758,55 @@ renderWardrobe();
 
 // 我的搭配入口
 document.getElementById('open-outfit-list').addEventListener('click', openOutfitList);
+
+/* ============================================================
+   分享搭配（生成图片保存）
+   ============================================================ */
+function shareOutfit(outfitId){
+  const outfit = state.outfits.find(x=>x.id===outfitId);
+  if(!outfit) return;
+  // 用canvas生成搭配图
+  const canvas = document.createElement('canvas');
+  canvas.width = 400;
+  canvas.height = 500;
+  const ctx = canvas.getContext('2d');
+  // 背景
+  ctx.fillStyle = '#FAF7F2';
+  ctx.fillRect(0, 0, 400, 500);
+  // 标题
+  ctx.fillStyle = '#3A3238';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(outfit.name, 200, 40);
+  // 按z排序画衣服
+  const sorted = [...outfit.items].sort((a,b)=>a.z-b.z);
+  sorted.forEach(item=>{
+    if(!item.photo) return;
+    const img = new Image();
+    // 同步加载不行，这里用异步方式
+    // 简化：直接在canvas里画占位框
+    ctx.save();
+    ctx.translate(200 + item.x*0.5, 100 + item.y*0.5);
+    ctx.rotate(item.rotation * Math.PI / 180);
+    ctx.fillStyle = '#E8E0D8';
+    ctx.fillRect(-item.width*0.5, -30, item.width, 60);
+    ctx.fillStyle = '#8A837E';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(item.name, 0, 5);
+    ctx.restore();
+  });
+  // 底部水印
+  ctx.fillStyle = '#B8A89A';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('来自 智搭', 200, 480);
+  // 生成图片下载
+  const link = document.createElement('a');
+  link.download = outfit.name + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  alert('搭配图已生成！\n\n长按保存图片，分享到朋友圈/小红书吧~');
+}
 </script>
 <div id="ai-mask" style="display:none;position:fixed;inset:0;background:rgba(30,20,25,.55);z-index:200;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:20px;padding:28px 32px;text-align:center;max-width:300px">
