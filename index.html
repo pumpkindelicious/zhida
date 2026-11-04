@@ -411,6 +411,8 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <!-- 今日搭配：左图右文 -->
     <div class="outfit-card" id="home-outfit-section" style="display:none">
       <h2><span class="dot"></span>今日搭配</h2>
+      <!-- 搭配切换tab -->
+      <div id="outfit-tabs" style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
         <!-- 左边：搭配图 -->
         <div>
@@ -543,7 +545,9 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
       <h1>我的衣橱</h1>
     </div>
     <button class="btn" id="open-outfit-list" style="width:100%;padding:12px;margin-bottom:12px;font-size:14px">👗 我的搭配（点击搭配衣服）</button>
-    <button class="btn ghost" id="open-color-stats" style="width:100%;padding:12px;margin-bottom:16px;font-size:14px">🎨 衣橱色彩统计</button>
+    <button class="btn ghost" id="open-color-stats" style="width:100%;padding:12px;margin-bottom:12px;font-size:14px">🎨 衣橱色彩统计</button>
+    <!-- 搜索框 -->
+    <input id="wardrobe-search" type="text" placeholder="🔍 搜索衣服名字..." style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--line);font-size:13px;margin-bottom:12px;box-sizing:border-box">
     <div id="wardrobe-cards"></div>
     <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">
       照片和衣服名都只存在你自己浏览器里，不上传任何服务器。
@@ -718,6 +722,74 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <button class="btn" id="ol-new" style="padding:8px 14px;font-size:13px">+ 新建搭配</button>
   </div>
   <div id="outfit-list" style="flex:1;overflow-y:auto;padding:16px"></div>
+</div>
+
+<!-- ==================== 衣服编辑弹窗 ==================== -->
+<div id="item-edit-mask" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:380;display:none;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:20px;width:90%;max-width:360px;max-height:85vh;overflow-y:auto">
+    <h3 style="font-size:16px;margin-bottom:16px">编辑衣服</h3>
+    <!-- 照片预览 -->
+    <div id="edit-item-photo-wrap" style="width:80px;height:80px;border-radius:12px;background:var(--bg);overflow:hidden;margin-bottom:12px;display:flex;align-items:center;justify-content:center">
+      <span style="font-size:24px;color:var(--ink-soft)">👕</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">名字</label>
+        <input id="edit-item-name" type="text" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;box-sizing:border-box">
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">版型</label>
+        <div id="edit-item-fit" style="display:flex;gap:6px">
+          <button data-val="紧身" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">紧身</button>
+          <button data-val="合身" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">合身</button>
+          <button data-val="宽松" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">宽松</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">厚度</label>
+        <div id="edit-item-thickness" style="display:flex;gap:6px">
+          <button data-val="薄" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">薄</button>
+          <button data-val="中等" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">中等</button>
+          <button data-val="厚" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">厚</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">季节</label>
+        <div id="edit-item-season" style="display:flex;gap:6px;flex-wrap:wrap">
+          <button data-val="春" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">春</button>
+          <button data-val="夏" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">夏</button>
+          <button data-val="秋" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">秋</button>
+          <button data-val="冬" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">冬</button>
+          <button data-val="春秋" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">春秋</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">材质</label>
+        <div id="edit-item-material" style="display:flex;gap:6px;flex-wrap:wrap">
+          <button data-val="棉" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">棉</button>
+          <button data-val="麻" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">麻</button>
+          <button data-val="针织" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">针织</button>
+          <button data-val="牛仔" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">牛仔</button>
+          <button data-val="其他" style="padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">其他</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--ink-soft);display:block;margin-bottom:6px">码数</label>
+        <div id="edit-item-size" style="display:flex;gap:6px">
+          <button data-val="XS" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">XS</button>
+          <button data-val="S" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">S</button>
+          <button data-val="M" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">M</button>
+          <button data-val="L" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">L</button>
+          <button data-val="XL" style="flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:12px;background:#fff;cursor:pointer">XL</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn ghost" id="edit-item-cancel" style="flex:1;padding:10px;font-size:13px">取消</button>
+        <button class="btn" id="edit-item-save" style="flex:1;padding:10px;font-size:13px">保存</button>
+      </div>
+      <button id="edit-item-delete" style="width:100%;padding:10px;font-size:13px;background:#FBE3E8;color:#B85A6E;border:none;border-radius:8px;margin-top:4px;cursor:pointer">删除这件衣服</button>
+    </div>
+  </div>
 </div>
 
 <!-- ==================== 色彩统计 ==================== -->
@@ -1685,31 +1757,51 @@ function renderHomeOutfit(w, todayEvent){
   const section = document.getElementById('home-outfit-section');
   const canvas = document.getElementById('home-outfit-canvas');
   const label = document.getElementById('home-outfit-label');
-  // 优先展示用户自己保存的搭配
-  if(state.outfits && state.outfits.length){
-    const userOutfit = state.outfits[0];
-    canvas.innerHTML = '';
-    renderOutfitDOM(userOutfit.items, canvas);
-    label.textContent = `你的搭配：${userOutfit.name}`;
-    section.style.display = 'block';
-    state._currentHomeOutfit = userOutfit.items;
-    state._currentHomeOutfitId = userOutfit.id;
-    return;
-  }
-  // 没有用户搭配时，系统生成
+  const tabsBox = document.getElementById('outfit-tabs');
+  // 构建所有可选搭配
+  const allOutfits = [];
+  // 用户自己的搭配
+  (state.outfits||[]).forEach(o=>{
+    allOutfits.push({ id: o.id, name: o.name, items: o.items, type: 'user' });
+  });
+  // 系统推荐的
   const sysOutfit = generateSystemOutfit(w, state.profile, todayEvent);
   if(sysOutfit.length){
-    canvas.innerHTML = '';
-    renderOutfitDOM(sysOutfit, canvas);
-    label.textContent = '从你衣橱里挑的这套';
-    section.style.display = 'block';
-    state._currentHomeOutfit = sysOutfit;
-    state._currentHomeOutfitId = null;
-  }else{
-    section.style.display = 'none';
-    state._currentHomeOutfit = null;
-    state._currentHomeOutfitId = null;
+    allOutfits.push({ id: 'system', name: '系统推荐', items: sysOutfit, type: 'system' });
   }
+  if(!allOutfits.length){
+    section.style.display = 'none';
+    return;
+  }
+  // 渲染tab
+  tabsBox.innerHTML = '';
+  allOutfits.forEach((o, idx)=>{
+    const tab = document.createElement('button');
+    tab.style.cssText = `flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--line);background:${idx===0?'var(--ink)':'#fff'};color:${idx===0?'#fff':'var(--ink-soft)'};cursor:pointer`;
+    tab.textContent = o.name.length > 8 ? o.name.slice(0,8)+'…' : o.name;
+    tab.addEventListener('click', ()=>{
+      // 切换选中状态
+      tabsBox.querySelectorAll('button').forEach((b,i)=>{
+        b.style.background = i===idx ? 'var(--ink)' : '#fff';
+        b.style.color = i===idx ? '#fff' : 'var(--ink-soft)';
+      });
+      // 渲染选中的搭配
+      canvas.innerHTML = '';
+      renderOutfitDOM(o.items, canvas);
+      label.textContent = o.type === 'user' ? `你的搭配：${o.name}` : '从你衣橱里挑的这套';
+      state._currentHomeOutfit = o.items;
+      state._currentHomeOutfitId = o.id;
+    });
+    tabsBox.appendChild(tab);
+  });
+  // 默认选中第一个
+  const first = allOutfits[0];
+  canvas.innerHTML = '';
+  renderOutfitDOM(first.items, canvas);
+  label.textContent = first.type === 'user' ? `你的搭配：${first.name}` : '从你衣橱里挑的这套';
+  section.style.display = 'block';
+  state._currentHomeOutfit = first.items;
+  state._currentHomeOutfitId = first.id;
 }
 // 今天就穿这套
 document.getElementById('home-wear-today').addEventListener('click',()=>{
@@ -1990,9 +2082,17 @@ function renderWardrobeCards(){
   });
 }
 function renderWardrobe(){
+  const search = (document.getElementById('wardrobe-search')?.value || '').trim().toLowerCase();
   WARDROBE_CATS.forEach(cat=>{
     const box = document.getElementById("wardrobe-" + cat.key);
-    if(box) renderWardrobeList(box, state.wardrobe[cat.key]);
+    if(box){
+      let list = state.wardrobe[cat.key];
+      // 搜索过滤
+      if(search){
+        list = list.filter(item => item.name.toLowerCase().includes(search));
+      }
+      renderWardrobeList(box, list);
+    }
   });
   renderColorStats();
 }
@@ -2113,7 +2213,8 @@ function renderWardrobeList(box, list){
     const del = document.createElement("button");
     del.className = "del";
     del.textContent = "×";
-    del.addEventListener("click",()=>{
+    del.addEventListener("click",(e)=>{
+      e.stopPropagation();
       list.splice(idx,1);
       save();
       renderWardrobe();
@@ -2121,9 +2222,88 @@ function renderWardrobeList(box, list){
     });
     row.appendChild(name);
     row.appendChild(del);
+    // 点行打开编辑面板
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', ()=>{
+      openItemEdit(list, idx);
+    });
     box.appendChild(row);
   });
 }
+// 编辑衣服
+let editItemCtx = null; // { list, idx }
+function setupButtonGroup(containerId, value){
+  const container = document.getElementById(containerId);
+  container.querySelectorAll('button').forEach(btn=>{
+    const active = btn.dataset.val === value;
+    btn.style.background = active ? 'var(--ink)' : '#fff';
+    btn.style.color = active ? '#fff' : 'var(--ink-soft)';
+    btn.style.borderColor = active ? 'var(--ink)' : 'var(--line)';
+    btn.onclick = ()=>{
+      container.querySelectorAll('button').forEach(b=>{
+        b.style.background = '#fff';
+        b.style.color = 'var(--ink-soft)';
+        b.style.borderColor = 'var(--line)';
+      });
+      btn.style.background = 'var(--ink)';
+      btn.style.color = '#fff';
+      btn.style.borderColor = 'var(--ink)';
+    };
+  });
+}
+function getButtonGroupValue(containerId){
+  const container = document.getElementById(containerId);
+  const active = container.querySelector('button[style*="background: var(--ink)"]');
+  return active ? active.dataset.val : null;
+}
+function openItemEdit(list, idx){
+  const item = list[idx];
+  editItemCtx = { list, idx };
+  document.getElementById('edit-item-name').value = item.name;
+  // 照片预览
+  const photoWrap = document.getElementById('edit-item-photo-wrap');
+  if(item.photo){
+    photoWrap.innerHTML = `<img src="${item.photo}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    photoWrap.innerHTML = '<span style="font-size:24px;color:var(--ink-soft)">👕</span>';
+  }
+  // 按钮组
+  setupButtonGroup('edit-item-fit', item.fit || '合身');
+  setupButtonGroup('edit-item-thickness', item.thickness || '中等');
+  setupButtonGroup('edit-item-season', item.season || '春秋');
+  setupButtonGroup('edit-item-material', item.material || '其他');
+  setupButtonGroup('edit-item-size', item.size || 'M');
+  document.getElementById('item-edit-mask').style.display = 'flex';
+}
+document.getElementById('edit-item-cancel').addEventListener('click', ()=>{
+  document.getElementById('item-edit-mask').style.display = 'none';
+});
+document.getElementById('edit-item-save').addEventListener('click', ()=>{
+  if(!editItemCtx) return;
+  const { list, idx } = editItemCtx;
+  const item = list[idx];
+  item.name = document.getElementById('edit-item-name').value.trim();
+  item.fit = getButtonGroupValue('edit-item-fit');
+  item.thickness = getButtonGroupValue('edit-item-thickness');
+  item.season = getButtonGroupValue('edit-item-season');
+  item.material = getButtonGroupValue('edit-item-material');
+  item.size = getButtonGroupValue('edit-item-size');
+  save();
+  renderWardrobe();
+  renderHome();
+  document.getElementById('item-edit-mask').style.display = 'none';
+});
+document.getElementById('edit-item-delete').addEventListener('click', ()=>{
+  if(!editItemCtx) return;
+  if(confirm('确定要删除这件衣服吗？')){
+    const { list, idx } = editItemCtx;
+    list.splice(idx, 1);
+    save();
+    renderWardrobe();
+    renderHome();
+    document.getElementById('item-edit-mask').style.display = 'none';
+  }
+});
 let pendingPhotos = { top:null, bottom:null, shoe:null };
 async function colorKeyCutout(dataUrl, tolerance=35){
   const img = new Image();
@@ -2362,6 +2542,55 @@ document.getElementById("editor-done").addEventListener("click",()=>{
   c.addEventListener("touchmove", moveDraw, {passive:false});
   c.addEventListener("touchend", endDraw);
 })();
+// 自动推断衣服属性
+function inferClothingAttrs(name, color, listKey){
+  const n = name.toLowerCase();
+  // 版型
+  let fit = '合身';
+  if(n.includes('卫衣') || n.includes('外套') || n.includes('羽绒') || n.includes('棉服') || n.includes('西装') || n.includes('衬衫') || n.includes('oversize')){
+    fit = '宽松';
+  } else if(n.includes('针织') || n.includes('毛衣') || n.includes('紧身') || n.includes('吊带') || n.includes('背心')){
+    fit = '紧身';
+  }
+  // 厚度
+  let thickness = '中等';
+  if(n.includes('羽绒') || n.includes('棉服') || n.includes('呢子') || n.includes('大衣') || n.includes('羊羔毛')){
+    thickness = '厚';
+  } else if(n.includes('t恤') || n.includes('短袖') || n.includes('吊带') || n.includes('短裤') || n.includes('短裙') || n.includes('衬衫') || n.includes('长袖t')){
+    thickness = '薄';
+  }
+  // 季节
+  let season = '春秋';
+  if(thickness === '厚'){
+    season = '冬';
+  } else if(thickness === '薄'){
+    season = '夏';
+  }
+  // 材质
+  let material = '其他';
+  if(n.includes('牛仔')) material = '牛仔';
+  else if(n.includes('针织') || n.includes('毛衣') || n.includes('羊毛')) material = '针织';
+  else if(n.includes('棉')) material = '棉';
+  else if(n.includes('风衣') || n.includes('冲锋衣') || n.includes('防水')) material = '防风';
+  else if(n.includes('丝') || n.includes('缎')) material = '丝绸';
+  // 码数：根据用户身高体重推断
+  let size = 'M';
+  const p = state.profile || {};
+  const height = p.height || 160;
+  const weight = p.weight || 100;
+  if(height < 155 && weight < 80) size = 'XS';
+  else if(height < 160 && weight < 95) size = 'S';
+  else if(height < 165 && weight < 110) size = 'M';
+  else if(height < 170 && weight < 125) size = 'L';
+  else size = 'XL';
+  // 紧身款建议大一码
+  if(fit === '紧身'){
+    const sizes = ['XS','S','M','L','XL'];
+    const idx = sizes.indexOf(size);
+    if(idx < sizes.length - 1) size = sizes[idx + 1];
+  }
+  return { fit, thickness, season, material, size };
+}
 function bindAddBtn(btnId, inputId, slotKey, listKey, photoBtnId, previewId){
   document.getElementById(btnId).addEventListener("click", async ()=>{
     const name = document.getElementById(inputId).value.trim();
@@ -2371,7 +2600,9 @@ function bindAddBtn(btnId, inputId, slotKey, listKey, photoBtnId, previewId){
     if(photo){
       try { color = await extractDominantColor(photo); } catch(e){ color = null; }
     }
-    state.wardrobe[listKey].push({ name, photo, color });
+    // 自动推断衣服属性
+    const attrs = inferClothingAttrs(name, color, listKey);
+    state.wardrobe[listKey].push({ name, photo, color, ...attrs, wearCount: 0 });
     pendingPhotos[slotKey] = null;
     document.getElementById(inputId).value = "";
     document.getElementById(photoBtnId).textContent = "照片";
@@ -2392,14 +2623,33 @@ function extractDominantColor(dataUrl){
       const ctx = c.getContext("2d");
       ctx.drawImage(img, 0,0, c.width, c.height);
       const d = ctx.getImageData(0,0,c.width,c.height).data;
-      let r=0,g=0,b=0,n=0;
+      // 量化颜色到粗粒度，聚类统计
+      const buckets = {};
+      let total = 0;
       for(let i=0;i<d.length;i+=4){
         if(d[i+3] < 128) continue;
-        r+=d[i]; g+=d[i+1]; b+=d[i+2]; n++;
+        // 量化到32级，减少颜色数量
+        const r = Math.floor(d[i]/32)*32;
+        const g = Math.floor(d[i+1]/32)*32;
+        const b = Math.floor(d[i+2]/32)*32;
+        const key = r+','+g+','+b;
+        buckets[key] = (buckets[key]||0) + 1;
+        total++;
       }
-      if(n===0){ resolve(null); return; }
-      r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
-      resolve(rgbToColorName(r,g,b));
+      if(!total){ resolve(null); return; }
+      // 按数量排序，取主要颜色
+      const sorted = Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
+      const mainColors = [];
+      for(const [key, count] of sorted){
+        const pct = count / total;
+        if(pct < 0.15) break; // 小于15%的忽略
+        if(mainColors.length >= 3) break; // 最多取3个
+        const [r,g,b] = key.split(',').map(Number);
+        const name = rgbToColorName(r+16, g+16, b+16); // 用中间值
+        mainColors.push({ name, pct: Math.round(pct*100), rgb: `rgb(${r},${g},${b})` });
+      }
+      // 第一个作为主色，后面的作为次要颜色
+      resolve(mainColors.length ? mainColors[0].name : null);
     };
     img.onerror = ()=>resolve(null);
     img.src = dataUrl;
@@ -2889,6 +3139,8 @@ renderWardrobe();
 
 // 我的搭配入口
 document.getElementById('open-outfit-list').addEventListener('click', openOutfitList);
+// 衣橱搜索
+document.getElementById('wardrobe-search').addEventListener('input', renderWardrobe);
 // 打开色彩统计
 document.getElementById('open-color-stats').addEventListener('click',()=>{
   renderColorStats();
