@@ -542,7 +542,8 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <div class="topbar">
       <h1>我的衣橱</h1>
     </div>
-    <button class="btn" id="open-outfit-list" style="width:100%;padding:12px;margin-bottom:16px;font-size:14px">👗 我的搭配（点击搭配衣服）</button>
+    <button class="btn" id="open-outfit-list" style="width:100%;padding:12px;margin-bottom:12px;font-size:14px">👗 我的搭配（点击搭配衣服）</button>
+    <button class="btn ghost" id="open-color-stats" style="width:100%;padding:12px;margin-bottom:16px;font-size:14px">🎨 衣橱色彩统计</button>
     <div id="wardrobe-cards"></div>
     <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">
       照片和衣服名都只存在你自己浏览器里，不上传任何服务器。
@@ -717,6 +718,37 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     <button class="btn" id="ol-new" style="padding:8px 14px;font-size:13px">+ 新建搭配</button>
   </div>
   <div id="outfit-list" style="flex:1;overflow-y:auto;padding:16px"></div>
+</div>
+
+<!-- ==================== 色彩统计 ==================== -->
+<div id="color-stats-mask" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:350;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:#fff">
+    <button class="btn ghost" id="cs-close" style="padding:8px 12px;font-size:13px">← 返回衣橱</button>
+    <h3 style="font-size:16px;flex:1">衣橱色彩统计</h3>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;box-sizing:border-box">
+    <!-- 环形图主体 -->
+    <div style="display:flex;justify-content:center;margin-bottom:24px">
+      <div style="position:relative;width:220px;height:220px">
+        <canvas id="color-pie" width="220" height="220" style="width:220px;height:220px"></canvas>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div id="color-total" style="font-size:32px;font-weight:600;color:var(--ink)">0</div>
+          <div style="font-size:13px;color:var(--ink-soft)">件衣服</div>
+        </div>
+      </div>
+    </div>
+    <!-- 颜色列表 -->
+    <div id="color-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px"></div>
+    <!-- 肤色推荐 -->
+    <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:var(--shadow)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:14px;font-weight:600">你的肤色类型</div>
+        <button class="btn ghost" id="retest-skin" style="font-size:12px;padding:6px 12px">🔄 重新测肤色</button>
+      </div>
+      <div id="skin-type-display" style="font-size:13px;color:var(--ink-soft)"></div>
+      <div id="color-recommend" style="font-size:13px;margin-top:8px;line-height:1.6"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1962,6 +1994,90 @@ function renderWardrobe(){
     const box = document.getElementById("wardrobe-" + cat.key);
     if(box) renderWardrobeList(box, state.wardrobe[cat.key]);
   });
+  renderColorStats();
+}
+// 色彩统计
+function renderColorStats(){
+  // 从衣服名字提取颜色关键词
+  const colorKeywords = {
+    '白': '白色', '黑': '黑色', '灰': '灰色', '红': '红色', '粉': '粉色',
+    '蓝': '蓝色', '浅蓝': '浅蓝色', '深蓝': '深蓝色', '藏蓝': '藏蓝色',
+    '绿': '绿色', '浅绿': '浅绿色', '军绿': '军绿色',
+    '黄': '黄色', '橙': '橙色', '紫': '紫色', '棕': '棕色', '咖': '咖啡色',
+    '米': '米色', '卡其': '卡其色', '驼': '驼色', '杏': '杏色',
+    '牛仔': '牛仔蓝', '条纹': '条纹色', '格纹': '格纹色'
+  };
+  // 莫兰迪配色，更高级
+  const palette = [
+    '#A8C5B8', '#D4B5B0', '#B5C4D4', '#D4C5B5', '#C4B5D4',
+    '#B8D4C5', '#D4C0B5', '#C5B5B5', '#B5BFD4', '#D4D4B5'
+  ];
+  // 统计所有衣服的颜色
+  const colorMap = {};
+  let total = 0;
+  WARDROBE_CATS.forEach(cat=>{
+    (state.wardrobe[cat.key]||[]).forEach(item=>{
+      let color = item.color;
+      if(!color){
+        for(const [keyword, colorName] of Object.entries(colorKeywords)){
+          if(item.name.includes(keyword)){
+            color = colorName;
+            break;
+          }
+        }
+      }
+      if(color){
+        colorMap[color] = (colorMap[color]||0) + 1;
+        total++;
+      }
+    });
+  });
+  // 画环形图
+  const canvas = document.getElementById('color-pie');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,220,220);
+  document.getElementById('color-total').textContent = total;
+  // 颜色列表
+  const listBox = document.getElementById('color-list');
+  listBox.innerHTML = '';
+  const entries = Object.entries(colorMap).sort((a,b)=>b[1]-a[1]);
+  if(entries.length === 0){
+    listBox.innerHTML = '<div style="font-size:12px;color:var(--ink-soft);text-align:center">还没有衣服，添加后自动统计</div>';
+    return;
+  }
+  // 画环形图
+  const centerX = 110, centerY = 110, radius = 95, innerRadius = 65;
+  let startAngle = -Math.PI / 2;
+  entries.forEach(([color, count], idx)=>{
+    const angle = (count / total) * Math.PI * 2;
+    // 用莫兰迪配色
+    const fillColor = palette[idx % palette.length];
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, startAngle, startAngle + angle);
+    ctx.arc(centerX, centerY, innerRadius, startAngle + angle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+    startAngle += angle;
+  });
+  // 列表
+  entries.forEach(([color, count], idx)=>{
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;font-size:13px';
+    row.innerHTML = `<span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:${palette[idx % palette.length]};flex-shrink:0"></span><span style="flex:1">${color}</span><span style="color:var(--ink-soft)">${count}件 · ${Math.round(count/total*100)}%</span>`;
+    listBox.appendChild(row);
+  });
+  // 肤色类型显示
+  const skinDisplay = document.getElementById('skin-type-display');
+  const recBox = document.getElementById('color-recommend');
+  if(state.profile && state.profile.seasonType && SEASON_TYPES[state.profile.seasonType]){
+    const sd = SEASON_TYPES[state.profile.seasonType];
+    skinDisplay.textContent = `你是${sd.name}肤色`;
+    recBox.innerHTML = `推荐你多买这些颜色：${sd.good.slice(0,5).join('、')}<br>少穿：${sd.bad.slice(0,3).join('、')}`;
+  }else{
+    skinDisplay.textContent = '还没测过肤色';
+    recBox.innerHTML = '点上面"重新测肤色"，看看你适合什么颜色';
+  }
 }
 function renderWardrobeList(box, list){
   if(typeof box === "string") box = document.getElementById(box);
@@ -2649,10 +2765,25 @@ function generateOutfitThumbnail(items){
 // 用 DOM 渲染搭配图（首页和列表用）
 function renderOutfitDOM(items, container){
   container.innerHTML = '';
+  // 计算所有衣服的边界，居中显示
+  let minX = 9999, minY = 9999, maxX = 0, maxY = 0;
+  items.forEach(item=>{
+    const x = item.x*0.6, y = item.y*0.6, w = item.width*0.6;
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x + w);
+    maxY = Math.max(maxY, y + 60);
+  });
+  const containerW = container.offsetWidth || 200;
+  const containerH = container.offsetHeight || 240;
+  const outfitW = maxX - minX;
+  const outfitH = maxY - minY;
+  const offsetX = (containerW - outfitW) / 2 - minX;
+  const offsetY = (containerH - outfitH) / 2 - minY;
   const sorted = [...items].sort((a,b)=>a.z-b.z);
   sorted.forEach(item=>{
     const el = document.createElement('div');
-    el.style.cssText = `position:absolute;left:${item.x*0.6}px;top:${item.y*0.6}px;z-index:${item.z};width:${item.width*0.6}px;transform:rotate(${item.rotation}deg)`;
+    el.style.cssText = `position:absolute;left:${item.x*0.6+offsetX}px;top:${item.y*0.6+offsetY}px;z-index:${item.z};width:${item.width*0.6}px;transform:rotate(${item.rotation}deg)`;
     if(item.photo){
       el.innerHTML = `<img src="${item.photo}" style="width:100%;pointer-events:none">`;
     }else{
@@ -2758,6 +2889,39 @@ renderWardrobe();
 
 // 我的搭配入口
 document.getElementById('open-outfit-list').addEventListener('click', openOutfitList);
+// 打开色彩统计
+document.getElementById('open-color-stats').addEventListener('click',()=>{
+  renderColorStats();
+  document.getElementById('color-stats-mask').style.display = 'flex';
+});
+document.getElementById('cs-close').addEventListener('click',()=>{
+  document.getElementById('color-stats-mask').style.display = 'none';
+});
+// 重新测肤色
+document.getElementById('retest-skin').addEventListener('click',()=>{
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = ()=>{
+    const f = input.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      const dataUrl = e.target.result;
+      startSkinDiagnosis(dataUrl, (result)=>{
+        if(result){
+          state.profile.seasonType = result.season;
+          save();
+          renderWardrobe();
+          renderHome();
+          alert('肤色测试完成！已更新你的肤色类型。');
+        }
+      });
+    };
+    reader.readAsDataURL(f);
+  };
+  input.click();
+});
 
 /* ============================================================
    分享搭配（生成图片保存）
