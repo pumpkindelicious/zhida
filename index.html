@@ -1126,16 +1126,53 @@ function parseWeather(w){
     code: c.weatherCode
   };
 }
+/* 26℃穿衣法则：衣服保暖度数参考表 */
+const CLOTH_DEGREE = {
+  thinTee: { name:"薄T恤/打底", deg:1 },
+  shirt: { name:"衬衫/长袖T", deg:2 },
+  sweater: { name:"卫衣/薄针织", deg:3 },
+  thickSweater: { name:"厚毛衣/棉背心", deg:4 },
+  blazer: { name:"西装/薄棉服", deg:5 },
+  lightDown: { name:"轻薄羽绒服", deg:6 },
+  thickDown: { name:"厚羽绒服", deg:9 },
+  longPants: { name:"长裤/长裙", deg:2 },
+  fleecePants: { name:"加绒裤", deg:5 },
+  scarf: { name:"围巾/毛帽", deg:4 }
+};
 function tempAdvice(t){
-  if(t < 0)   return "天寒地冻，需要羽绒服 / 厚羊毛大衣 + 厚毛衣，围巾手套别忘。";
-  if(t < 5)   return "零下附近，穿厚羽绒服或羊绒大衣，内搭毛衣，下身厚裤或加打底裤。";
-  if(t < 10)  return "有点冷，厚外套（大衣/棉服）+ 针织毛衣，下身长裤。";
-  if(t < 15)  return "微凉，风衣 / 牛仔外套 / 薄呢大衣 + 长袖，中午可能会热，方便脱。";
-  if(t < 20)  return "舒服不冷，长袖 T 恤 / 薄针织 + 一件薄外套，早晚加一件。";
-  if(t < 25)  return "舒适温度，长袖或薄衫即可，早晚备件薄开衫。";
-  if(t < 28)  return "有点暖，短袖、薄长袖、薄裤都可以，注意防晒。";
-  if(t < 33)  return "挺热，穿透气短袖、轻薄下装，注意补水防晒。";
-  return "很热，轻薄透气衣物优先，尽量浅色，多在阴凉处。";
+  // 26℃法则：需要的保暖度数 = 26 - 气温
+  const need = Math.round(26 - t);
+  if(need <= 0){
+    return `今天${t}℃，体感很热，衣服基本不需要额外保暖。选透气短袖+薄下装即可，尽量浅色，注意防晒补水。`;
+  }
+  // 按需要的度数推荐叠穿组合
+  let combo = [];
+  let remaining = need;
+  if(remaining >= 9){
+    combo.push("厚羽绒服(9℃)"); remaining -= 9;
+    if(remaining >= 4){ combo.push("厚毛衣(4℃)"); remaining -= 4; }
+    if(remaining >= 2){ combo.push("衬衫内搭(2℃)"); remaining -= 2; }
+    if(remaining >= 4){ combo.push("加绒裤(5℃)或围巾(4℃)"); }
+  }else if(remaining >= 6){
+    combo.push("轻薄羽绒服(6℃)"); remaining -= 6;
+    if(remaining >= 3){ combo.push("卫衣/针织(3℃)"); remaining -= 3; }
+    if(remaining >= 2){ combo.push("衬衫打底(2℃)"); remaining -= 2; }
+    if(remaining >= 2){ combo.push("长裤(2℃)"); }
+  }else if(remaining >= 5){
+    combo.push("西装/薄棉服(5℃)"); remaining -= 5;
+    if(remaining >= 2){ combo.push("长袖T(2℃)"); remaining -= 2; }
+    if(remaining >= 2){ combo.push("长裤(2℃)"); }
+  }else if(remaining >= 3){
+    combo.push("卫衣/薄针织(3℃)"); remaining -= 3;
+    if(remaining >= 2){ combo.push("衬衫打底(2℃)"); remaining -= 2; }
+    if(remaining >= 1){ combo.push("薄打底(1℃)"); }
+  }else if(remaining >= 2){
+    combo.push("衬衫/长袖T(2℃)"); remaining -= 2;
+    if(remaining >= 1){ combo.push("薄打底(1℃)"); }
+  }else{
+    combo.push("薄T恤+薄长裤(2℃)");
+  }
+  return `按26℃穿衣法则，今天${t}℃，衣服需要凑够约${need}℃的保暖度。推荐叠穿：${combo.join(" + ")}，体感刚好26℃。中午热了可以脱一件外套灵活调整。`;
 }
 function styleAdvice(styles, gender){
   if(!styles || !styles.length) return "";
@@ -1229,38 +1266,65 @@ function periodAdvice(isPeriod, gender){
 function bodyAdvice(p){
   if(!p) return "";
   const bits=[];
-  if(p.height && p.height < 160){
-    if(p.gender==="男") bits.push("身高偏娇小，上衣选短款、裤装选直筒修身，避免过长过宽压个子。");
-    else bits.push("身高偏娇小，多用高腰线和同色系拉长比例。");
+  // 身高比例建议
+  if(p.height && p.height < 160 && p.gender!=="男"){
+    bits.push("小个子秘诀：上短下长三七分——短上衣+高腰下装，腰线提到最细处，同色系上下装拉长比例。");
   }
-  if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来。");
-  if(p.height && p.height > 168 && p.gender!=="男") bits.push("个子高挑，宽松廓形和长款都很撑得起来。");
+  if(p.height && p.height < 170 && p.gender==="男"){
+    bits.push("个子偏娇小：上衣选短款、裤装选直筒修身，鞋裤同色拉长腿部，避免过长过宽压个子。");
+  }
+  if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来，基本百搭。");
+  if(p.height && p.height > 168 && p.gender!=="男") bits.push("个子高挑，宽松廓形和长款都很撑得起来，可以大胆尝试风衣、阔腿裤。");
+  // 身材扬长避短（融入上紧下松/上松下紧、内紧外松规则）
   const bs = p.bodyShape;
   if(bs){
     const femaleTip = {
-      "梨型":"梨型身材：上衣可以有点设计感/浅色，下装选深色直筒或 A 字，胯腿处别太紧身。",
-      "苹果型":"苹果型身材：上身选略宽松有型的款，腰线放在胸下位置，下装选修身直筒平衡。",
-      "沙漏型":"沙漏型身材：收腰款最出彩，刚好突出腰臀曲线。",
-      "直筒型":"直筒型身材：用腰带、层次叠穿制造腰线和曲线。",
-      "倒三角":"倒三角身材：下身可以稍微蓬松一点（百褶、阔腿）平衡肩宽。",
-      "匀称":"匀称身材：百搭，主要看风格和场合。",
-      "偏瘦":"偏瘦：多选有层次的叠穿、横条纹，视觉上增加分量感。",
-      "偏壮":"偏壮/骨架大：选剪裁利落的纯色款，避开太蓬松或太紧身的。"
+      "梨型":"梨型身材（上窄下宽）：上紧下松——上身选修身针织/浅色有设计感，下装选深色直筒或A字裙，胯腿处别太紧身。焦点放上半身，下半身选挺括哑光材质。",
+      "苹果型":"苹果型身材（腰腹圆润）：上松下紧——上身选略宽松有型的款，腰线放到胸下位置，下装选修身直筒平衡。颜色上深下浅，竖向线条引导视线向上。",
+      "沙漏型":"沙漏型身材（腰细臀翘）：收腰款最出彩，别穿太宽松淹没腰线。上下平衡，重点突出腰细这条优势。",
+      "直筒型":"H型身材（肩腰胯差不多宽）：主动制造腰线——用腰带、层次叠穿（内紧外松：修身内搭+廓形外套），肩胯位置适当增加装饰，制造曲线感。",
+      "倒三角":"倒三角身材（肩宽胯窄）：弱化上半身、凸显下半身——上深下浅，上半身选V领/U领，避免横条纹和肩部装饰；下半身可A字裙、花苞裙增加量感。",
+      "匀称":"匀称身材：百搭，可以大胆尝试各种风格和比例组合，主要看风格和场合。",
+      "偏瘦":"偏瘦单薄：多叠穿增加分量感（内紧外松：修身打底+宽松外套），横条纹、蓬松材质视觉上增加体积。",
+      "偏壮":"偏壮/骨架大：选剪裁利落的纯色款，垂感面料比蓬松材质更显瘦，避免胸前大logo和横纹。"
     };
     const maleTip = {
-      "梨型":"身材偏下宽：上身可以稍微有体积感（落肩、厚面料），下装选深色直筒。",
-      "苹果型":"苹果型/有肚子：选略宽松直筒的上衣，别穿紧身 T，竖条纹更利落。",
-      "沙漏型":"曲线明显：合身剪裁最显精神，别穿太宽松。",
-      "直筒型":"H 型身材：用外套层次、腰带制造肩腰落差，显倒三角。",
-      "倒三角":"倒三角/肩宽腰细：基本百搭，修身 T 恤就很出效果。",
+      "梨型":"下半身偏宽：上松下紧——上身选落肩/厚面料增加体积感，下装选深色直筒修身，平衡上下比例。",
+      "苹果型":"苹果型/有肚子：上松下紧——选略宽松直筒的上衣，别穿紧身T，竖条纹更利落，下装选修身款平衡。",
+      "沙漏型":"曲线明显：合身剪裁最显精神，别穿太宽松，突出身材优势。",
+      "直筒型":"H型身材：用外套层次、腰带制造肩腰落差，显倒三角，内紧外松增加轮廓。",
+      "倒三角":"倒三角/肩宽腰细：基本百搭，修身T恤就很出效果，避免肩部太蓬松的款式。",
       "匀称":"匀称标准：百搭，主要看风格和场合。",
-      "偏瘦":"偏瘦单薄：多叠穿（衬衫+针织马甲+外套），横条纹增加体积感。",
-      "偏壮":"偏壮/肩宽：选垂感好的纯色衬衫/T 恤，避开胸前大 logo 和横纹。"
+      "偏瘦":"偏瘦单薄：多叠穿（衬衫+针织马甲+外套），横条纹、蓬松面料增加体积感，别穿太紧身显单薄。",
+      "偏壮":"偏壮/肩宽：选垂感好的纯色衬衫/T恤，避开胸前大logo和横纹，竖线条更利落。"
     };
     const m = p.gender==="男" ? maleTip : femaleTip;
     if(m[bs]) bits.push(m[bs]);
   }
+  // 通用比例法则：适当露肤
+  if(p.gender !== "男"){
+    bits.push("适当露肤法则：全身露一两处最友好的位置——锁骨（V领/方领）、手腕（卷袖子）、脚踝（九分裤/露踝），避免上下同时大面积露肤。");
+  }
   return bits.join(" ");
+}
+/* 色彩时尚提示：三色原则 + 70/20/10 + 色彩呼应 */
+function fashionColorTip(profile){
+  const bits = [];
+  // 基于四季型色彩给具体配色建议
+  if(profile.seasonType && SEASON_TYPES[profile.seasonType]){
+    const sd = SEASON_TYPES[profile.seasonType];
+    const goodColors = sd.good.slice(0,3);
+    bits.push(`配色法则：今天走${sd.tones}路线，主色用${goodColors[0]}（70%大面积），辅助色用${goodColors[1]}（20%过渡），点睛色用${goodColors[2]}（10%小面积，如配饰/包包）。`);
+    bits.push("色彩呼应小技巧：让同一个颜色在身上出现至少两次（比如包包和鞋子同色、内搭和配饰同色），整体感立刻提升。");
+  }else{
+    bits.push("三色原则：全身大色块不超过三种，遵循70/20/10比例——主色70%定基调，辅助色20%过渡，点睛色10%制造记忆点。中性色（黑白灰米棕）打底最安全。");
+    bits.push("同色系深浅搭配：同一色系深浅不一、材质不同，比全身一模一样高级得多，比如燕麦色+米白+浅驼靠明度差制造层次。");
+  }
+  return bits.join(" ");
+}
+/* 基础款/设计款非对称法则 */
+function fashionContrastTip(){
+  return "穿搭节奏法则：上身基础，下身就不基础；下身基础，上身就不基础；上下都基础，配饰就不基础。用低调+高调的组合避免全基础款的乏味感。";
 }
 function buildOutfit(w, profile, todayEvent, isPeriodToday){
   const parts = [];
@@ -1307,10 +1371,10 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
   if(ba) parts.push(ba);
   const pa = periodAdvice(isPeriodToday, profile.gender);
   if(pa) parts.push(pa);
-  if(profile.seasonType && SEASON_TYPES[profile.seasonType]){
-    const sd = SEASON_TYPES[profile.seasonType];
-    parts.push(`色彩提示：你是${profile.seasonType}人，今天可以多穿${sd.good.slice(0,3).join("、")}这类颜色；少穿${sd.bad[0]}。`);
-  }
+  const fc = fashionColorTip(profile);
+  if(fc) parts.push(fc);
+  const fct = fashionContrastTip();
+  if(fct) parts.push(fct);
   return { main: parts.join(" "), tags };
 }
 async function renderHome(){
