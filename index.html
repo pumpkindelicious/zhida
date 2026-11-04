@@ -13,10 +13,10 @@
   --ink:#3D3A38;
   --ink-soft:#8A837E;
   --line:#EFE9E2;
-  --primary:#D97A8C;        /* 豆沙粉 */
+  --primary:#D97A8C;
   --primary-soft:#FBE3E8;
   --primary-deep:#B85A6E;
-  --sage:#9CB49A;           /* 鼠尾草绿 */
+  --sage:#9CB49A;
   --sage-soft:#E7EEE5;
   --sun:#E9B949;
   --rain:#7FA8C9;
@@ -30,22 +30,17 @@ body{
   color:var(--ink);
   font-size:15px;
   line-height:1.6;
-  padding-bottom:110px; /* 给底部 tab 留位 */
+  padding-bottom:110px;
 }
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input,textarea,select{font-family:inherit;font-size:16px;outline:none}
-/* ============ 布局 ============ */
 .app{max-width:480px;margin:0 auto;min-height:100vh}
 .view{display:none;padding:20px 18px 24px;animation:fadeIn .25s ease}
 .view.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-/* ============ 顶部 ============ */
 .topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0 16px}
 .topbar h1{font-size:22px;font-weight:600;letter-spacing:.5px}
 .topbar .date-today{font-size:13px;color:var(--ink-soft)}
-
-/* ============ 行程提醒横幅 ============ */
 .alert-banner{
   background:linear-gradient(135deg,#FCE4E8,#FDEEE9);
   border-radius:var(--radius);
@@ -57,8 +52,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 .alert-banner .body{flex:1;min-width:0}
 .alert-banner .title{font-weight:600;font-size:14px;color:var(--primary-deep);margin-bottom:2px}
 .alert-banner .desc{font-size:13px;color:var(--ink)}
-
-/* ============ 天气卡片 ============ */
 .weather-card{
   background:linear-gradient(160deg,#FFFFFF 0%,#FDF6F4 100%);
   border-radius:var(--radius);
@@ -77,8 +70,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   font-size:13px;color:var(--ink-soft);
 }
 .weather-hilo b{color:var(--ink);font-weight:500}
-
-/* ============ 穿搭推荐卡 ============ */
 .outfit-card{
   background:var(--card);
   border-radius:var(--radius);
@@ -96,8 +87,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 }
 .tag.sage{background:var(--sage-soft);color:#5C7A5A}
 .tag.warn{background:#FFF3D6;color:#9A7B1F}
-
-/* ============ 经期提示 ============ */
 .period-banner{
   background:var(--primary-soft);
   border-radius:14px;
@@ -107,8 +96,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   margin-bottom:16px;
   display:flex;gap:8px;align-items:flex-start;
 }
-
-/* ============ 日历 ============ */
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .cal-head .month-label{font-size:18px;font-weight:600}
 .cal-nav{display:flex;gap:8px}
@@ -132,13 +119,9 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 .cal-cell .dot-e{width:5px;height:5px;border-radius:50%;background:var(--sun)}
 .cal-cell .dot-p{width:5px;height:5px;border-radius:50%;background:var(--primary)}
 .cal-cell.today .dot-e,.cal-cell.today .dot-p{background:#fff}
-/* 真实经期：浅粉实心背景 */
 .cal-cell.real-period{background:#FBE3E8;color:var(--primary-deep)}
 .cal-cell.real-period.today{background:var(--primary);color:#fff}
-/* 预测经期：浅粉虚线边框 */
 .cal-cell.pred-period{outline:1.5px dashed #E8A0A8;outline-offset:-2px}
-
-/* 日历底部：选中日详情 */
 .day-panel{
   background:var(--card);border-radius:var(--radius);padding:18px;
   box-shadow:var(--shadow);margin-top:16px;
@@ -160,8 +143,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   font-size:14px;font-weight:500;
 }
 .btn.ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
-
-/* ============ 我的档案 ============ */
 .profile-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
 .profile-card h3{font-size:14px;color:var(--ink-soft);font-weight:500;margin-bottom:12px;letter-spacing:.5px}
 .field{margin-bottom:14px}
@@ -179,8 +160,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   transition:all .15s;
 }
 .chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* ============ 底部 Tab ============ */
 .tabbar{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
   width:100%;max-width:480px;background:rgba(255,255,255,.95);
@@ -195,8 +174,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 }
 .tab svg{width:22px;height:22px}
 .tab.on{color:var(--primary)}
-
-/* ============ 首次建档覆盖层 ============ */
 .onboard-mask{
   position:fixed;inset:0;background:rgba(60,40,45,.4);z-index:100;
   display:flex;align-items:flex-end;justify-content:center;
@@ -209,17 +186,17 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
 .onboard h2{font-size:20px;margin-bottom:6px}
 .onboard p.sub{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
 .onboard .btn{width:100%;padding:14px;font-size:15px;margin-top:8px}
-
 .empty{padding:40px 20px;text-align:center;color:var(--ink-soft);font-size:13px}
-
-/* ============ 衣橱 ============ */
 .wardrobe-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .wardrobe-item{
   display:flex;align-items:center;gap:10px;
   padding:8px 10px;background:var(--bg);border-radius:12px;
 }
 .wardrobe-item img{
-  width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--line);
+  width:44px;height:44px;border-radius:8px;object-fit:cover;background:
+    linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%),
+    linear-gradient(45deg,#eee 25%,#fff 25%,#fff 75%,#eee 75%);
+  background-size:10px 10px;background-position:0 0,5px 5px;
 }
 .wardrobe-item .ph{
   width:44px;height:44px;border-radius:8px;background:var(--line);
@@ -230,22 +207,36 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   width:28px;height:28px;border-radius:8px;background:#FBE3E8;color:var(--primary-deep);
   font-size:14px;line-height:1;
 }
-.wardrobe-add-row{display:flex;gap:8px;align-items:center}
+.wardrobe-add-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .wardrobe-add-row input[type=text]{
-  flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  flex:1;min-width:120px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);
 }
 .wardrobe-add-row .btn{padding:10px 14px;font-size:13px}
+.wardrobe-preview{
+  width:44px;height:44px;border-radius:8px;flex-shrink:0;
+  background:
+    linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%),
+    linear-gradient(45deg,#eee 25%,#fff 25%,#fff 75%,#eee 75%);
+  background-size:10px 10px;background-position:0 0,5px 5px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.wardrobe-preview img{width:100%;height:100%;object-fit:contain}
+.wardrobe-preview .empty-hint{font-size:10px;color:var(--ink-soft);text-align:center;line-height:1.2}
 .wardrobe-empty{font-size:13px;color:var(--ink-soft);padding:10px 0}
-
-/* ============ 桌面端适配 (>=768px) ============ */
+.ob-choice.selected{border-color:var(--primary)!important;background:var(--primary-soft)!important}
+.ob-age{padding:14px;border-radius:12px;border:2px solid var(--line);background:#fff;text-align:left;font-size:14px;cursor:pointer}
+.ob-age.selected{border-color:var(--primary);background:var(--primary-soft);font-weight:600}
+.skin-card{
+  width:56px;height:56px;border-radius:50%;cursor:pointer;
+  border:3px solid transparent;transition:transform .15s;
+}
+.skin-card.selected{border-color:var(--primary);transform:scale(1.15)}
 @media (min-width: 768px){
   body{padding-bottom:100px}
   .app{max-width:960px}
   .view{padding:32px 36px 40px}
   .topbar h1{font-size:26px}
   .weather-temp{font-size:64px}
-
-  /* 首页：两栏网格 */
   #view-home.active{
     display:grid;
     grid-template-columns: 1.4fr 1fr;
@@ -258,8 +249,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   #view-home .weather-card{margin-bottom:0;grid-column:1}
   #view-home .outfit-card{margin-bottom:0;grid-column:1}
   #view-home .upcoming-card{grid-column:2;grid-row:4 / span 2}
-
-  /* 右侧空栏放一个"近期行程"小卡（JS 会注入） */
   .upcoming-card{
     background:var(--card);border-radius:var(--radius);padding:20px;
     box-shadow:var(--shadow);align-self:flex-start;
@@ -268,8 +257,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   .upcoming-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px}
   .upcoming-item:last-child{border-bottom:none}
   .upcoming-item .d{color:var(--primary-deep);font-weight:600;min-width:70px}
-
-  /* 日历页：月历 + 详情面板并排 */
   #view-cal.active{
     display:grid;
     grid-template-columns: 1.4fr 1fr;
@@ -278,23 +265,18 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   #view-cal .topbar, #view-cal .cal-head, #view-cal .cal-weekdays, #view-cal .cal-grid{grid-column:1}
   #view-cal .day-panel{grid-column:2;grid-row:2 / span 4;margin-top:0;align-self:start;position:sticky;top:20px}
   .cal-cell{font-size:16px;border-radius:14px}
-
-  /* 我的页：卡片两列 */
   #view-me.active{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:16px;
   }
   #view-me .topbar, #view-me #save-profile, #view-me #save-tip{grid-column:1 / -1}
-
   .tabbar{max-width:960px}
 }
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- ==================== 视图：首页 ==================== -->
   <section id="view-home" class="view active">
     <div class="topbar">
       <div>
@@ -302,10 +284,8 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         <div class="date-today" id="today-label">--</div>
       </div>
     </div>
-
     <div id="alert-area"></div>
     <div id="period-tip-area"></div>
-
     <div class="weather-card">
       <div class="weather-row">
         <div class="weather-temp"><span id="w-temp">--</span><small>℃</small></div>
@@ -321,7 +301,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         <span>风 <b id="w-wind">--</b></span>
       </div>
     </div>
-
     <div class="outfit-card">
       <h2><span class="dot"></span>今日穿搭建议</h2>
       <div class="outfit-main" id="outfit-main">完善资料后这里会生成你的专属穿搭建议。</div>
@@ -333,7 +312,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     </div>
   </section>
 
-  <!-- ==================== 视图：日历 ==================== -->
   <section id="view-cal" class="view">
     <div class="topbar">
       <h1>日历</h1>
@@ -349,7 +327,6 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
       <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
-
     <div class="day-panel" id="day-panel" style="display:none">
       <h3 id="day-panel-title">--</h3>
       <label style="font-size:13px;color:var(--ink-soft)">当天行程 / 备注</label>
@@ -363,12 +340,10 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
     </div>
   </section>
 
-  <!-- ==================== 视图：我的 ==================== -->
   <section id="view-me" class="view">
     <div class="topbar">
       <h1>我的档案</h1>
     </div>
-
     <div class="profile-card">
       <h3>基本信息</h3>
       <div class="field">
@@ -402,26 +377,22 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         </select>
       </div>
       <div class="field">
-        <label>体型</label>
-        <select id="f-body-shape">
-          <option value="">不填也可以</option>
-          <option value="梨型">梨型（上窄下宽，胯腿有肉）</option>
-          <option value="苹果型">苹果型（腰腹有肉，四肢偏细）</option>
-          <option value="沙漏型">沙漏型（胸臀有曲线，腰细）</option>
-          <option value="直筒型">直筒型 / H型（肩腰胯差不多宽）</option>
-          <option value="倒三角">倒三角（肩宽胯窄）</option>
-          <option value="匀称">匀称标准</option>
-          <option value="偏瘦">偏瘦单薄</option>
-          <option value="偏壮">偏壮/骨架大</option>
-        </select>
+        <label>体型（必选）</label>
+        <input id="f-body-shape" readonly placeholder="点这里选择你的身材" style="background:#FAF7F4;cursor:pointer">
+      </div>
+      <div class="field">
+        <label>肤色（必选）</label>
+        <input id="f-skin-tone" readonly placeholder="点这里选择或拍照判断肤色" style="background:#FAF7F4;cursor:pointer">
+      </div>
+      <div class="field">
+        <label>年龄段（必选）</label>
+        <input id="f-age-range" readonly placeholder="点这里选择年龄段" style="background:#FAF7F4;cursor:pointer">
       </div>
     </div>
-
     <div class="profile-card">
       <h3>穿搭风格（可多选）</h3>
       <div class="chip-group" id="style-chips"></div>
     </div>
-
     <div class="profile-card" id="period-card">
       <h3>生理期记录（可选）</h3>
       <div class="field-row">
@@ -438,55 +409,20 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
         填好后，来月经那天在日历上点一下"开始经期"，App 会自动帮你记完整个经期，并预测下次日子。
       </p>
     </div>
-
     <button class="btn" id="save-profile" style="width:100%;padding:14px">保存档案</button>
     <div id="save-tip" style="text-align:center;margin-top:10px;font-size:13px;color:var(--sage);min-height:20px"></div>
   </section>
 
-  <!-- ==================== 视图：衣橱 ==================== -->
   <section id="view-wardrobe" class="view">
     <div class="topbar">
       <h1>我的衣橱</h1>
     </div>
-
-    <div class="profile-card">
-      <h3>上装</h3>
-      <div id="wardrobe-tops" class="wardrobe-list"></div>
-      <div class="wardrobe-add-row">
-        <input type="text" id="new-top-name" placeholder="例如：白色衬衫">
-        <input type="file" id="new-top-photo" accept="image/*" hidden>
-        <button class="btn ghost" id="add-top-photo-btn">照片</button>
-        <button class="btn" id="add-top-btn">添加</button>
-      </div>
-    </div>
-
-    <div class="profile-card">
-      <h3>下装</h3>
-      <div id="wardrobe-bottoms" class="wardrobe-list"></div>
-      <div class="wardrobe-add-row">
-        <input type="text" id="new-bottom-name" placeholder="例如：深蓝牛仔裤">
-        <input type="file" id="new-bottom-photo" accept="image/*" hidden>
-        <button class="btn ghost" id="add-bottom-photo-btn">照片</button>
-        <button class="btn" id="add-bottom-btn">添加</button>
-      </div>
-    </div>
-
-    <div class="profile-card">
-      <h3>鞋子</h3>
-      <div id="wardrobe-shoes" class="wardrobe-list"></div>
-      <div class="wardrobe-add-row">
-        <input type="text" id="new-shoe-name" placeholder="例如：小白鞋">
-        <input type="file" id="new-shoe-photo" accept="image/*" hidden>
-        <button class="btn ghost" id="add-shoe-photo-btn">照片</button>
-        <button class="btn" id="add-shoe-btn">添加</button>
-      </div>
-    </div>
+    <div id="wardrobe-cards"></div>
     <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px">
       照片和衣服名都只存在你自己浏览器里，不上传任何服务器。
     </p>
   </section>
 
-  <!-- ==================== 底部 Tab ==================== -->
   <nav class="tabbar">
     <button class="tab on" data-tab="home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
@@ -507,88 +443,147 @@ input,textarea,select{font-family:inherit;font-size:16px;outline:none}
   </nav>
 </div>
 
-<!-- ==================== 首次建档覆盖层 ==================== -->
 <div class="onboard-mask" id="onboard-mask" style="display:none">
   <div class="onboard">
-    <h2>先认识一下你</h2>
-    <p class="sub">填完下面几项，我就能每天帮你安排穿什么啦。随时可以在"我的"里修改。</p>
-    <div class="field">
-      <label>所在城市（可精确到区/县）</label>
-      <input id="ob-city" placeholder="例如：福州鼓楼 / 闽侯">
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>身高 (cm)</label>
-        <input id="ob-height" type="number" placeholder="160">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <div style="flex:1;height:4px;background:var(--line);border-radius:2px;overflow:hidden">
+        <div id="ob-progress" style="height:100%;background:var(--primary);width:0%;transition:width .3s"></div>
       </div>
-      <div class="field">
-        <label>体重 (kg)</label>
-        <input id="ob-weight" type="number" placeholder="50">
+      <span id="ob-step-label" style="font-size:12px;color:var(--ink-soft)">1/5</span>
+    </div>
+    <div class="ob-step" data-step="1">
+      <h2>你是？</h2>
+      <p class="sub">不同性别会推荐不同的穿搭风格。</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <button class="ob-choice" data-value="女" style="padding:20px;border-radius:16px;border:2px solid var(--line);background:#fff;text-align:center;cursor:pointer">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 6px;color:#D97A8C"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          <div style="font-weight:600">女生</div>
+        </button>
+        <button class="ob-choice" data-value="男" style="padding:20px;border-radius:16px;border:2px solid var(--line);background:#fff;text-align:center;cursor:pointer">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 6px;color:#7FA8C9"><circle cx="10" cy="8" r="4"/><path d="M4 21c0-4 3-6 6-6s3 0 6 0l4-5m0 0V6m0 3h-3"/></svg>
+          <div style="font-weight:600">男生</div>
+        </button>
       </div>
     </div>
-    <div class="field">
-      <label>性别</label>
-      <select id="ob-gender">
-        <option value="女">女</option>
-        <option value="男">男</option>
-      </select>
+    <div class="ob-step" data-step="2" style="display:none">
+      <h2>你的肤色是？</h2>
+      <p class="sub">对着自然光比对色卡，或拍张正脸照让我自动判断。</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin:16px 0" id="skin-cards"></div>
+      <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-bottom:12px" id="skin-desc">
+        选一个最接近你手腕内侧颜色的色卡。
+      </p>
+      <input type="file" id="ob-skin-photo" accept="image/*" hidden>
+      <button class="btn ghost" id="ob-skin-auto" style="width:100%;margin-top:6px">拍张正脸照自动判断肤色</button>
     </div>
-    <div class="field">
-      <label>身份阶段</label>
-      <select id="ob-identity">
-        <option value="学生">学生</option>
-        <option value="上班族">上班族</option>
-        <option value="自由职业">自由职业</option>
-        <option value="其他">其他</option>
-      </select>
+    <div class="ob-step" data-step="3" style="display:none">
+      <h2>你的身材是？</h2>
+      <p class="sub">选最接近的，后面随时能改。</p>
+      <div class="chip-group" id="ob-body-chips" style="margin-top:10px"></div>
+      <div id="body-desc" style="font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.6"></div>
     </div>
-    <div class="field">
-      <label>体型（可选）</label>
-      <select id="ob-body-shape">
-        <option value="">不填也可以</option>
-        <option value="梨型">梨型（上窄下宽，胯腿有肉）</option>
-        <option value="苹果型">苹果型（腰腹有肉，四肢偏细）</option>
-        <option value="沙漏型">沙漏型（胸臀有曲线，腰细）</option>
-        <option value="直筒型">直筒型 / H型</option>
-        <option value="倒三角">倒三角（肩宽胯窄）</option>
-        <option value="匀称">匀称标准</option>
-        <option value="偏瘦">偏瘦单薄</option>
-        <option value="偏壮">偏壮/骨架大</option>
-      </select>
+    <div class="ob-step" data-step="4" style="display:none">
+      <h2>你现在的年龄段？</h2>
+      <p class="sub">不同阶段推荐会更贴合身份。</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px" id="age-options">
+        <button class="ob-age" data-value="18以下">18 岁以下</button>
+        <button class="ob-age" data-value="18-22">18 - 22 岁（学生时代）</button>
+        <button class="ob-age" data-value="23-30">23 - 30 岁（初入职场）</button>
+        <button class="ob-age" data-value="31-40">31 - 40 岁</button>
+        <button class="ob-age" data-value="40以上">40 岁以上</button>
+      </div>
     </div>
-    <div class="field">
-      <label>喜欢的穿搭风格（可多选）</label>
-      <div class="chip-group" id="ob-style-chips"></div>
+    <div class="ob-step" data-step="5" style="display:none">
+      <h2>你喜欢什么风格？</h2>
+      <p class="sub">可多选，后面随时能改。</p>
+      <div class="chip-group" id="ob-style-chips" style="margin-top:10px"></div>
+      <div class="field" style="margin-top:16px">
+        <label>所在城市（可精确到区/县）</label>
+        <input id="ob-city" placeholder="例如：福州鼓楼">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>身高 (cm)</label>
+          <input id="ob-height" type="number" placeholder="160">
+        </div>
+        <div class="field">
+          <label>体重 (kg)</label>
+          <input id="ob-weight" type="number" placeholder="50">
+        </div>
+      </div>
     </div>
-    <button class="btn" id="ob-start">开始使用</button>
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button class="btn ghost" id="ob-prev" style="flex:0 0 90px;display:none">上一步</button>
+      <button class="btn" id="ob-next" style="flex:1" disabled>下一步</button>
+    </div>
+  </div>
+</div>
+
+<div id="editor-mask" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;flex-direction:column">
+  <div style="color:#fff;text-align:center;padding:12px;font-size:14px">涂抹擦掉杂物，切换笔刷可恢复误删部分</div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
+    <canvas id="editor-canvas" style="max-width:100%;max-height:100%;touch-action:none;cursor:crosshair"></canvas>
+  </div>
+  <div style="background:#fff;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center">
+    <button class="btn ghost" id="editor-erase-mode" style="background:#FBE3E8;color:#B85A6E">擦除</button>
+    <button class="btn ghost" id="editor-restore-mode">恢复</button>
+    <label style="font-size:12px;color:#8A837E">笔刷</label>
+    <input type="range" id="editor-size" min="5" max="80" value="25" style="width:100px">
+    <button class="btn ghost" id="editor-cancel">取消</button>
+    <button class="btn" id="editor-done">完成</button>
+  </div>
+</div>
+
+<div id="picker-mask" style="display:none;position:fixed;inset:0;background:rgba(30,20,25,.45);z-index:250;align-items:flex-end;justify-content:center">
+  <div style="background:#fff;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:22px 20px 28px;max-height:85vh;overflow-y:auto">
+    <h3 id="picker-title" style="margin-bottom:6px">选择</h3>
+    <p id="picker-sub" style="font-size:13px;color:var(--ink-soft);margin-bottom:14px"></p>
+    <div id="picker-body"></div>
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button class="btn ghost" id="picker-cancel" style="flex:1">取消</button>
+      <button class="btn" id="picker-ok" style="flex:2" disabled>确认</button>
+    </div>
+  </div>
+</div>
+
+<div id="pickcolor-mask" style="display:none;position:fixed;inset:0;background:#000;z-index:400;flex-direction:column">
+  <div style="color:#fff;text-align:center;padding:12px;font-size:14px;font-weight:600" id="pickcolor-hint">第 1 步：点击你脸颊没化妆的地方</div>
+  <div style="flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center" id="pickcolor-stage">
+    <div id="pickcolor-wrap" style="position:relative;line-height:0">
+      <img id="pickcolor-img" style="display:block;max-width:100vw;max-height:100%;user-select:none" alt="">
+    </div>
+  </div>
+  <div style="background:#111;padding:12px;display:flex;gap:10px;justify-content:center;align-items:center">
+    <button class="btn ghost" id="pickcolor-skip" style="background:#333;color:#fff;border-color:#333">跳过，手动选</button>
+    <button class="btn ghost" id="pickcolor-back" style="background:#333;color:#fff;border-color:#333">上一步</button>
   </div>
 </div>
 
 <script>
-/* ============================================================
-   数据层：localStorage
-   ============================================================ */
 const LS_KEY = "weather_outfit_calendar_v1";
-
 const STYLE_OPTIONS = [
   "韩系","日系","新中式","法式","老钱风","极简",
   "甜酷","甜美","芭蕾风","Y2K辣妹","纯欲","学院风",
   "街头","暗黑","复古港风","山系户外","波西米亚",
   "通勤职场","休闲运动","小香风","多巴胺","文艺","中性风"
 ];
-/* 仅推荐给女性的风格 */
 const WOMEN_ONLY_STYLES = new Set(["甜美","芭蕾风","Y2K辣妹","纯欲","小香风"]);
-
 const DEFAULT_STATE = {
-  profile: null,            // {city,height,weight,styles:[],identity,bodyShape,cycleDays,periodLength,gender}
-  events: {},               // {"2026-10-28":"面试"}
-  periodDays: [],           // ["2026-10-20", ...]
-  wardrobe: { tops: [], bottoms: [], shoes: [] },  // 每项 {name, photo?}
-  calCursor: null           // 日历当前查看的年月
+  profile: null,
+  events: {},
+  periodDays: [],
+  wardrobe: { outerwear:[], tops:[], bottoms:[], shoes:[], bags:[], socks:[], accessories:[] },
+  calCursor: null
 };
-
+const WARDROBE_CATS = [
+  { key:'outerwear',   label:'外套',   placeholder:'例如：驼色大衣 / 黑西装' },
+  { key:'tops',        label:'上衣',   placeholder:'例如：白衬衫 / 灰卫衣 / 针织衫' },
+  { key:'bottoms',     label:'下装',   placeholder:'例如：深蓝牛仔裤 / 黑半身裙' },
+  { key:'shoes',       label:'鞋子',   placeholder:'例如：小白鞋 / 短靴' },
+  { key:'bags',        label:'包包',   placeholder:'例如：黑色托特包' },
+  { key:'socks',       label:'袜子',   placeholder:'例如：连裤袜 / 白船袜' },
+  { key:'accessories',label:'配饰',   placeholder:'例如：项链 / 围巾 / 帽子' }
+];
 let state = load();
-
 function load(){
   try{
     const raw = localStorage.getItem(LS_KEY);
@@ -597,10 +592,6 @@ function load(){
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-
-/* ============================================================
-   工具函数
-   ============================================================ */
 function dkey(d){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
   return `${y}-${m}-${day}`;
@@ -611,10 +602,6 @@ function fmtCN(d){
   const w = ["日","一","二","三","四","五","六"][d.getDay()];
   return `${d.getMonth()+1}月${d.getDate()}日 周${w}`;
 }
-
-/* ============================================================
-   Tab 切换
-   ============================================================ */
 document.querySelectorAll(".tab").forEach(btn=>{
   btn.addEventListener("click",()=>{
     document.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));
@@ -625,10 +612,6 @@ document.querySelectorAll(".tab").forEach(btn=>{
     if(btn.dataset.tab==="home") renderHome();
   });
 });
-
-/* ============================================================
-   风格 chip 渲染（建档 + 我的档案两处）
-   ============================================================ */
 function renderChips(containerId, selectedSet, gender, onChange){
   const box = document.getElementById(containerId);
   box.innerHTML = "";
@@ -645,39 +628,413 @@ function renderChips(containerId, selectedSet, gender, onChange){
     box.appendChild(c);
   });
 }
-
-/* ============================================================
-   首次建档
-   ============================================================ */
+const SKIN_TONES = [
+  { name:"冷白皮", color:"#F5D5C8", desc:"血管偏紫/蓝，晒了容易红。适合冷调色系：纯白、雾霾蓝、酒红。" },
+  { name:"自然白", color:"#E8B89A", desc:"黄调一白，不挑色，大部分颜色都能驾驭。" },
+  { name:"小麦色", color:"#C8956E", desc:"健康黄皮，适合暖色：驼色、橙色、墨绿。" },
+  { name:"蜜糖色", color:"#A66B45", desc:"偏深的小麦色，穿亮黄、正红很出彩。" },
+  { name:"黝黑", color:"#6B4423", desc:"深色皮肤，避免灰暗色，穿高饱和色或纯白更精神。" }
+];
+const BODY_SHAPES_INFO = {
+  "梨型": "上窄下宽，胯和腿有肉。",
+  "苹果型": "腰腹有肉，四肢偏细。",
+  "沙漏型": "胸臀有曲线，腰细。",
+  "直筒型": "肩腰胯差不多宽，曲线不明显。",
+  "倒三角": "肩宽胯窄。",
+  "匀称": "标准比例，穿什么都好看。",
+  "偏瘦": "单薄骨架，需要叠穿增加分量。",
+  "偏壮": "骨架大/有肉，选利落剪裁。"
+};
+const obState = {
+  step: 1, gender: null, skinTone: null, bodyShape: null, ageRange: null, styles: new Set()
+};
 function checkOnboard(){
   if(!state.profile){
     document.getElementById("onboard-mask").style.display = "flex";
-    renderChips("ob-style-chips", new Set(), "女");
+    obState.step = 1;
+    renderObStep();
+    renderSkinCards();
+    renderBodyChips();
+    renderChips("ob-style-chips", obState.styles, "女");
   }else{
     document.getElementById("onboard-mask").style.display = "none";
     fillProfileForm();
   }
 }
-
-document.getElementById("ob-start").addEventListener("click",()=>{
+function renderObStep(){
+  document.querySelectorAll(".ob-step").forEach(s=>{
+    s.style.display = parseInt(s.dataset.step) === obState.step ? "block" : "none";
+  });
+  document.getElementById("ob-step-label").textContent = obState.step + "/5";
+  document.getElementById("ob-progress").style.width = (obState.step/5*100) + "%";
+  document.getElementById("ob-prev").style.display = obState.step>1 ? "block" : "none";
+  const nextBtn = document.getElementById("ob-next");
+  nextBtn.textContent = obState.step===5 ? "开始使用" : "下一步";
+  let ok = true;
+  if(obState.step===1) ok = !!obState.gender;
+  if(obState.step===2) ok = !!obState.skinTone;
+  if(obState.step===3) ok = !!obState.bodyShape;
+  if(obState.step===4) ok = !!obState.ageRange;
+  nextBtn.disabled = !ok;
+}
+function renderSkinCards(){
+  const box = document.getElementById("skin-cards");
+  box.innerHTML = "";
+  SKIN_TONES.forEach((s,i)=>{
+    const c = document.createElement("div");
+    c.className = "skin-card";
+    c.style.background = s.color;
+    c.title = s.name;
+    c.dataset.name = s.name;
+    if(obState.skinTone === s.name) c.classList.add("selected");
+    c.addEventListener("click",()=>{
+      obState.skinTone = s.name;
+      document.getElementById("skin-desc").textContent = s.desc;
+      renderSkinCards();
+      renderObStep();
+    });
+    box.appendChild(c);
+  });
+}
+function renderBodyChips(){
+  const box = document.getElementById("ob-body-chips");
+  box.innerHTML = "";
+  Object.keys(BODY_SHAPES_INFO).forEach(name=>{
+    const c = document.createElement("button");
+    c.className = "chip" + (obState.bodyShape===name?" on":"");
+    c.textContent = name;
+    c.addEventListener("click",()=>{
+      obState.bodyShape = name;
+      document.getElementById("body-desc").textContent = BODY_SHAPES_INFO[name];
+      renderBodyChips();
+      renderObStep();
+    });
+    box.appendChild(c);
+  });
+}
+document.querySelectorAll(".ob-choice").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    obState.gender = btn.dataset.value;
+    document.querySelectorAll(".ob-choice").forEach(b=>b.classList.toggle("selected", b===btn));
+    renderChips("ob-style-chips", obState.styles, obState.gender||"女");
+    renderObStep();
+  });
+});
+document.querySelectorAll(".ob-age").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    obState.ageRange = btn.dataset.value;
+    document.querySelectorAll(".ob-age").forEach(b=>b.classList.toggle("selected", b===btn));
+    renderObStep();
+  });
+});
+document.getElementById("ob-skin-auto").addEventListener("click",()=>{
+  document.getElementById("ob-skin-photo").click();
+});
+document.getElementById("ob-skin-photo").addEventListener("change", async (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const dataUrl = await new Promise(r=>{
+    const fr = new FileReader();
+    fr.onload = ev=>r(ev.target.result);
+    fr.readAsDataURL(f);
+  });
+  startSkinDiagnosis(dataUrl, (result)=>{
+    if(result){
+      obState.skinTone = result.tone;
+      obState.seasonType = result.season;
+      const sd = SEASON_TYPES[result.season];
+      document.getElementById("skin-desc").innerHTML =
+        `<b>诊断结果：${result.season}型人</b>（${sd.tones}）<br>${sd.advice}`;
+      renderSkinCards();
+    }
+    renderObStep();
+  });
+});
+document.getElementById("ob-prev").addEventListener("click",()=>{
+  if(obState.step>1){ obState.step--; renderObStep(); }
+});
+document.getElementById("ob-next").addEventListener("click",()=>{
+  if(obState.step<5){ obState.step++; renderObStep(); }
+  else{ finishOnboard(); }
+});
+function finishOnboard(){
   const city = document.getElementById("ob-city").value.trim();
   const height = parseInt(document.getElementById("ob-height").value)||0;
   const weight = parseInt(document.getElementById("ob-weight").value)||0;
-  const gender = document.getElementById("ob-gender").value;
-  const identity = document.getElementById("ob-identity").value;
-  const bodyShape = document.getElementById("ob-body-shape").value;
-  const styles = Array.from(document.querySelectorAll("#ob-style-chips .chip.on")).map(c=>c.textContent);
-  if(!city){ alert("请填写所在城市"); return; }
-  state.profile = { city, height, weight, gender, styles, identity, bodyShape, cycleDays: gender==="男" ? null : 28, periodLength: gender==="男" ? null : 5 };
+  if(!city){ alert("最后一步填一下城市哦"); return; }
+  let identity = "其他";
+  if(obState.ageRange==="18以下" || obState.ageRange==="18-22") identity = "学生";
+  else if(obState.ageRange==="23-30") identity = "上班族";
+  state.profile = {
+    city, height, weight,
+    gender: obState.gender,
+    skinTone: obState.skinTone,
+    seasonType: obState.seasonType || null,
+    bodyShape: obState.bodyShape,
+    ageRange: obState.ageRange,
+    styles: Array.from(obState.styles),
+    identity,
+    cycleDays: obState.gender==="男" ? null : 28,
+    periodLength: obState.gender==="男" ? null : 5
+  };
   save();
   document.getElementById("onboard-mask").style.display="none";
   fillProfileForm();
   renderHome();
+}
+const PICK_STEPS = [
+  { key:"face",  hint:"第 1 步：点击你脸颊没化妆的地方" },
+  { key:"lip",   hint:"第 2 步：点击你的嘴唇" },
+  { key:"hair",  hint:"第 3 步：点击你的头发" },
+  { key:"eye",   hint:"第 4 步：点击你的瞳孔" }
+];
+const pickcolor = { img: null, points: {}, stepIdx: 0, onResult: null, markers: [] };
+function startSkinDiagnosis(dataUrl, onResult){
+  pickcolor.onResult = onResult;
+  pickcolor.points = {};
+  pickcolor.stepIdx = 0;
+  pickcolor.markers.forEach(m=>m.remove());
+  pickcolor.markers = [];
+  const img = document.getElementById("pickcolor-img");
+  img.src = dataUrl;
+  document.getElementById("pickcolor-mask").style.display = "flex";
+  document.getElementById("pickcolor-hint").textContent = PICK_STEPS[0].hint;
+}
+imgClickHandler = function(e){
+  const img = document.getElementById("pickcolor-img");
+  const wrap = document.getElementById("pickcolor-wrap");
+  const rect = wrap.getBoundingClientRect();
+  const cx = (e.touches ? e.touches[0].clientX : e.clientX);
+  const cy = (e.touches ? e.touches[0].clientY : e.clientY);
+  const x = cx - rect.left;
+  const y = cy - rect.top;
+  if(x < 0 || y < 0 || x > rect.width || y > rect.height) return;
+  const c = document.createElement("canvas");
+  c.width = img.naturalWidth; c.height = img.naturalHeight;
+  const ctx = c.getContext("2d");
+  ctx.drawImage(img,0,0);
+  const sx = Math.floor(x / rect.width * img.naturalWidth);
+  const sy = Math.floor(y / rect.height * img.naturalHeight);
+  const d = ctx.getImageData(sx, sy, 1, 1).data;
+  const step = PICK_STEPS[pickcolor.stepIdx];
+  pickcolor.points[step.key] = { r:d[0], g:d[1], b:d[2] };
+  const marker = document.createElement("div");
+  marker.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:22px;height:22px;border:3px solid #D97A8C;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 0 2px #fff`;
+  wrap.appendChild(marker);
+  pickcolor.markers.push(marker);
+  pickcolor.stepIdx++;
+  if(pickcolor.stepIdx < PICK_STEPS.length){
+    document.getElementById("pickcolor-hint").textContent = PICK_STEPS[pickcolor.stepIdx].hint;
+  }else{
+    const tone = analyzeSkin(pickcolor.points);
+    const season = analyzeSeason(pickcolor.points);
+    document.getElementById("pickcolor-mask").style.display = "none";
+    pickcolor.onResult && pickcolor.onResult({ tone, season });
+  }
+};
+const SEASON_TYPES = {
+  "春型": {
+    desc: "暖而明亮，像春天的樱花和新芽。",
+    tones: "暖调 + 浅 + 清透",
+    good: ["珊瑚粉","暖橙","姜黄","嫩绿","驼色","奶油白","暖棕"],
+    bad: ["冷灰","藏青","纯黑","玫粉","冷紫"],
+    advice: "你天生适合暖色、明亮色。珊瑚粉、姜黄、嫩绿、驼色穿在身上会显得气色很好；避开暗沉的冷灰和纯黑，它们会让你显疲惫。"
+  },
+  "夏型": {
+    desc: "冷而柔和，像夏天的海雾和粉玫瑰。",
+    tones: "冷调 + 柔和 + 低饱和",
+    good: ["灰粉","雾霾蓝","薰衣草紫","玫瑰棕","灰绿","酒红","银灰"],
+    bad: ["橙黄","鲜绿","纯黑","亮橘","土黄"],
+    advice: "你适合柔和、带灰调的颜色。灰粉、雾霾蓝、玫瑰棕最衬你；避开高饱和的橙黄和纯黑，它们会压住你的气色。"
+  },
+  "秋型": {
+    desc: "暖而浓郁，像秋天的枫叶和焦糖。",
+    tones: "暖调 + 深 + 浓郁",
+    good: ["芥末黄","橄榄绿","砖红","焦糖","巧克力","米金","铁锈红"],
+    bad: ["粉蓝","冷粉","冰蓝","荧光色","纯白"],
+    advice: "你适合浓郁、有质感的暖色。焦糖、橄榄绿、砖红、巧克力色特别衬你；避开粉蓝、冰蓝这类冷粉色，会让你看起来没精神。"
+  },
+  "冬型": {
+    desc: "冷而分明，像冬天的白雪和圣诞红。",
+    tones: "冷调 + 高对比 + 清晰",
+    good: ["纯黑","纯白","正红","宝蓝","玫粉","冷紫","冰蓝"],
+    bad: ["米黄","驼色","橙棕","芥末黄","暖棕"],
+    advice: "你适合高对比、清晰的颜色。纯黑、纯白、正红、宝蓝会让你看起来很有精神；避开驼色、米黄、橙棕这类暖土色，会让你显得气色暗。"
+  }
+};
+function analyzeSeason(pts){
+  const f = pts.face || {r:220,g:190,b:170};
+  const h = pts.hair || {r:60,g:50,b:45};
+  const e = pts.eye || {r:80,g:60,b:50};
+  const l = pts.lip || {r:180,g:110,b:100};
+  const faceWarm = f.r - f.b;
+  const hairL = (h.r+h.g+h.b)/3;
+  const contrast = Math.abs((f.r+f.g+f.b)/3 - hairL);
+  const faceL = (f.r+f.g+f.b)/3;
+  let season;
+  if(faceWarm > 12){
+    season = (faceL > 190 && contrast < 70) ? "春型" : "秋型";
+  }else{
+    season = (contrast > 80 || faceL > 200) ? "冬型" : "夏型";
+  }
+  return season;
+}
+function analyzeSkin(pts){
+  const f = pts.face || {r:200,g:170,b:150};
+  const brightness = (f.r+f.g+f.b)/3;
+  const warmScore = f.r - f.b;
+  let tone;
+  if(brightness > 215) tone = warmScore > 25 ? "自然白" : "冷白皮";
+  else if(brightness > 185) tone = warmScore > 30 ? "小麦色" : "自然白";
+  else if(brightness > 145) tone = warmScore > 25 ? "小麦色" : "蜜糖色";
+  else if(brightness > 100) tone = "蜜糖色";
+  else tone = "黝黑";
+  return tone;
+}
+document.getElementById("pickcolor-wrap").addEventListener("click", imgClickHandler);
+document.getElementById("pickcolor-wrap").addEventListener("touchstart", function(e){ e.preventDefault(); imgClickHandler(e); }, {passive:false});
+document.getElementById("pickcolor-skip").addEventListener("click",()=>{
+  document.getElementById("pickcolor-mask").style.display = "none";
+  pickcolor.onResult && pickcolor.onResult(null);
 });
-
-/* ============================================================
-   我的档案表单
-   ============================================================ */
+document.getElementById("pickcolor-back").addEventListener("click",()=>{
+  if(pickcolor.stepIdx > 0){
+    pickcolor.stepIdx--;
+    const m = pickcolor.markers.pop();
+    if(m) m.remove();
+    document.getElementById("pickcolor-hint").textContent = PICK_STEPS[pickcolor.stepIdx].hint;
+  }
+});
+const picker = { type:null, current:null, onConfirm:null };
+function openPicker(type, current, onConfirm){
+  picker.type = type;
+  picker.current = current;
+  picker.onConfirm = onConfirm;
+  const mask = document.getElementById("picker-mask");
+  const title = document.getElementById("picker-title");
+  const sub = document.getElementById("picker-sub");
+  const body = document.getElementById("picker-body");
+  const okBtn = document.getElementById("picker-ok");
+  okBtn.disabled = true;
+  if(type==="skin"){
+    title.textContent = "你的肤色是？";
+    sub.textContent = "对着自然光比对色卡，或拍张正脸照让我自动判断。";
+    body.innerHTML = `
+      <div style="display:flex;gap:12px;justify-content:center;margin:14px 0" id="pk-skin-cards"></div>
+      <p id="pk-skin-desc" style="font-size:12px;color:var(--ink-soft);text-align:center;min-height:36px"></p>
+      <input type="file" id="pk-skin-photo" accept="image/*" hidden>
+      <button class="btn ghost" id="pk-skin-auto" style="width:100%;margin-top:6px">拍张正脸照自动判断</button>
+    `;
+    const cardsBox = document.getElementById("pk-skin-cards");
+    SKIN_TONES.forEach(s=>{
+      const c = document.createElement("div");
+      c.className = "skin-card" + (current===s.name?" selected":"");
+      c.style.background = s.color;
+      c.title = s.name;
+      c.dataset.name = s.name;
+      c.addEventListener("click",()=>{
+        picker.current = s.name;
+        document.getElementById("pk-skin-desc").textContent = s.desc;
+        cardsBox.querySelectorAll(".skin-card").forEach(x=>x.classList.toggle("selected", x===c));
+        okBtn.disabled = false;
+      });
+      cardsBox.appendChild(c);
+    });
+    if(current){
+      const cur = SKIN_TONES.find(s=>s.name===current);
+      if(cur) document.getElementById("pk-skin-desc").textContent = cur.desc;
+    }
+    document.getElementById("pk-skin-auto").addEventListener("click",()=>document.getElementById("pk-skin-photo").click());
+    document.getElementById("pk-skin-photo").addEventListener("change", async (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const dataUrl = await new Promise(r=>{ const fr=new FileReader(); fr.onload=ev=>r(ev.target.result); fr.readAsDataURL(f); });
+      startSkinDiagnosis(dataUrl, (result)=>{
+        if(result){
+          picker.current = result.tone;
+          const sd = SEASON_TYPES[result.season];
+          window.__lastSeason = result.season;
+          document.getElementById("pk-skin-desc").innerHTML =
+            `<b>诊断结果：${result.season}型人</b>（${sd.tones}）<br>${sd.advice}`;
+          cardsBox.querySelectorAll(".skin-card").forEach(x=>x.classList.toggle("selected", x.dataset.name===result.tone));
+          document.getElementById("picker-ok").disabled = false;
+        }
+      });
+    });
+  }
+  else if(type==="body"){
+    title.textContent = "你的身材是？";
+    sub.textContent = "选最接近的，下面会说明这种身材的特点。";
+    body.innerHTML = `<div class="chip-group" id="pk-body-chips"></div><div id="pk-body-desc" style="font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.6;min-height:20px"></div>`;
+    const chipsBox = document.getElementById("pk-body-chips");
+    Object.keys(BODY_SHAPES_INFO).forEach(name=>{
+      const c = document.createElement("button");
+      c.className = "chip" + (current===name?" on":"");
+      c.textContent = name;
+      c.addEventListener("click",()=>{
+        picker.current = name;
+        document.getElementById("pk-body-desc").textContent = BODY_SHAPES_INFO[name];
+        chipsBox.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===c));
+        okBtn.disabled = false;
+      });
+      chipsBox.appendChild(c);
+    });
+    if(current) document.getElementById("pk-body-desc").textContent = BODY_SHAPES_INFO[current]||"";
+  }
+  else if(type==="age"){
+    title.textContent = "你的年龄段？";
+    sub.textContent = "不同阶段推荐会更贴合身份。";
+    body.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px" id="pk-age-list"></div>`;
+    const list = [
+      ["18以下","18 岁以下"],
+      ["18-22","18 - 22 岁（学生时代）"],
+      ["23-30","23 - 30 岁（初入职场）"],
+      ["31-40","31 - 40 岁"],
+      ["40以上","40 岁以上"]
+    ];
+    const listBox = document.getElementById("pk-age-list");
+    list.forEach(([val,label])=>{
+      const b = document.createElement("button");
+      b.className = "ob-age" + (current===val?" selected":"");
+      b.textContent = label;
+      b.addEventListener("click",()=>{
+        picker.current = val;
+        listBox.querySelectorAll(".ob-age").forEach(x=>x.classList.toggle("selected", x===b));
+        okBtn.disabled = false;
+      });
+      listBox.appendChild(b);
+    });
+  }
+  mask.style.display = "flex";
+}
+document.getElementById("picker-cancel").addEventListener("click",()=>{
+  document.getElementById("picker-mask").style.display = "none";
+});
+document.getElementById("picker-ok").addEventListener("click",()=>{
+  if(picker.onConfirm && picker.current){
+    picker.onConfirm(picker.current);
+    if(window.__lastSeason && state.profile){
+      state.profile.seasonType = window.__lastSeason;
+      window.__lastSeason = null;
+      save();
+    }
+  }
+  document.getElementById("picker-mask").style.display = "none";
+});
+document.getElementById("f-skin-tone").addEventListener("click",()=>{
+  openPicker("skin", state.profile?.skinTone||"", (val)=>{
+    document.getElementById("f-skin-tone").value = val;
+  });
+});
+document.getElementById("f-body-shape").addEventListener("click",()=>{
+  openPicker("body", state.profile?.bodyShape||"", (val)=>{
+    document.getElementById("f-body-shape").value = val;
+  });
+});
+document.getElementById("f-age-range").addEventListener("click",()=>{
+  openPicker("age", state.profile?.ageRange||"", (val)=>{
+    document.getElementById("f-age-range").value = val;
+  });
+});
 let meStyles = new Set();
 function fillProfileForm(){
   if(!state.profile) return;
@@ -689,29 +1046,38 @@ function fillProfileForm(){
   document.getElementById("f-cycle").value = state.profile.cycleDays||28;
   document.getElementById("f-period-len").value = state.profile.periodLength||5;
   document.getElementById("f-body-shape").value = state.profile.bodyShape||"";
+  document.getElementById("f-skin-tone").value = state.profile.skinTone||"";
+  document.getElementById("f-age-range").value = state.profile.ageRange||"";
   meStyles = new Set(state.profile.styles||[]);
   renderChips("style-chips", meStyles, state.profile.gender);
   applyGenderVisibility(state.profile.gender);
 }
-/* 男生：隐藏周期卡片；切换性别时重建风格选项 */
 function applyGenderVisibility(gender){
   document.getElementById("period-card").style.display = gender==="男" ? "none" : "";
 }
 document.getElementById("f-gender").addEventListener("change",(e)=>{
   const g = e.target.value;
   applyGenderVisibility(g);
-  // 重新渲染风格 chips，过滤掉女性专属项
   renderChips("style-chips", meStyles, g);
 });
 document.getElementById("save-profile").addEventListener("click",()=>{
   const gender = document.getElementById("f-gender").value;
+  const city = document.getElementById("f-city").value.trim();
+  const bodyShape = document.getElementById("f-body-shape").value;
+  const skinTone = document.getElementById("f-skin-tone").value;
+  const ageRange = document.getElementById("f-age-range").value;
+  if(!city){ alert("请填写所在城市"); return; }
+  if(!bodyShape){ alert("请选择体型（点那个输入框）"); return; }
+  if(!skinTone){ alert("请选择肤色（点那个输入框）"); return; }
+  if(!ageRange){ alert("请选择年龄段（点那个输入框）"); return; }
+  let identity = document.getElementById("f-identity").value;
+  if(ageRange==="18以下" || ageRange==="18-22") identity = "学生";
+  else if(ageRange==="23-30") identity = "上班族";
   state.profile = {
-    city: document.getElementById("f-city").value.trim() || state.profile.city,
+    city,
     height: parseInt(document.getElementById("f-height").value)||0,
     weight: parseInt(document.getElementById("f-weight").value)||0,
-    gender,
-    identity: document.getElementById("f-identity").value,
-    bodyShape: document.getElementById("f-body-shape").value,
+    gender, identity, bodyShape, skinTone, ageRange,
     cycleDays: gender==="男" ? null : (parseInt(document.getElementById("f-cycle").value)||28),
     periodLength: gender==="男" ? null : (parseInt(document.getElementById("f-period-len").value)||5),
     styles: Array.from(meStyles)
@@ -722,13 +1088,8 @@ document.getElementById("save-profile").addEventListener("click",()=>{
   renderHome();
   setTimeout(()=>tip.textContent="",1500);
 });
-
-/* ============================================================
-   天气获取（wttr.in 免 key）
-   ============================================================ */
 let weatherCache = { city:null, data:null, ts:0 };
 async function fetchWeather(city){
-  // 缓存 10 分钟
   if(weatherCache.city===city && weatherCache.data && Date.now()-weatherCache.ts<10*60*1000){
     return weatherCache.data;
   }
@@ -746,8 +1107,6 @@ async function fetchWeather(city){
     return null;
   }
 }
-
-/* wttr.in 天气代码 → 中文描述 + 标签 */
 function parseWeather(w){
   if(!w || !w.current_condition) return null;
   const c = w.current_condition[0];
@@ -760,7 +1119,6 @@ function parseWeather(w){
     wind: c.windspeedKmph + "km/h",
     hi: today.maxtempC,
     lo: today.mintempC,
-    // 判断是否雨/雪/晴
     isRain: /雨|小雨|中雨|大雨|阵雨|毛毛雨/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
     isSnow: /雪/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
     isSunny: /晴/.test(c.lang_zh?.[0]?.value||c.weatherDesc[0].value),
@@ -768,10 +1126,6 @@ function parseWeather(w){
     code: c.weatherCode
   };
 }
-
-/* ============================================================
-   穿搭推荐生成
-   ============================================================ */
 function tempAdvice(t){
   if(t < 0)   return "天寒地冻，需要羽绒服 / 厚羊毛大衣 + 厚毛衣，围巾手套别忘。";
   if(t < 5)   return "零下附近，穿厚羽绒服或羊绒大衣，内搭毛衣，下身厚裤或加打底裤。";
@@ -783,7 +1137,6 @@ function tempAdvice(t){
   if(t < 33)  return "挺热，穿透气短袖、轻薄下装，注意补水防晒。";
   return "很热，轻薄透气衣物优先，尽量浅色，多在阴凉处。";
 }
-
 function styleAdvice(styles, gender){
   if(!styles || !styles.length) return "";
   const femaleMap = {
@@ -832,7 +1185,6 @@ function styleAdvice(styles, gender){
   const map = gender==="男" ? maleMap : femaleMap;
   return styles.slice(0,2).map(s=>map[s]).filter(Boolean).join(" ");
 }
-
 function shortSceneTip(evText){
   if(!evText) return "";
   const t = evText;
@@ -850,11 +1202,9 @@ function shortSceneTip(evText){
     return "穿搭提示：得体大方，别太随意也别抢风头。";
   return "";
 }
-
 function eventAdvice(evText){
   if(!evText) return "";
   const t = evText;
-  // 先根据行程内容给针对性建议
   if(/面试|开会|报告|汇报|上班|工作|商务|客户|演讲|答辩/.test(t))
     return `今天要"${t}"，建议整洁正式一点，衬衫/西裤/干净的上衣，避开太随意的卫衣拖鞋。`;
   if(/运动|跑步|健身|瑜伽|球|游泳|骑行|爬山|徒步/.test(t))
@@ -869,16 +1219,13 @@ function eventAdvice(evText){
     return `今天"${t}"，穿宽松舒服的就好。`;
   if(/婚礼|婚宴|敬酒|喜酒/.test(t))
     return `今天参加婚礼，穿得体大方的小礼服或精致套装，别抢新娘风头。`;
-  // 兜底：把行程内容明确带进建议
   return `今天有安排"${t}"，衣服方便行动、干净得体为主。`;
 }
-
 function periodAdvice(isPeriod, gender){
   if(gender==="男") return "";
   if(!isPeriod) return "";
   return "经期提醒：今天建议穿深色下装更安心，腰腹和腿脚注意保暖，别穿太勒的衣服，随身带个暖宝宝。";
 }
-
 function bodyAdvice(p){
   if(!p) return "";
   const bits=[];
@@ -888,8 +1235,6 @@ function bodyAdvice(p){
   }
   if(p.height && p.height > 178 && p.gender==="男") bits.push("个子高挑，宽松廓形和大衣都很撑得起来。");
   if(p.height && p.height > 168 && p.gender!=="男") bits.push("个子高挑，宽松廓形和长款都很撑得起来。");
-
-  // 体型建议
   const bs = p.bodyShape;
   if(bs){
     const femaleTip = {
@@ -917,27 +1262,34 @@ function bodyAdvice(p){
   }
   return bits.join(" ");
 }
-
 function buildOutfit(w, profile, todayEvent, isPeriodToday){
   const parts = [];
   const tags = [];
-
-  // 优先从衣橱里组合
-  const wr = state.wardrobe || {tops:[],bottoms:[],shoes:[]};
-  const hasAnyWardrobe = wr.tops.length || wr.bottoms.length || wr.shoes.length;
+  const wr = state.wardrobe || {};
+  WARDROBE_CATS.forEach(c=>{ if(!Array.isArray(wr[c.key])) wr[c.key]=[]; });
+  const hasAnyWardrobe = WARDROBE_CATS.some(c=>wr[c.key].length);
   if(hasAnyWardrobe){
-    const top = pickFromWardrobe(wr.tops, w, todayEvent);
+    const bits = [];
+    if(w && w.temp < 20){
+      const outer = pickFromWardrobe(wr.outerwear, w, todayEvent);
+      if(outer) bits.push(outer.name);
+    }
+    const top1 = pickFromWardrobe(wr.tops, w, todayEvent);
+    if(top1) bits.push(top1.name);
+    if(w && w.temp < 15){
+      const top2 = pickFromWardrobe(wr.tops.filter(t=>t!==top1), w, todayEvent);
+      if(top2) bits.push(top2.name);
+    }
     const bot = pickFromWardrobe(wr.bottoms, w, todayEvent);
+    if(bot) bits.push(bot.name);
     const shoe = pickFromWardrobe(wr.shoes, w, todayEvent);
-    const outfitBits = [];
-    if(top) outfitBits.push(top.name);
-    if(bot) outfitBits.push(bot.name);
-    if(shoe) outfitBits.push(shoe.name);
-    if(outfitBits.length){
-      parts.push("从你衣橱里挑了这套：" + outfitBits.join(" + ") + "。");
+    if(shoe) bits.push(shoe.name);
+    const bag = pickFromWardrobe(wr.bags, w, todayEvent);
+    if(bag) bits.push(bag.name);
+    if(bits.length){
+      parts.push("从你衣橱里挑了这套：" + bits.join(" + ") + "。");
     }
   }
-
   if(w){
     parts.push(tempAdvice(w.temp));
     if(w.isRain) parts.push("今天有雨，记得带伞，鞋子选防水防滑的。");
@@ -948,7 +1300,6 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
   }else{
     parts.push("暂时没拿到实时天气，按你的体感穿即可。");
   }
-
   if(todayEvent) parts.push(eventAdvice(todayEvent));
   const sa = styleAdvice(profile.styles, profile.gender);
   if(sa) parts.push(sa);
@@ -956,23 +1307,19 @@ function buildOutfit(w, profile, todayEvent, isPeriodToday){
   if(ba) parts.push(ba);
   const pa = periodAdvice(isPeriodToday, profile.gender);
   if(pa) parts.push(pa);
-
+  if(profile.seasonType && SEASON_TYPES[profile.seasonType]){
+    const sd = SEASON_TYPES[profile.seasonType];
+    parts.push(`色彩提示：你是${profile.seasonType}人，今天可以多穿${sd.good.slice(0,3).join("、")}这类颜色；少穿${sd.bad[0]}。`);
+  }
   return { main: parts.join(" "), tags };
 }
-
-/* ============================================================
-   首页渲染
-   ============================================================ */
 async function renderHome(){
   const t = today();
   document.getElementById("today-label").textContent = fmtCN(t);
-
   if(!state.profile){
     checkOnboard();
     return;
   }
-
-  // 未来 1-2 天行程提醒
   const alertArea = document.getElementById("alert-area");
   alertArea.innerHTML = "";
   for(let i=1;i<=2;i++){
@@ -995,8 +1342,6 @@ async function renderHome(){
       alertArea.appendChild(div);
     }
   }
-
-  // 经期临近提醒（仅女性）
   const ptArea = document.getElementById("period-tip-area");
   ptArea.innerHTML = "";
   if(state.profile.gender !== "男" && state.profile.cycleDays){
@@ -1012,14 +1357,10 @@ async function renderHome(){
       }
     }
   }
-
-  // 穿搭推荐（先基于已知信息立刻渲染，天气回来后再补一条）
   const todayKey = dkey(t);
   const todayEvent = state.events[todayKey] || "";
   const isPeriodToday = state.periodDays.includes(todayKey);
   renderOutfit(null, todayEvent, isPeriodToday);
-
-  // 近期行程列表（未来 14 天）
   const upList = document.getElementById("upcoming-list");
   const upCard = document.getElementById("upcoming-card");
   upList.innerHTML = "";
@@ -1041,8 +1382,6 @@ async function renderHome(){
     upList.innerHTML = `<div style="font-size:13px;color:var(--ink-soft)">未来两周还没有安排，去日历里加几个吧。</div>`;
   }
   upCard.style.display = "";
-
-  // 异步拉天气，回来后更新天气卡和穿搭建议
   const w = parseWeather(await fetchWeather(state.profile.city));
   if(w){
     document.getElementById("w-temp").textContent = w.temp;
@@ -1057,7 +1396,6 @@ async function renderHome(){
   }
   renderOutfit(w, todayEvent, isPeriodToday);
 }
-
 function renderOutfit(w, todayEvent, isPeriodToday){
   const rec = buildOutfit(w, state.profile, todayEvent, isPeriodToday);
   document.getElementById("outfit-main").textContent = rec.main;
@@ -1082,42 +1420,29 @@ function renderOutfit(w, todayEvent, isPeriodToday){
     tagBox.appendChild(s);
   }
 }
-
-/* ============================================================
-   日历渲染
-   ============================================================ */
 let calCursor = state.calCursor || { y: today().getFullYear(), m: today().getMonth() };
 let selectedDate = dkey(today());
-
 function renderCalendar(){
   document.getElementById("cal-month").textContent = `${calCursor.y} 年 ${calCursor.m+1} 月`;
   const grid = document.getElementById("cal-grid");
   grid.innerHTML = "";
-
   const first = new Date(calCursor.y, calCursor.m, 1);
-  const startDay = first.getDay(); // 0=周日
+  const startDay = first.getDay();
   const daysInMonth = new Date(calCursor.y, calCursor.m+1, 0).getDate();
   const prevDays = new Date(calCursor.y, calCursor.m, 0).getDate();
-
   const tKey = dkey(today());
-
-  // 前面补上月
   for(let i=startDay-1;i>=0;i--){
     grid.appendChild(makeCell(prevDays-i, true));
   }
-  // 本月
   for(let d=1; d<=daysInMonth; d++){
     const dt = new Date(calCursor.y, calCursor.m, d);
     grid.appendChild(makeCell(d, false, dt));
   }
-  // 后面补到 7 的倍数
   const total = startDay + daysInMonth;
   const tail = (7 - total%7) % 7;
   for(let i=1;i<=tail;i++) grid.appendChild(makeCell(i, true));
-
   renderDayPanel();
 }
-
 function makeCell(dayNum, other, dateObj){
   const cell = document.createElement("div");
   cell.className = "cal-cell" + (other?" other":"");
@@ -1128,16 +1453,13 @@ function makeCell(dayNum, other, dateObj){
     if(key===selectedDate) cell.classList.add("selected");
   }
   cell.innerHTML = `<span>${dayNum}</span>`;
-
   if(!other && key){
     const hasEvent = !!state.events[key];
     const isPeriod = state.profile && state.profile.gender!=="男" && state.periodDays.includes(key);
     const pred = getPredictedPeriodDays();
     const isPred = pred.has(key);
-
     if(isPeriod) cell.classList.add("real-period");
     if(isPred && !isPeriod) cell.classList.add("pred-period");
-
     if(hasEvent){
       const dots = document.createElement("div");
       dots.className = "dot-row";
@@ -1153,16 +1475,12 @@ function makeCell(dayNum, other, dateObj){
   }
   return cell;
 }
-
-/* 计算预测经期日期集合：从最近一次真实经期开始日 + cycleDays 开始，连续 periodLength 天 */
 function getPredictedPeriodDays(){
   const result = new Set();
   if(!state.profile || state.profile.gender==="男") return result;
   const cycle = state.profile.cycleDays || 28;
   const plen = state.profile.periodLength || 5;
   if(!state.periodDays.length) return result;
-
-  // 找最近一次经期段的开始日（连续段的第一天）
   const sorted = [...state.periodDays].sort();
   let lastStart = sorted[sorted.length-1];
   for(let i=sorted.length-1;i>=0;i--){
@@ -1170,17 +1488,13 @@ function getPredictedPeriodDays(){
     const prev = new Date(sorted[i-1]);
     if(i===0 || (cur - prev !== 86400000)){ lastStart = sorted[i]; break; }
   }
-  // 预测下次开始日
   const nextStart = addDays(new Date(lastStart+"T00:00:00"), cycle);
-  // 如果预测开始日已经过去（说明用户这次还没记录），不预测
   if(nextStart < today()) return result;
   for(let i=0;i<plen;i++){
     result.add(dkey(addDays(nextStart, i)));
   }
   return result;
 }
-
-/* 最近一次真实经期开始日（用于首页临近提醒） */
 function getLastPeriodStart(){
   if(!state.periodDays.length) return null;
   const sorted = [...state.periodDays].sort();
@@ -1191,7 +1505,6 @@ function getLastPeriodStart(){
   }
   return sorted[0];
 }
-
 function renderDayPanel(){
   const panel = document.getElementById("day-panel");
   if(!selectedDate){ panel.style.display="none"; return; }
@@ -1203,10 +1516,8 @@ function renderDayPanel(){
   const tp = document.getElementById("toggle-period");
   tp.classList.toggle("on", on);
   document.getElementById("period-action-label").textContent = on ? "结束经期（提前结束）" : "今天来月经了，开始记录";
-  // 男生不显示经期按钮
   tp.style.display = (state.profile && state.profile.gender==="男") ? "none" : "";
 }
-
 document.getElementById("prev-month").addEventListener("click",()=>{
   calCursor.m--; if(calCursor.m<0){calCursor.m=11;calCursor.y--;}
   renderCalendar();
@@ -1219,14 +1530,12 @@ document.getElementById("toggle-period").addEventListener("click",()=>{
   const plen = (state.profile && state.profile.periodLength) || 5;
   const on = state.periodDays.includes(selectedDate);
   if(on){
-    // 结束经期：把从选中日开始往后的连续经期天删掉
     const sel = new Date(selectedDate+"T00:00:00");
     state.periodDays = state.periodDays.filter(k=>{
       const d = new Date(k+"T00:00:00");
-      return d < sel; // 严格早于选中日的保留，选中日及之后连续的删掉
+      return d < sel;
     });
   }else{
-    // 开始经期：从选中日开始加 plen 天
     for(let i=0;i<plen;i++){
       const k = dkey(addDays(new Date(selectedDate+"T00:00:00"), i));
       if(!state.periodDays.includes(k)) state.periodDays.push(k);
@@ -1250,19 +1559,46 @@ document.getElementById("save-day").addEventListener("click",()=>{
   document.getElementById("day-panel").appendChild(tip);
   setTimeout(()=>tip.remove(),1200);
 });
-
-/* ============================================================
-   衣橱
-   ============================================================ */
-if(!state.wardrobe) state.wardrobe = { tops: [], bottoms: [], shoes: [] };
-
-function renderWardrobe(){
-  renderWardrobeList("wardrobe-tops", state.wardrobe.tops);
-  renderWardrobeList("wardrobe-bottoms", state.wardrobe.bottoms);
-  renderWardrobeList("wardrobe-shoes", state.wardrobe.shoes);
+if(!state.wardrobe) state.wardrobe = {};
+WARDROBE_CATS.forEach(c=>{ if(!Array.isArray(state.wardrobe[c.key])) state.wardrobe[c.key] = []; });
+function renderWardrobeCards(){
+  const box = document.getElementById("wardrobe-cards");
+  box.innerHTML = "";
+  WARDROBE_CATS.forEach(cat=>{
+    const list = state.wardrobe[cat.key];
+    const card = document.createElement("div");
+    card.className = "profile-card";
+    card.innerHTML = `<h3>${cat.label} <span style="font-weight:400;color:var(--ink-soft);font-size:12px">${list.length} 件</span></h3>`;
+    const listBox = document.createElement("div");
+    listBox.className = "wardrobe-list";
+    listBox.id = "wardrobe-" + cat.key;
+    card.appendChild(listBox);
+    const addRow = document.createElement("div");
+    addRow.className = "wardrobe-add-row";
+    addRow.innerHTML = `
+      <div class="wardrobe-preview" id="preview-${cat.key}"></div>
+      <input type="text" id="new-${cat.key}-name" placeholder="${cat.placeholder}">
+      <input type="file" id="new-${cat.key}-photo" accept="image/*" hidden>
+      <button class="btn ghost" id="add-${cat.key}-photo-btn">照片</button>
+      <button class="btn" id="add-${cat.key}-btn">添加</button>
+    `;
+    card.appendChild(addRow);
+    box.appendChild(card);
+  });
+  WARDROBE_CATS.forEach(cat=>{
+    bindPhotoInput(`new-${cat.key}-photo`, cat.key, `add-${cat.key}-photo-btn`, `preview-${cat.key}`);
+    bindAddBtn(`add-${cat.key}-btn`, `new-${cat.key}-name`, cat.key, cat.key, `add-${cat.key}-photo-btn`, `preview-${cat.key}`);
+  });
 }
-function renderWardrobeList(containerId, list){
-  const box = document.getElementById(containerId);
+function renderWardrobe(){
+  WARDROBE_CATS.forEach(cat=>{
+    const box = document.getElementById("wardrobe-" + cat.key);
+    if(box) renderWardrobeList(box, state.wardrobe[cat.key]);
+  });
+}
+function renderWardrobeList(box, list){
+  if(typeof box === "string") box = document.getElementById(box);
+  if(!box) return;
   box.innerHTML = "";
   if(!list.length){
     box.innerHTML = `<div class="wardrobe-empty">还没有衣服，从下面添加吧。</div>`;
@@ -1276,7 +1612,13 @@ function renderWardrobeList(containerId, list){
       : `<div class="ph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7l4-3h8l4 3v13H4z"/><path d="M9 10h6"/></svg></div>`;
     const name = document.createElement("div");
     name.className = "name";
-    name.textContent = item.name;
+    if(item.color){
+      const dot = document.createElement("span");
+      dot.style.cssText = `display:inline-block;width:10px;height:10px;border-radius:50%;background:${colorToHex(item.color)};border:1px solid rgba(0,0,0,.1);margin-right:6px;vertical-align:middle`;
+      dot.title = item.color;
+      name.appendChild(dot);
+    }
+    name.appendChild(document.createTextNode(item.name));
     const del = document.createElement("button");
     del.className = "del";
     del.textContent = "×";
@@ -1291,65 +1633,292 @@ function renderWardrobeList(containerId, list){
     box.appendChild(row);
   });
 }
-
-/* 读照片文件为 base64 */
 let pendingPhotos = { top:null, bottom:null, shoe:null };
-function bindPhotoInput(fileInputId, slotKey, btnId){
+async function colorKeyCutout(dataUrl, tolerance=38){
+  const img = new Image();
+  await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; img.src=dataUrl; });
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const ctx = canvas.getContext("2d", { willReadFrequently:true });
+  ctx.drawImage(img,0,0);
+  const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  const data = imgData.data;
+  const W = canvas.width, H = canvas.height;
+  const samplePoints = [
+    [0,0],[W-1,0],[0,H-1],[W-1,H-1],
+    [W/2,0],[W/2,H-1],[0,H/2],[W-1,H/2]
+  ];
+  let br=0,bg=0,bb=0;
+  samplePoints.forEach(([x,y])=>{
+    const i = (Math.round(y)*W + Math.round(x))*4;
+    br+=data[i]; bg+=data[i+1]; bb+=data[i+2];
+  });
+  br/=samplePoints.length; bg/=samplePoints.length; bb/=samplePoints.length;
+  const feather = 25;
+  for(let i=0;i<data.length;i+=4){
+    const dr=data[i]-br, dg=data[i+1]-bg, db=data[i+2]-bb;
+    const dist = Math.sqrt(dr*dr+dg*dg+db*db);
+    if(dist < tolerance){
+      data[i+3] = 0;
+    }else if(dist < tolerance+feather){
+      data[i+3] = Math.round(255*(dist-tolerance)/feather);
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+  return canvas.toDataURL("image/png");
+}
+function bindPhotoInput(fileInputId, slotKey, btnId, previewId){
   const input = document.getElementById(fileInputId);
   const btn = document.getElementById(btnId);
+  const preview = document.getElementById(previewId);
+  preview.innerHTML = `<div class="empty-hint">未选图</div>`;
   btn.addEventListener("click",()=>input.click());
-  input.addEventListener("change",()=>{
+  input.addEventListener("change", async ()=>{
     const f = input.files[0];
     if(!f) return;
-    const reader = new FileReader();
-    reader.onload = e=>{
-      // 压缩一下，避免 localStorage 爆掉
-      const img = new Image();
-      img.onload = ()=>{
-        const canvas = document.createElement("canvas");
-        const MAX = 200;
-        const scale = Math.min(1, MAX/Math.max(img.width, img.height));
-        canvas.width = img.width*scale;
-        canvas.height = img.height*scale;
-        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
-        pendingPhotos[slotKey] = canvas.toDataURL("image/jpeg", 0.8);
-        btn.textContent = "已选图";
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(f);
+    const mask = document.getElementById("ai-mask");
+    mask.style.display = "flex";
+    try{
+      const dataUrl = await new Promise((res,rej)=>{
+        const r = new FileReader();
+        r.onload = e=>res(e.target.result);
+        r.onerror = rej;
+        r.readAsDataURL(f);
+      });
+      pendingPhotos[slotKey] = await colorKeyCutout(dataUrl, 38);
+      btn.textContent = "修图";
+      openEditor(pendingPhotos[slotKey], (finalUrl)=>{
+        pendingPhotos[slotKey] = finalUrl;
+        preview.innerHTML = `<img src="${finalUrl}" alt="">`;
+        btn.textContent = "已抠图";
+      });
+    }catch(err){
+      console.warn("抠图失败", err);
+      alert("抠图失败，已为您展示原图。");
+      pendingPhotos[slotKey] = await new Promise((res,rej)=>{
+        const r = new FileReader();
+        r.onload = e=>res(e.target.result);
+        r.onerror = rej;
+        r.readAsDataURL(f);
+      });
+      btn.textContent = "已选原图";
+      preview.innerHTML = `<img src="${pendingPhotos[slotKey]}" alt="">`;
+    }finally{
+      mask.style.display = "none";
+      input.value = "";
+    }
   });
 }
-bindPhotoInput("new-top-photo","top","add-top-photo-btn");
-bindPhotoInput("new-bottom-photo","bottom","add-bottom-photo-btn");
-bindPhotoInput("new-shoe-photo","shoe","add-shoe-photo-btn");
-
-function bindAddBtn(btnId, inputId, slotKey, listKey){
-  document.getElementById(btnId).addEventListener("click",()=>{
+const editor = {
+  canvas: null, ctx: null,
+  isDrawing: false, lastX: 0, lastY: 0,
+  mode: "erase",
+  originalImg: null,
+  onDone: null
+};
+function openEditor(dataUrl, onDone){
+  const mask = document.getElementById("editor-mask");
+  const canvas = document.getElementById("editor-canvas");
+  editor.canvas = canvas;
+  editor.ctx = canvas.getContext("2d");
+  editor.onDone = onDone;
+  editor.mode = "erase";
+  const img = new Image();
+  img.onload = ()=>{
+    const MAX = 600;
+    const scale = Math.min(1, MAX/Math.max(img.width, img.height));
+    canvas.width = img.width*scale;
+    canvas.height = img.height*scale;
+    editor.ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    editor.originalImg = img;
+    mask.style.display = "flex";
+    updateModeBtn();
+  };
+  img.src = dataUrl;
+}
+function updateModeBtn(){
+  const e = document.getElementById("editor-erase-mode");
+  const r = document.getElementById("editor-restore-mode");
+  if(editor.mode==="erase"){
+    e.style.background = "#FBE3E8"; e.style.color = "#B85A6E";
+    r.style.background = ""; r.style.color = "";
+  }else{
+    r.style.background = "#E7EEE5"; r.style.color = "#5C7A5A";
+    e.style.background = ""; e.style.color = "";
+  }
+}
+function getPos(e){
+  const canvas = editor.canvas;
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  return { x: x * (canvas.width / rect.width), y: y * (canvas.height / rect.height) };
+}
+function startDraw(e){
+  e.preventDefault();
+  editor.isDrawing = true;
+  const {x,y} = getPos(e);
+  editor.lastX = x; editor.lastY = y;
+  drawDot(x,y);
+}
+function moveDraw(e){
+  if(!editor.isDrawing) return;
+  e.preventDefault();
+  const {x,y} = getPos(e);
+  const ctx = editor.ctx;
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.lineWidth = parseInt(document.getElementById("editor-size").value);
+  if(editor.mode==="erase"){
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.strokeStyle = "rgba(0,0,0,1)";
+  }else{
+    restoreStroke(editor.lastX, editor.lastY, x, y);
+  }
+  editor.lastX = x; editor.lastY = y;
+}
+function drawDot(x,y){
+  const ctx = editor.ctx;
+  ctx.beginPath();
+  ctx.arc(x,y,parseInt(document.getElementById("editor-size").value)/2,0,Math.PI*2);
+  if(editor.mode==="erase"){
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,1)";
+  }else{
+    restoreDot(x,y);
+  }
+  ctx.fill();
+}
+function restoreDot(x,y){
+  const ctx = editor.ctx;
+  const size = parseInt(document.getElementById("editor-size").value);
+  const scale = editor.canvas.width / editor.originalImg.width;
+  ctx.save();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.beginPath();
+  ctx.arc(x,y,size/2,0,Math.PI*2);
+  ctx.clip();
+  ctx.drawImage(editor.originalImg, 0,0, editor.originalImg.width, editor.originalImg.height,
+    0,0, editor.canvas.width, editor.canvas.height);
+  ctx.restore();
+}
+function restoreStroke(x1,y1,x2,y2){
+  const dist = Math.hypot(x2-x1,y2-y1);
+  const steps = Math.max(1, Math.ceil(dist/4));
+  for(let i=0;i<=steps;i++){
+    const x = x1 + (x2-x1)*i/steps;
+    const y = y1 + (y2-y1)*i/steps;
+    restoreDot(x,y);
+  }
+}
+function endDraw(){ editor.isDrawing = false; }
+document.getElementById("editor-erase-mode").addEventListener("click",()=>{ editor.mode="erase"; updateModeBtn(); });
+document.getElementById("editor-restore-mode").addEventListener("click",()=>{ editor.mode="restore"; updateModeBtn(); });
+document.getElementById("editor-cancel").addEventListener("click",()=>{
+  document.getElementById("editor-mask").style.display="none";
+});
+document.getElementById("editor-done").addEventListener("click",()=>{
+  const dataUrl = editor.canvas.toDataURL("image/png");
+  document.getElementById("editor-mask").style.display="none";
+  if(editor.onDone) editor.onDone(dataUrl);
+});
+(function(){
+  const c = document.getElementById("editor-canvas");
+  c.addEventListener("mousedown", startDraw);
+  c.addEventListener("mousemove", moveDraw);
+  window.addEventListener("mouseup", endDraw);
+  c.addEventListener("touchstart", startDraw, {passive:false});
+  c.addEventListener("touchmove", moveDraw, {passive:false});
+  c.addEventListener("touchend", endDraw);
+})();
+function bindAddBtn(btnId, inputId, slotKey, listKey, photoBtnId, previewId){
+  document.getElementById(btnId).addEventListener("click", async ()=>{
     const name = document.getElementById(inputId).value.trim();
     if(!name){ alert("先填个名字吧"); return; }
-    state.wardrobe[listKey].push({ name, photo: pendingPhotos[slotKey] || null });
+    const photo = pendingPhotos[slotKey] || null;
+    let color = null;
+    if(photo){
+      try { color = await extractDominantColor(photo); } catch(e){ color = null; }
+    }
+    state.wardrobe[listKey].push({ name, photo, color });
     pendingPhotos[slotKey] = null;
     document.getElementById(inputId).value = "";
-    document.getElementById(btnId.replace("add-","add-").replace("-btn","-photo-btn")).textContent = "照片";
+    document.getElementById(photoBtnId).textContent = "照片";
+    document.getElementById(previewId).innerHTML = `<div class="empty-hint">未选图</div>`;
     save();
     renderWardrobe();
     renderHome();
   });
 }
-bindAddBtn("add-top-btn","new-top-name","top","tops");
-bindAddBtn("add-bottom-btn","new-bottom-name","bottom","bottoms");
-bindAddBtn("add-shoe-btn","new-shoe-name","shoe","shoes");
-
-/* ============================================================
-   从衣橱里挑衣服（按温度+场景关键词打分）
-   ============================================================ */
+function extractDominantColor(dataUrl){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const c = document.createElement("canvas");
+      const MAX = 200;
+      const scale = Math.min(1, MAX/Math.max(img.width, img.height));
+      c.width = img.width*scale; c.height = img.height*scale;
+      const ctx = c.getContext("2d");
+      ctx.drawImage(img, 0,0, c.width, c.height);
+      const d = ctx.getImageData(0,0,c.width,c.height).data;
+      let r=0,g=0,b=0,n=0;
+      for(let i=0;i<d.length;i+=4){
+        if(d[i+3] < 128) continue;
+        r+=d[i]; g+=d[i+1]; b+=d[i+2]; n++;
+      }
+      if(n===0){ resolve(null); return; }
+      r=Math.round(r/n); g=Math.round(g/n); b=Math.round(b/n);
+      resolve(rgbToColorName(r,g,b));
+    };
+    img.onerror = ()=>resolve(null);
+    img.src = dataUrl;
+  });
+}
+function rgbToColorName(r,g,b){
+  r/=255; g/=255; b/=255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h = 0, s = 0, l = (max+min)/2;
+  if(max!==min){
+    const d = max-min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h = (g-b)/d + (g<b?6:0); break;
+      case g: h = (b-r)/d + 2; break;
+      case b: h = (r-g)/d + 4; break;
+    }
+    h *= 60;
+  }
+  if(s < 0.12){
+    if(l < 0.18) return "黑色";
+    if(l < 0.4) return "深灰";
+    if(l < 0.7) return "灰色";
+    if(l < 0.88) return "浅灰";
+    return "白色";
+  }
+  if(h < 15 || h >= 345) return l < 0.4 ? "深红" : (l > 0.7 ? "粉色" : "红色");
+  if(h < 45) return l < 0.5 ? "棕色" : (s > 0.6 ? "橙色" : "驼色/卡其");
+  if(h < 70) return l > 0.7 ? "米白" : "黄色";
+  if(h < 160) return l < 0.4 ? "墨绿" : (l > 0.75 ? "薄荷绿" : "绿色");
+  if(h < 200) return "青色";
+  if(h < 250) return l < 0.4 ? "深蓝" : (l > 0.75 ? "浅蓝" : "蓝色");
+  if(h < 290) return "紫色";
+  return "粉色";
+}
+function colorToHex(name){
+  const map = {
+    "黑色":"#1a1a1a","深灰":"#555","灰色":"#999","浅灰":"#ccc","白色":"#fff",
+    "深红":"#8B0000","红色":"#D62828","粉色":"#F4C2C2","橙色":"#E76F51",
+    "棕色":"#6F4E37","驼色/卡其":"#C19A6B","黄色":"#E9C46A","米白":"#F5F0E1",
+    "墨绿":"#2D5A27","绿色":"#588157","薄荷绿":"#B7E4C7","青色":"#2A9D8F",
+    "深蓝":"#1D3557","蓝色":"#457B9D","浅蓝":"#A8DADC","紫色":"#6D597A"
+  };
+  return map[name] || "#ccc";
+}
 function pickFromWardrobe(list, w, eventText){
   if(!list || !list.length) return null;
   const scored = list.map(item=>{
     let score = 0;
     const n = item.name;
-    // 温度权重
     if(w){
       if(w.temp < 10){
         if(/厚|羽绒|棉|毛|呢|外套|大衣|夹克|针织|毛衣|靴子|靴/.test(n)) score += 3;
@@ -1361,7 +1930,6 @@ function pickFromWardrobe(list, w, eventText){
         if(/羽绒|厚|棉|呢|毛衣|靴/.test(n)) score -= 3;
       }
     }
-    // 场景权重
     if(eventText){
       if(/面试|开会|上班|工作|商务|报告|答辩/.test(eventText)){
         if(/衬衫|西装|西裤|皮鞋|正装|通勤|衬衫| Polo/.test(n)) score += 4;
@@ -1380,23 +1948,19 @@ function pickFromWardrobe(list, w, eventText){
   scored.sort((a,b)=>b.score-a.score);
   return scored[0].item;
 }
-
-/* ============================================================
-   启动
-   ============================================================ */
+renderWardrobeCards();
 checkOnboard();
 renderHome();
 renderCalendar();
 renderWardrobe();
-
-/* 首次建档时切换性别，联动过滤风格 */
-document.getElementById("ob-gender").addEventListener("change",(e)=>{
-  const g = e.target.value;
-  // 保留已选 chips，过滤女性专属项
-  const keep = new Set(Array.from(document.querySelectorAll("#ob-style-chips .chip.on")).map(c=>c.textContent));
-  if(g==="男") WOMEN_ONLY_STYLES.forEach(s=>keep.delete(s));
-  renderChips("ob-style-chips", keep, g);
-});
 </script>
+<div id="ai-mask" style="display:none;position:fixed;inset:0;background:rgba(30,20,25,.55);z-index:200;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:28px 32px;text-align:center;max-width:300px">
+    <div style="width:44px;height:44px;border:3px solid #FBE3E8;border-top-color:#D97A8C;border-radius:50%;margin:0 auto 14px;animation:spin 1s linear infinite"></div>
+    <div style="font-size:15px;font-weight:600;margin-bottom:6px">正在抠图…</div>
+    <div style="font-size:12px;color:#8A837E">本地处理，1 秒内完成</div>
+  </div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 </body>
 </html>
